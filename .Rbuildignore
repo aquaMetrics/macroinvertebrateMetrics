@@ -1,0 +1,9 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^\.Rhistory$
+^\.travis\.yml$
+^appveyor\.yml$
+^codecov\.yml$
+dev
+backup
+

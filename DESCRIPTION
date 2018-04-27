@@ -1,0 +1,20 @@
+Package: macroinvertebrateMetrics
+Type: Package
+Title: Freshwater Biotic indices
+Version: 0.98-2
+Date: 2017-03-30
+Authors@R: c(person("Carlos","Ruiz",role="aut"),
+             person("Tim","Foster",email = "tim.foster@sepa.org.uk",role=c("ctb","cre"))) 
+Description: Metrics for assessing ecological indicators of biodiversity in rivers and lakes.
+Suggests:
+  covr,
+  testthat,
+  knitr
+Depends: 
+  R (>= 2.10)
+License: MIT + file LICENSE
+URL: https://github.com/aquaMetrics/macroinvertebrateMetrics
+LazyLoad: yes
+LazyData: yes
+VignetteBuilder: knitr
+RoxygenNote: 6.0.1
