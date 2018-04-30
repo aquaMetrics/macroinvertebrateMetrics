@@ -9,7 +9,10 @@ Description: Metrics for assessing ecological indicators of biodiversity in rive
 Suggests:
   covr,
   testthat,
-  knitr
+  knitr,
+  sepaTools,
+  lintr,
+  devtools
 Depends: 
   R (>= 2.10)
 License: MIT + file LICENSE
