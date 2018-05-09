@@ -4,17 +4,17 @@
 \alias{calcSpear}
 \title{Calculate SPEAR metric}
 \usage{
-calcSpear(ecologyResults)
+calcSpear(ecologyResults, recoveryArea = "unknown")
 }
 \arguments{
-\item{ecologyresults}{Dataframe of results with four columns: SAMPLE_NUMBER, TAXON, SPEAR_SPECIES, RESULT}
-
 \item{recoveryArea}{There are 3 different paramaters depending on availability of "Recovery areas" information:
 \itemize{
   \item "Absent" - No presence of recovery areas
   \item "Present" - Presence of recovery areas
   \item "Unknown" - No information available
 }}
+
+\item{ecologyresults}{Dataframe of results with four columns: SAMPLE_NUMBER, TAXON, SPEAR_SPECIES, RESULT}
 }
 \value{
 dataframe with...
@@ -24,4 +24,6 @@ Calculate SPEAR metric
 }
 \examples{
 calcSpear(demoEcoloyResults, recoveryArea = "unknown")
+
+instal.git_()
 }

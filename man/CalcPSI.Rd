@@ -2,19 +2,29 @@
 % Please edit documentation in R/calcPsi.R
 \name{calcPsi}
 \alias{calcPsi}
-\title{Calculate Pollution Silt Index (PSI)}
+\title{Proportion of Sediment-sensitive Invertebrates (PSI)}
 \usage{
-calcPsi(ecologyResults)
+calcPsi(ecologyResults, valueWarning = FALSE, taxaList = "TL2")
 }
 \arguments{
-\item{ecologyResults}{Dataframe of Ecology results}
+\item{ecologyResults}{Dataframe with at least two columns
+item{SAMPLE_ID} - unique idenftier for each sample
+item{TAXON} - Taxon name that matches to macroinvertebrateTaxa dataset}
 }
 \value{
-dataframe with...
+Dataframe with
+item{SAMPLE_ID}
+item{ANALYSIS_NAME}
+item{DETERMINAND}
+item{RESULT}
 }
 \description{
-Calculate Pollution Silt Index (PSI)
+A sediment-sensitive macro-invertebrate metric that provides a proxy to
+describe the extent to which the surface of river bed are composed, or
+covered by sediments. It can be calculated at Taxonomic Levels 3, 4 & 5
 }
 \examples{
-calcEpsi(demoEcologyResults)
+sample <- demoEcologyResults
+sample <- filterPsi(sample,taxaList = "TL2")
+calcPsi(ecologyResults= sample)
 }

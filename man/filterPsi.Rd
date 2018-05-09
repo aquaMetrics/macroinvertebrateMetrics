@@ -10,8 +10,7 @@ filterPsi(ecologyResults, taxaList = "TL2")
 \item{ecologyResults}{Dataframe with ecology results...}
 
 \item{taxaList}{The taxonomic level the sample(s) have been identified at according to specificed taxa lists
-as described in \href{https://www.sniffer.org.uk/Handlers/Download.ashx?IDMF=e9b55f14-59cf-46b4-927f-66411e2e02d8}
-{WFD100 Further Development of River Invertebrate Classification Tool}.
+as described in WFD100 Further Development of River Invertebrate Classification Tool.
 Either "TL2" - Taxa list 2 or "TL5" Taxa list 3.}
 }
 \value{
