@@ -13,9 +13,7 @@
 #' @export
 #'
 #' @examples
-#' calcSpear(demoEcoloyResults, recoveryArea = "unknown")
-#'
-#' instal.git_()
+#' calcSpear(demoEcoloyResults, recoveryArea = "unknown") 
 calcSpear <- function(ecologyResults, recoveryArea = "unknown") {
   sampleMetric <-
     lapply(split(ecologyResults, ecologyResults$SAMPLE_ID), function(sample) {
