@@ -1,8 +1,8 @@
-#' Proportion of Sediment-sensitive Invertebrates (PSI)
+#' Enchanced Proportion of Sediment-sensitive Invertebrates (EPSI)
 #'
 #' A sediment-sensitive macro-invertebrate metric that provides a proxy to
 #' describe the extent to which the surface of river bed are composed, or
-#' covered by sediments. It can be calculated at Taxonomic Levels 3, 4 & 5
+#' covered by sediments. It can be calculated at Taxonomic Levels 2 & 5
 #' @param ecologyResults
 #' Dataframe with at least two columns
 #' item{SAMPLE_ID} - unique idenftier for each sample
@@ -18,14 +18,10 @@
 #' sample <- demoEcologyResults
 #' sample <- filterPsi(sample,taxaList = "TL3")
 #' calcPsi(ecologyResults= sample)
-calcPsi <- function(ecologyResults, taxaList = "TL3") {
-  if (!taxaList %in% c("TL3", "TL5", "TL4")) {
-    stop("taxaList arugment must be either 'TL3', 'TL4' or 'TL5'")
+calcEpsi <- function(ecologyResults, taxaList = "TL2") {
+  if (!taxaList %in% c("TL2", "TL5")) {
+    stop("taxaList arugment must be either 'TL2' or 'TL5'")
   }
-  # unique taxa incase any duplicate taxa causes double counting. Metric is based on present / absent so
-  # don't need to group by abundance etc.
-  ecologyResults <- unique(ecologyResults[, c("SAMPLE_ID", "TAXON")])
-
   # merge ecology results with taxa metric scores based on taxon name
   macroinvertebrates <-  macroinvertebrateMetrics::macroinvertebrateTaxa
   ecologyResults <-
@@ -33,13 +29,36 @@ calcPsi <- function(ecologyResults, taxaList = "TL3") {
           macroinvertebrates,
           by.x = "TAXON",
           by.y = "TAXON_NAME")
+  
+ 
   # split by sample number
   sampleMetric <-
     lapply(split(ecologyResults, ecologyResults$SAMPLE_ID), function(sample) {
       # calculate PSI score
-      sampleMetric <-
-        length(sample$PSI_GROUP[sample$PSI_GROUP %in% c("A", "B")]) /
-        length(sample$PSI_GROUP[sample$PSI_GROUP != "" | is.na(sample$PSI_GROUP)]) * 100
+      sample$CAT <- floor(log10(sample$RESULT) + 1)
+      if (taxaList == "TL2") {
+        # if no scoring families present return error
+        if(sum(sample$EPSI_WEIGHT_FAM,na.rm = T) == 0 ) {
+          samplePsi <- data.frame(
+            SAMPLE_ID = unique(sample$SAMPLE_ID),
+            ANALYSIS_REPNAME = paste0("EPSI Metric ", taxaList),
+            ANALYSIS_NAME = paste0("EPSI Metric ", taxaList),
+            DETERMINAND = paste0("Error"),
+            RESULT = "No EPSI scoring families in sample"
+          )
+          return(samplePsi) 
+        }
+      sample$PSI_VALUE <- sample$CAT * sample$EPSI_WEIGHT_FAM
+      sample$PSI_SENSITIVE_SUM <-  sum(sample$PSI_VALUE[sample$EPSI_WEIGHT_FAM >= 0.5 ],na.rm = T)
+      } else {
+      sample$PSI_VALUE <- sample$CAT * sample$EPSI_WEIGHT_TL5
+      sample$PSI_SENSITIVE_SUM <-  sum(sample$PSI_VALUE[sample$EPSI_WEIGHT_TL5 >= 0.5 ],na.rm = T)
+      }
+      
+      sample$PSI_ALL_SUM <- sum(sample$PSI_VALUE,na.rm = T)
+      sample$PSI_SCORE <- (sample$PSI_SENSITIVE_SUM / sample$PSI_ALL_SUM) * 100
+      sampleMetric <-  unique(sample$PSI_SCORE)
+                 
       # calculate PSI condition using psiCondition dataframe saved in package
        psiConditions <- macroinvertebrateMetrics::psiCondition
       intervals <-
@@ -58,14 +77,15 @@ calcPsi <- function(ecologyResults, taxaList = "TL3") {
       # create dataframe of results
       samplePsi <- data.frame(
         SAMPLE_ID = unique(sample$SAMPLE_ID),
-        ANALYSIS_REPNAME = paste0("PSI Metric ", taxaList),
-        ANALYSIS_NAME = paste0("PSI Metric ", taxaList),
-        DETERMINAND = c(paste0("PSI Score ", taxaList), paste0("PSI Condition ", taxaList)),
+        ANALYSIS_REPNAME = paste0("EPSI Metric ", taxaList),
+        ANALYSIS_NAME = paste0("EPSI Metric ", taxaList),
+        DETERMINAND = c(paste0("EPSI Score ", taxaList), paste0("EPSI Condition ", taxaList)),
         RESULT = psiResult
       )
 
       return(samplePsi)
     })
   metric <- do.call("rbind", sampleMetric)
+  
   return(metric)
 }

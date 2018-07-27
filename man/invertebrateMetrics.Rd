@@ -21,8 +21,8 @@ Specifically coded to be used with TIBCO Enterprise Runtime for R (TERR).
 This package contains several functions which compute multiple ecological
 metrics at different Taxonomic Levels (TL) using multiple season combinations.
 \itemize{
- \item SPEAR (\code{\link{CalcSPEAR}})\cr Species at Risk
- \item PSI (\code{\link{CalcPSI}})\cr Proportion of Sediment-sensitive Invertebrates
+ \item SPEAR (\code{\link{calcSpear}})\cr Species at Risk
+ \item PSI (\code{\link{calcPsi}})\cr Proportion of Sediment-sensitive Invertebrates
  \item LIFE (\code{\link{CalcLIFE}})\cr Lotic Invertebrate Index for Flow Evaluation
  \item Riverfly's ASI (\code{\link{CalcASI}})\cr Riverfly Angler's Score Index
  \item Climate Change (\code{\link{CalcCC}})\cr Climate Change. Thermal indicator.

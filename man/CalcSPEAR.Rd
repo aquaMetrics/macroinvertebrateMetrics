@@ -24,6 +24,4 @@ Calculate SPEAR metric
 }
 \examples{
 calcSpear(demoEcoloyResults, recoveryArea = "unknown")
-
-instal.git_()
 }

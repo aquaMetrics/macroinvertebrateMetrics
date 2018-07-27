@@ -4,14 +4,15 @@
 \alias{filterPsi}
 \title{Filter results for PSI metric}
 \usage{
-filterPsi(ecologyResults, taxaList = "TL2")
+filterPsi(ecologyResults, taxaList = "TL3")
 }
 \arguments{
 \item{ecologyResults}{Dataframe with ecology results...}
 
 \item{taxaList}{The taxonomic level the sample(s) have been identified at according to specificed taxa lists
 as described in WFD100 Further Development of River Invertebrate Classification Tool.
-Either "TL2" - Taxa list 2 or "TL5" Taxa list 3.}
+Either "TL3" - Taxa list 2 or "TL5" Taxa list 3 or "TL4". PSI TL lists don't match RIVPACS species e.g.
+TL3 list includes 'Oligochaeta' even though it is not a TL3 taxa according to WFD100.}
 }
 \value{
 Dataframe
