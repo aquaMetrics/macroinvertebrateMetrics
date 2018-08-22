@@ -3,5 +3,6 @@
 export(calcEpsi)
 export(calcPsi)
 export(calcSpear)
+export(calcWhpt)
 export(filterPsi)
 export(filterSpear)
