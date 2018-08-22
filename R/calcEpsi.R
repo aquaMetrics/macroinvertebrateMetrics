@@ -29,36 +29,32 @@ calcEpsi <- function(ecologyResults, taxaList = "TL2") {
           macroinvertebrates,
           by.x = "TAXON",
           by.y = "TAXON_NAME")
-  
- 
-  # split by sample number
+
+# split by sample number
   sampleMetric <-
     lapply(split(ecologyResults, ecologyResults$SAMPLE_ID), function(sample) {
       # calculate PSI score
       sample$CAT <- floor(log10(sample$RESULT) + 1)
       if (taxaList == "TL2") {
         # if no scoring families present return error
-        if(sum(sample$EPSI_WEIGHT_FAM,na.rm = T) == 0 ) {
-          samplePsi <- data.frame(
-            SAMPLE_ID = unique(sample$SAMPLE_ID),
+        if (sum(sample$EPSI_WEIGHT_FAM, na.rm = T) == 0) {
+          samplePsi <- data.frame(SAMPLE_ID = unique(sample$SAMPLE_ID),
             ANALYSIS_REPNAME = paste0("EPSI Metric ", taxaList),
             ANALYSIS_NAME = paste0("EPSI Metric ", taxaList),
             DETERMINAND = paste0("Error"),
-            RESULT = "No EPSI scoring families in sample"
-          )
-          return(samplePsi) 
+            RESULT = "No EPSI scoring families in sample")
+          return(samplePsi)
         }
       sample$PSI_VALUE <- sample$CAT * sample$EPSI_WEIGHT_FAM
-      sample$PSI_SENSITIVE_SUM <-  sum(sample$PSI_VALUE[sample$EPSI_WEIGHT_FAM >= 0.5 ],na.rm = T)
+      sample$PSI_SENSITIVE_SUM <-  sum(sample$PSI_VALUE[sample$EPSI_WEIGHT_FAM >= 0.5], na.rm = T)
       } else {
       sample$PSI_VALUE <- sample$CAT * sample$EPSI_WEIGHT_TL5
-      sample$PSI_SENSITIVE_SUM <-  sum(sample$PSI_VALUE[sample$EPSI_WEIGHT_TL5 >= 0.5 ],na.rm = T)
+      sample$PSI_SENSITIVE_SUM <-  sum(sample$PSI_VALUE[sample$EPSI_WEIGHT_TL5 >= 0.5], na.rm = T)
       }
-      
-      sample$PSI_ALL_SUM <- sum(sample$PSI_VALUE,na.rm = T)
+
+      sample$PSI_ALL_SUM <- sum(sample$PSI_VALUE, na.rm = T)
       sample$PSI_SCORE <- (sample$PSI_SENSITIVE_SUM / sample$PSI_ALL_SUM) * 100
       sampleMetric <-  unique(sample$PSI_SCORE)
-                 
       # calculate PSI condition using psiCondition dataframe saved in package
        psiConditions <- macroinvertebrateMetrics::psiCondition
       intervals <-
@@ -86,6 +82,6 @@ calcEpsi <- function(ecologyResults, taxaList = "TL2") {
       return(samplePsi)
     })
   metric <- do.call("rbind", sampleMetric)
-  
+
   return(metric)
 }
