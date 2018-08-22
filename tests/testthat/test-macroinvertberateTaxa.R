@@ -2,15 +2,13 @@ context("test macroinvertebrateTaxa")
 
 test_that("Test .csv source file matches binary file", {
   # These two files should be the same, there are two files for ease of use:
-  # "INVERT-TAXON-DICTIONARY" is in csv file for easy reading and
+  # 1. "INVERT-TAXON-DICTIONARY" is in csv file for easy reading and
   # comparison on github i.e. this is plain text and easy to track changes
   taxonDictionarySource <- read.csv(
     system.file("extdata",
                 "INVERT-TAXON-DICTIONARY.csv",
-                package = "macroinvertebrateMetrics"),
-    stringsAsFactors = F
-  )
-  # "macroinvertebrateTaxa" table is held in sys.data file as a binary for fast access in
+                package = "macroinvertebrateMetrics"))
+  # 2. "macroinvertebrateTaxa" table is held in sys.data file as a binary for fast access in
   # the package
   taxonDictionaryBinary <- macroinvertebrateTaxa
   # check that the binary file matches the plain text csv file
