@@ -2,6 +2,7 @@
 
 export(calcEpsi)
 export(calcPsi)
+export(calcRiverfly)
 export(calcSpear)
 export(calcWhpt)
 export(filterPsi)
