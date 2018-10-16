@@ -17,7 +17,7 @@
 #' The taxonomic level the sample(s) have been identified at according to specificed taxa lists
 #' as described in WFD100 Further Development of River Invertebrate Classification Tool.
 #' Either "TL2" - Taxa list 2, "TL4" - Taxa list 4 or  "TL5" - Taxa list 5.
-#' @return dataframe with...
+#' @return dataframe with metric outputs
 #' @references
 #' Liess M. & Von der Ohe P. 2005. \emph{Analyzing effects of pesticides on invertebrate
 #' communities in streams}. Environ Toxicol Chem. 24: 954-965.
@@ -34,11 +34,11 @@
 #' @export
 #'
 #' @examples
-#' calcSpear(demoEcoloyResults, recoveryArea = "unknown")
-#'  ecologyResults <- demoEcologyResults
-#'  ecologyResults <- ecologyResults[ecologyResults$SAMPLE_NUMBER == 3201863,]
-#'  sample <- filterSpear(ecologyResults, taxaList = "TL2")
-#'  spearOutput <- calcSpear(sample, taxaList = "TL2")
+#' ecologyResults <- demoEcologyResults
+#' ecologyResults <- ecologyResults[ecologyResults$SAMPLE_NUMBER == 3201863,]
+#' ecologyResults <- ecologyResults[ecologyResults$ANALYSIS_NAME == "FW_TAX_ID",]
+#' sample <- filterSpear(ecologyResults, taxaList = "TL2")
+#' spearOutput <- calcSpear(sample, taxaList = "TL2")
 
 calcSpear <- function(ecologyResults, recoveryArea = "unknown", taxaList = NULL) {
   sampleMetric <-
