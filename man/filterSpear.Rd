@@ -11,7 +11,7 @@ filterSpear(ecologyResults, taxaList = NULL)
 
 \item{taxaList}{The taxonomic level the sample(s) have been identified at according to specificed taxa lists
 as described in WFD100 Further Development of River Invertebrate Classification Tool.
-Either "TL2" - Taxa list 2 or "TL5" - Taxa list 5.}
+Either "TL2" - Taxa list 2, "TL4" - Taxa list 4 or  "TL5" - Taxa list 5.}
 }
 \value{
 Dataframe of filtered and aggregated results (based on Taxa List) with four columns:

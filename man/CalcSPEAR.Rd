@@ -16,12 +16,12 @@ calcSpear(ecologyResults, recoveryArea = "unknown", taxaList = NULL)
 
 \item{taxaList}{The taxonomic level the sample(s) have been identified at according to specificed taxa lists
 as described in WFD100 Further Development of River Invertebrate Classification Tool.
-Either "TL2" - Taxa list 2 or "TL5" - Taxa list 5.}
+Either "TL2" - Taxa list 2, "TL4" - Taxa list 4 or  "TL5" - Taxa list 5.}
 
 \item{ecologyresults}{Dataframe of results with four columns: SAMPLE_NUMBER, TAXON, SPEAR_SPECIES, RESULT}
 }
 \value{
-dataframe with...
+dataframe with metric outputs
 }
 \description{
 Indicator based on biological traits used to detect effects of pesticides on
@@ -29,11 +29,11 @@ non-target freshwater invertebrate organisms. It can be calculated at Taxonomic
 Levels 2, 4 and 5.
 }
 \examples{
-calcSpear(demoEcoloyResults, recoveryArea = "unknown")
- ecologyResults <- demoEcologyResults
- ecologyResults <- ecologyResults[ecologyResults$SAMPLE_NUMBER == 3201863,]
- sample <- filterSpear(ecologyResults, taxaList = "TL2")
- spearOutput <- calcSpear(sample, taxaList = "TL2")
+ecologyResults <- demoEcologyResults
+ecologyResults <- ecologyResults[ecologyResults$SAMPLE_NUMBER == 3201863,]
+ecologyResults <- ecologyResults[ecologyResults$ANALYSIS_NAME == "FW_TAX_ID",]
+sample <- filterSpear(ecologyResults, taxaList = "TL2")
+spearOutput <- calcSpear(sample, taxaList = "TL2")
 }
 \references{
 Liess M. & Von der Ohe P. 2005. \emph{Analyzing effects of pesticides on invertebrate
