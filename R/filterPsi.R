@@ -33,11 +33,16 @@ filterPsi <- function(ecologyResults, taxaList = "TL3") {
   if (length(taxaMetricValues$TAXON) == 0) {
     return(taxaMetricValues)
   }
+  # change class for aggregation
+  taxaMetricValues$RESULT <-  as.numeric(taxaMetricValues$RESULT)
+  taxaMetricValues$PSI_GROUP <- as.character(taxaMetricValues$PSI_GROUP)
   # aggregate to correct Taxa List (TL) level
   taxaMetricValues$RESULT <- as.character(taxaMetricValues$RESULT)
   taxaMetricValues$RESULT <- as.numeric(taxaMetricValues$RESULT)
   if (taxaList == "TL3") {
+    taxaMetricValues$TL3_TAXON <- as.character(taxaMetricValues$TL3_TAXON)
     taxaMetricValues$TL3_TAXON[taxaMetricValues$TAXON == "Oligochaeta"] <- "Oligochaeta"
+
     taxaMetricValues <- aggregate(
       taxaMetricValues[, c("RESULT")],
       by = list(
@@ -100,5 +105,8 @@ filterPsi <- function(ecologyResults, taxaList = "TL3") {
   names(taxaMetricValues) <- c("SAMPLE_ID", "TAXON", "PSI_GROUP", "RESULT")
   # PSI_GROUP not required by calcPSI function
   taxaMetricValues$PSI_GROUP <- NULL
+  # remove 'blank' taxa if not scores for PSI
+  taxaMetricValues <- taxaMetricValues[taxaMetricValues$TAXON != "",]
+  taxaMetricValues <- taxaMetricValues[! is.na(taxaMetricValues$TAXON),]
   return(taxaMetricValues)
 }
