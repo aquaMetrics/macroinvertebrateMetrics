@@ -4,14 +4,14 @@
 \alias{filterSpear}
 \title{Filter data before calculating SPEAR metric}
 \usage{
-filterSpear(ecologyResults, taxaList = "TL2")
+filterSpear(ecologyResults, taxaList = NULL)
 }
 \arguments{
 \item{ecologyResults}{Dataframe with ecology results...}
 
 \item{taxaList}{The taxonomic level the sample(s) have been identified at according to specificed taxa lists
 as described in WFD100 Further Development of River Invertebrate Classification Tool.
-Either "TL2" - Taxa list 2 or "TL5" Taxa list 3.}
+Either "TL2" - Taxa list 2 or "TL5" - Taxa list 5.}
 }
 \value{
 Dataframe of filtered and aggregated results (based on Taxa List) with four columns:

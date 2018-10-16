@@ -5,7 +5,7 @@
 #' @param taxaList
 #' The taxonomic level the sample(s) have been identified at according to specificed taxa lists
 #' as described in WFD100 Further Development of River Invertebrate Classification Tool.
-#' Either "TL2" - Taxa list 2 or "TL5" Taxa list 3.
+#' Either "TL2" - Taxa list 2, "TL4" - Taxa list 4 or  "TL5" - Taxa list 5.
 #' @return
 #' Dataframe of filtered and aggregated results (based on Taxa List) with four columns:
 #' SAMPLE_NUMBER, TAXON, SPEAR_SPECIES, RESULT
@@ -13,7 +13,7 @@
 #'
 #' @examples
 #' filterSpear(demoEcoloyResults, taxaList = "TL2")
-filterSpear <- function(ecologyResults, taxaList = "TL2") {
+filterSpear <- function(ecologyResults, taxaList = NULL) {
   # only need Taxon abundance determinand
   ecologyResults <-
     ecologyResults[ecologyResults$DETERMINAND == "Taxon abundance" |
@@ -42,12 +42,22 @@ filterSpear <- function(ecologyResults, taxaList = "TL2") {
       ),
       FUN = sum
     )
+  } else if(taxaList == "TL5") {
+    taxaMetricValues <- aggregate(
+      taxaMetricValues[, c("RESULT")],
+      by = list(
+        taxaMetricValues$SAMPLE_ID,
+        taxaMetricValues$TL5_TAXON,
+        taxaMetricValues$SPEAR_SPECIES
+      ),
+      FUN = sum
+    )
   } else {
     taxaMetricValues <- aggregate(
       taxaMetricValues[, c("RESULT")],
       by = list(
         taxaMetricValues$SAMPLE_ID,
-        taxaMetricValues$TL2_TAXON,
+        taxaMetricValues$TL4_TAXON,
         taxaMetricValues$SPEAR_SPECIES
       ),
       FUN = sum
@@ -55,6 +65,9 @@ filterSpear <- function(ecologyResults, taxaList = "TL2") {
   }
   # update names after aggregation
   names(taxaMetricValues) <-
-    c("SAMPLE_ID", "TAXON", "SPEAR_SPECIES")
+    c("SAMPLE_ID", "TAXON", "SPEAR_SPECIES", "RESULT")
+  # only return results for records that match TL
+  taxaMetricValues <- taxaMetricValues[taxaMetricValues$TAXON != "", ]
+
   return(taxaMetricValues)
 }

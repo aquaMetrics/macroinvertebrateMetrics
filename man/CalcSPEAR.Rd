@@ -2,9 +2,9 @@
 % Please edit documentation in R/calcSpear.R
 \name{calcSpear}
 \alias{calcSpear}
-\title{Calculate SPEAR metric}
+\title{SPEcies At Risk (SPEAR) metric}
 \usage{
-calcSpear(ecologyResults, recoveryArea = "unknown")
+calcSpear(ecologyResults, recoveryArea = "unknown", taxaList = NULL)
 }
 \arguments{
 \item{recoveryArea}{There are 3 different paramaters depending on availability of "Recovery areas" information:
@@ -14,14 +14,39 @@ calcSpear(ecologyResults, recoveryArea = "unknown")
   \item "Unknown" - No information available
 }}
 
+\item{taxaList}{The taxonomic level the sample(s) have been identified at according to specificed taxa lists
+as described in WFD100 Further Development of River Invertebrate Classification Tool.
+Either "TL2" - Taxa list 2 or "TL5" - Taxa list 5.}
+
 \item{ecologyresults}{Dataframe of results with four columns: SAMPLE_NUMBER, TAXON, SPEAR_SPECIES, RESULT}
 }
 \value{
 dataframe with...
 }
 \description{
-Calculate SPEAR metric
+Indicator based on biological traits used to detect effects of pesticides on
+non-target freshwater invertebrate organisms. It can be calculated at Taxonomic
+Levels 2, 4 and 5.
 }
 \examples{
 calcSpear(demoEcoloyResults, recoveryArea = "unknown")
+ ecologyResults <- demoEcologyResults
+ ecologyResults <- ecologyResults[ecologyResults$SAMPLE_NUMBER == 3201863,]
+ sample <- filterSpear(ecologyResults, taxaList = "TL2")
+ spearOutput <- calcSpear(sample, taxaList = "TL2")
+}
+\references{
+Liess M. & Von der Ohe P. 2005. \emph{Analyzing effects of pesticides on invertebrate
+communities in streams}. Environ Toxicol Chem. 24: 954-965.
+
+Wogram J. & Liess M. 2001. \emph{Rank ordering of macroinvertebrate species sensitivity
+to toxic compounds by comparison with that of Daphnia magna}. Bull Environ Contam
+Toxicol. 67: 360-367
+
+Liess M., Schaefer R., Schriever C. 2008. \emph{The footprint of pesticide stress in
+communities - Species traits reveal community effects of toxicants}. Science of
+the Total Environment. 406: 484-490
+}
+\seealso{
+\code{\link{filterSpear}}
 }
