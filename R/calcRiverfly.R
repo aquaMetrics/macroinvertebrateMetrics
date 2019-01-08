@@ -51,10 +51,16 @@ riverflySum$VALUE_LOG <- c(apply(riverflySum[, "VALUE"], 2, category))
 
 # group_by sample_id and sum log abundance
 riverflyScore <- dplyr::group_by(riverflySum, SAMPLE_ID) %>% dplyr::summarise(RESULT = sum(VALUE_LOG))
+# if no relevant data return NULL object
+if(nrow(riverflyScore) == 0) {
+ return()
+}
+
 riverflyScore$DETERMINAND <- "Riverfly Score"
 riverflyScore$ANALYSIS_NAME <- "Metric: Riverfly Score"
 riverflyScore$ANALYSIS_REPNAME <- "Metric: Riverfly Score"
 # End Exclude Linting
+
 
 return(riverflyScore)
 }
