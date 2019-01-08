@@ -39,7 +39,7 @@ calcWhpt <- function(ecologyResults, taxonTable = NULL) {
                                            )))
 
   # group by sample so WHPT scores are produce by sample
-  metricResults <- metricResults %>%  dplyr::group_by(SAMPLE_ID = metricResults$SAMPLE_ID)
+  metricResults <- metricResults %>%  dplyr::group_by(SAMPLE_ID = metricResults$SAMPLE_ID, TL2_TAXON)
 
   # calculate WHPT score
   metricResults <- metricResults %>%

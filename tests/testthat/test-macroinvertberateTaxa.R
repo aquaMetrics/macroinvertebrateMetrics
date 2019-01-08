@@ -6,7 +6,7 @@ test_that("Test .csv source file matches binary file", {
   # comparison on github i.e. this is plain text and easy to track changes
   taxonDictionarySource <- read.csv(
     system.file("extdata",
-                "INVERT-TAXON-DICTIONARY.csv",
+                "invert-taxon-dictionary.csv",
                 package = "macroinvertebrateMetrics"))
   # 2. "macroinvertebrateTaxa" table is held in sys.data file as a binary for fast access in
   # the package

@@ -3,7 +3,7 @@
 \docType{data}
 \name{psiCondition}
 \alias{psiCondition}
-\title{PSI condition}
+\title{PSI condition definition table}
 \format{A data frame}
 \usage{
 psiCondition

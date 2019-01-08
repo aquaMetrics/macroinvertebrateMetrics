@@ -18,7 +18,7 @@ test_that("creates dataframe", {
   ecologyResults <- getEcologyResults(locations = 9599, sampleNumber = 2495120)
   ecologyResults <- filterPsi(ecologyResults, taxaList = "TL2")
   metricResults <- calcEpsi(ecologyResults)
-  expect_equal(round(as.numeric(as.character(metricResults$RESULT[1])),digits = 2), 82.96)
+  expect_equal(round(as.numeric(as.character(metricResults$RESULT[1])), digits = 2), 82.96)
 
   # test random field sample
   ecologyResults <- getEcologyResults(sampleNumber = c("2430420", "2430489"))
@@ -29,7 +29,7 @@ test_that("creates dataframe", {
   ecologyResults <- getEcologyResults(sampleNumber = c("3077042"))
   ecologyResults <- filterPsi(ecologyResults, taxaList = "TL2")
   metricResults <- calcEpsi(ecologyResults)
-  expect_equal(as.character(metricResults$DETERMINAND),"Error")
+  expect_equal(as.character(metricResults$DETERMINAND), "Error")
 
   ecologyResults <- getEcologyResults(sampleNumber = c("3077042"))
   ecologyResults <- filterPsi(ecologyResults, taxaList = "TL3")

@@ -8,8 +8,8 @@ test_that("creates dataframe", {
 
 test_that("compare TL2 against aquaMetric package scores", {
   ecologyResults <- demoEcologyResults
-  ecologyResults <- ecologyResults[ecologyResults$SAMPLE_NUMBER == 3201863,]
-  ecologyResults <- ecologyResults[ecologyResults$ANALYSIS_NAME == "FW_TAX_ID",]
+  ecologyResults <- ecologyResults[ecologyResults$SAMPLE_NUMBER == 3201863, ]
+  ecologyResults <- ecologyResults[ecologyResults$ANALYSIS_NAME == "FW_TAX_ID", ]
   ecologyResults <- filterSpear(ecologyResults, taxaList = "TL2")
   spearOutput <- calcSpear(ecologyResults, recoveryArea = "unknown", taxaList = "TL2")
 
@@ -22,7 +22,7 @@ test_that("compare TL2 against aquaMetric package scores", {
 test_that("compare TL2 against aquaMetric package scores", {
   # currently DAVE Ecology not working for TL5?
   ecologyResults <- demoEcologyResults
-  ecologyResults <- ecologyResults[ecologyResults$ANALYSIS_NAME == "MIXTAX_TST",]
+  ecologyResults <- ecologyResults[ecologyResults$ANALYSIS_NAME == "MIXTAX_TST", ]
   ecologyResults <- filterSpear(ecologyResults, taxaList = "TL5")
   spearOutput <- calcSpear(ecologyResults, recoveryArea = "unknown", taxaList = "TL5")
 })

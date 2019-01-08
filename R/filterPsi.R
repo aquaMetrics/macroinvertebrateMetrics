@@ -106,7 +106,7 @@ filterPsi <- function(ecologyResults, taxaList = "TL3") {
   # PSI_GROUP not required by calcPSI function
   taxaMetricValues$PSI_GROUP <- NULL
   # remove 'blank' taxa if not scores for PSI
-  taxaMetricValues <- taxaMetricValues[taxaMetricValues$TAXON != "",]
-  taxaMetricValues <- taxaMetricValues[! is.na(taxaMetricValues$TAXON),]
+  taxaMetricValues <- taxaMetricValues[taxaMetricValues$TAXON != "", ]
+  taxaMetricValues <- taxaMetricValues[! is.na(taxaMetricValues$TAXON), ]
   return(taxaMetricValues)
 }

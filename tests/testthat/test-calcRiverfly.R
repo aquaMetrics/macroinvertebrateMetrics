@@ -3,7 +3,7 @@ context("calcRiverfly")
 
 test_that("test riverfly scores", {
   ecologyResults <- demoEcologyResults
-  ecologyResults <- ecologyResults[ecologyResults$ANALYSIS_NAME == "FW_TAX_ID",]
+  ecologyResults <- ecologyResults[ecologyResults$ANALYSIS_NAME == "FW_TAX_ID", ]
   riverflyOutput <- calcRiverfly(ecologyResults)
 
   expect_equal(riverflyOutput$RESULT[1], 10)

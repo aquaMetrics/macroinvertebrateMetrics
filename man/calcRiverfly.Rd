@@ -4,10 +4,10 @@
 \alias{calcRiverfly}
 \title{Riverfly metric}
 \usage{
-calcRiverfly(ecologyResults = ecologyResults)
+calcRiverfly(ecologyResults)
 }
 \arguments{
-\item{ecologyResults}{A data frame of ecology view data}
+\item{ecologyResults}{A data frame of ecology data}
 }
 \value{
 A data frame 5 variables
@@ -17,6 +17,6 @@ Function to calculate riverfly scores
 }
 \examples{
 ecologyResults <- demoEcologyResults
-ecologyResults <- ecologyResults[ecologyResults$ANALYSIS_NAME == "FW_TAX_ID",]
+ecologyResults <- ecologyResults[ecologyResults$ANALYSIS_NAME == "FW_TAX_ID", ]
 spearOutput <- calcRiverfly(ecologyResults)
 }

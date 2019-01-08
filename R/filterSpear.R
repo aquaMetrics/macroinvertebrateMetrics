@@ -42,7 +42,7 @@ filterSpear <- function(ecologyResults, taxaList = NULL) {
       ),
       FUN = sum
     )
-  } else if(taxaList == "TL5") {
+  } else if (taxaList == "TL5") {
     taxaMetricValues <- aggregate(
       taxaMetricValues[, c("RESULT")],
       by = list(
