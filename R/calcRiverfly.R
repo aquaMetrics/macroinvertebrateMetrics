@@ -16,9 +16,10 @@
 calcRiverfly <- function(ecologyResults) {
 
 # need to create riverfly score for each sample number
+macroinvertebrates <-  macroinvertebrateMetrics::macroinvertebrateTaxa
 SEPAresults <-
     merge(ecologyResults,
-          macroinvertebrateTaxa,
+          macroinvertebrates,
           by.x = "TAXON",
           by.y = "TAXON_NAME")
 # this table has a lookup list for riverfly taxon groups against TL2 families

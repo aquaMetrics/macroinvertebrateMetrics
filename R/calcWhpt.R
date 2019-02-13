@@ -12,9 +12,11 @@
 #' @examples
 #' metricResults <- calcWhpt(demoEcologyResults)
 calcWhpt <- function(ecologyResults, taxonTable = NULL) {
+  # get macroinvertebrtae taxa
+  macroinvertebrates <-  macroinvertebrateMetrics::macroinvertebrateTaxa
 
   if (!is.null(taxonTable)){
-    macroinvertebrateTaxa <- taxonTable
+    macroinvertebrates <- taxonTable
   }
 
   # filter results so only Taxon abundance results and greater zero as these
@@ -27,7 +29,7 @@ calcWhpt <- function(ecologyResults, taxonTable = NULL) {
   # Need to join ecology results to reference table of WHPT scores
   ecologyResults <-
     dplyr::inner_join(ecologyResults,
-                      macroinvertebrateTaxa,
+                      macroinvertebrates,
                       by = c("TAXON" = "TAXON_NAME"))
 
   # WHPT score is based on abundance - find correct WHPT score to use
