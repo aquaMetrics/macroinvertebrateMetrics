@@ -22,8 +22,13 @@ SEPAresults <-
           macroinvertebrates,
           by.x = "TAXON",
           by.y = "TAXON_NAME")
-# this table has a lookup list for riverfly taxon groups against TL2 families
 
+# need 'Taxon abundance' results to calculate Riverfly score
+SEPAresults <- SEPAresults[SEPAresults$DETERMINAND == 'Taxon abundance' |
+                           SEPAresults$DETERMINAND == 'Taxon Abundance',]
+
+
+# this table has a lookup list for riverfly taxon groups against TL2 families
 taxonTable <- read.csv(system.file("extdata",
                      "riverfly.csv",
                      package = "macroinvertebrateMetrics"),
