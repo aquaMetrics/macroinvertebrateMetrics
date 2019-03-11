@@ -14,18 +14,20 @@
 #' spearOutput <- calcRiverfly(ecologyResults)
 
 calcRiverfly <- function(ecologyResults) {
-
 # need to create riverfly score for each sample number
 macroinvertebrates <-  macroinvertebrateMetrics::macroinvertebrateTaxa
+
+# need 'Taxon abundance' results to calculate Riverfly score
+ecologyResults <- ecologyResults[ecologyResults$DETERMINAND == "Taxon abundance" |
+                             ecologyResults$DETERMINAND == "Taxon Abundance", ]
+
+ecologyResults$TAXON <- trimws(ecologyResults$TAXON)
+
 SEPAresults <-
     merge(ecologyResults,
           macroinvertebrates,
           by.x = "TAXON",
           by.y = "TAXON_NAME")
-
-# need 'Taxon abundance' results to calculate Riverfly score
-SEPAresults <- SEPAresults[SEPAresults$DETERMINAND == 'Taxon abundance' |
-                           SEPAresults$DETERMINAND == 'Taxon Abundance',]
 
 
 # this table has a lookup list for riverfly taxon groups against TL2 families

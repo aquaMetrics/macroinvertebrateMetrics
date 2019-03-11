@@ -14,7 +14,7 @@
 calcWhpt <- function(ecologyResults, taxonTable = NULL) {
   # get macroinvertebrtae taxa
   macroinvertebrates <-  macroinvertebrateMetrics::macroinvertebrateTaxa
-
+  ecologyResults$TAXON <- trimws(ecologyResults$TAXON)
   if (!is.null(taxonTable)){
     macroinvertebrates <- taxonTable
   }

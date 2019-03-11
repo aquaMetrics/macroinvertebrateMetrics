@@ -20,6 +20,7 @@ filterSpear <- function(ecologyResults, taxaList = NULL) {
                      ecologyResults$DETERMINAND == "Taxon Abundance", ]
   # merge ecology results with taxa metric scores based on taxon name
   macroinvertebrates <- macroinvertebrateMetrics::macroinvertebrateTaxa
+  ecologyResults$TAXON <- trimws(ecologyResults$TAXON)
   taxaMetricValues <-
     merge(ecologyResults,
           macroinvertebrates,
