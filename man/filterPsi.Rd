@@ -21,5 +21,5 @@ Dataframe
 Filter results for PSI metric
 }
 \examples{
-filterPsi(demoEcoloyResults, taxaList = "TL2")
+filterPsi(demoEcologyResults, taxaList = "TL2")
 }

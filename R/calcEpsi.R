@@ -18,7 +18,7 @@
 #' sample <- demoEcologyResults
 #' sample <- filterPsi(sample,taxaList = "TL3")
 #' calcPsi(ecologyResults= sample)
-calcEpsi <- function(ecologyResults, taxaList = "TL2") {
+calcEpsi <- function(ecologyResults, taxaList = "TL2", logAbundance = TRUE) {
   if (!taxaList %in% c("TL2", "TL5")) {
     stop("taxaList arugment must be either 'TL2' or 'TL5'")
   }
@@ -34,12 +34,16 @@ calcEpsi <- function(ecologyResults, taxaList = "TL2") {
   sampleMetric <-
     lapply(split(ecologyResults, ecologyResults$SAMPLE_ID), function(sample) {
       # calculate PSI score
+      if (logAbundance == FALSE) {
       sample$CAT <- floor(log10(sample$RESULT) + 1)
+      } else {
+        sample$CAT <- sample$RESULT
+      }
       if (taxaList == "TL2") {
         # if no scoring families present return error
         if (sum(sample$EPSI_WEIGHT_FAM, na.rm = T) == 0) {
           samplePsi <- data.frame(SAMPLE_ID = unique(sample$SAMPLE_ID),
-            ANALYSIS_REPNAME = paste0("EPSI Metric ", taxaList),
+            ANALYSIS_REPNAME = paste0("Enhanced Proportion of Sediment-sensitive InvertsEPSI Metric ", taxaList),
             ANALYSIS_NAME = paste0("EPSI Metric ", taxaList),
             DETERMINAND = paste0("Error"),
             RESULT = "No EPSI scoring families in sample")
@@ -73,8 +77,8 @@ calcEpsi <- function(ecologyResults, taxaList = "TL2") {
       # create dataframe of results
       samplePsi <- data.frame(
         SAMPLE_ID = unique(sample$SAMPLE_ID),
-        ANALYSIS_REPNAME = paste0("EPSI Metric ", taxaList),
-        ANALYSIS_NAME = paste0("EPSI Metric ", taxaList),
+        ANALYSIS_REPNAME = paste0("Enhanced Proportion of Sediment-sensitive Inverts ", taxaList),
+        ANALYSIS_NAME = paste0("METRIC EPSI ", taxaList),
         DETERMINAND = c(paste0("EPSI Score ", taxaList), paste0("EPSI Condition ", taxaList)),
         RESULT = psiResult
       )

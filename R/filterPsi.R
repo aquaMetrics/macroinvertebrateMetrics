@@ -12,7 +12,7 @@
 #' @export
 #'
 #' @examples
-#' filterPsi(demoEcoloyResults, taxaList = "TL2")
+#' filterPsi(demoEcologyResults, taxaList = "TL2")
 filterPsi <- function(ecologyResults, taxaList = "TL3") {
   if (!taxaList %in% c("TL2", "TL3", "TL5", "TL4")) {
     stop("taxaList arugment must be either 'TL2', 'TL3', 'TL4' or 'TL5'")
@@ -34,7 +34,6 @@ filterPsi <- function(ecologyResults, taxaList = "TL3") {
     return(taxaMetricValues)
   }
   # change class for aggregation
-  taxaMetricValues$RESULT <-  as.numeric(taxaMetricValues$RESULT)
   taxaMetricValues$PSI_GROUP <- as.character(taxaMetricValues$PSI_GROUP)
   # aggregate to correct Taxa List (TL) level
   taxaMetricValues$RESULT <- as.character(taxaMetricValues$RESULT)
@@ -108,5 +107,8 @@ filterPsi <- function(ecologyResults, taxaList = "TL3") {
   # remove 'blank' taxa if not scores for PSI
   taxaMetricValues <- taxaMetricValues[taxaMetricValues$TAXON != "", ]
   taxaMetricValues <- taxaMetricValues[! is.na(taxaMetricValues$TAXON), ]
+  # log Abundance
+  taxaMetricValues$RESULT <- floor(log10(taxaMetricValues$RESULT) + 1)
+  taxaMetricValues$RESULT[taxaMetricValues$RESULT > 6] <- 6
   return(taxaMetricValues)
 }

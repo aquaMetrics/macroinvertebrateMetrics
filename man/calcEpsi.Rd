@@ -4,7 +4,7 @@
 \alias{calcEpsi}
 \title{Enchanced Proportion of Sediment-sensitive Invertebrates (EPSI)}
 \usage{
-calcEpsi(ecologyResults, taxaList = "TL2")
+calcEpsi(ecologyResults, taxaList = "TL2", logAbundance = TRUE)
 }
 \arguments{
 \item{ecologyResults}{Dataframe with at least two columns

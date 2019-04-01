@@ -65,8 +65,8 @@ if(nrow(riverflyScore) == 0) {
 }
 
 riverflyScore$DETERMINAND <- "Riverfly Score"
-riverflyScore$ANALYSIS_NAME <- "Metric: Riverfly Score"
-riverflyScore$ANALYSIS_REPNAME <- "Metric: Riverfly Score"
+riverflyScore$ANALYSIS_NAME <- "METRIC Riverfly"
+riverflyScore$ANALYSIS_REPNAME <- "Riverfly"
 # End Exclude Linting
 
 

@@ -7,9 +7,10 @@
 calcPsi(ecologyResults, taxaList = "TL3")
 }
 \arguments{
-\item{ecologyResults}{Dataframe with at least two columns
+\item{ecologyResults}{Dataframe with at least three columns
 item{SAMPLE_ID} - unique idenftier for each sample
-item{TAXON} - Taxon name that matches to macroinvertebrateTaxa dataset}
+item{TAXON} - Taxon name that matches to macroinvertebrateTaxa dataset
+item{RESULT} - Log abundance category}
 }
 \value{
 Dataframe with

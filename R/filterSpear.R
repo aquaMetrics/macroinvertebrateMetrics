@@ -26,6 +26,11 @@ filterSpear <- function(ecologyResults, taxaList = NULL) {
           macroinvertebrates,
           by.x = "TAXON",
           by.y = "TAXON_NAME")
+
+  # Remove oligochaeta - not counted at TL2 in SPEAR metric
+  if(taxaList %in% c("TL2","TL3")) {
+  taxaMetricValues <- taxaMetricValues[taxaMetricValues$TAXON != "Oligochaeta", ]
+   }
   # if nothing in data.frame
   if (length(taxaMetricValues$TAXON) == 0) {
     return(taxaMetricValues)

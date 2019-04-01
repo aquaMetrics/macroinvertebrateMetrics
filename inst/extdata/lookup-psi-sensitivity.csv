@@ -1,0 +1,31 @@
+"GROUP","DESCRIPTION","LOG10 ABUN CAT","SEDIMENT SS"
+"A","Highly Sensitive",1,2
+"B","Moderately Sensitive",1,1
+"C","Moderately Insensitive",1,1
+"D","Highly Insensitive",1,2
+"E","Excluded",1,
+"A","Highly Sensitive",2,3
+"B","Moderately Sensitive",2,2
+"C","Moderately Insensitive",2,2
+"D","Highly Insensitive",2,3
+"E","Excluded",2,
+"A","Highly Sensitive",3,4
+"B","Moderately Sensitive",3,3
+"C","Moderately Insensitive",3,3
+"D","Highly Insensitive",3,4
+"E","Excluded",3,
+"A","Highly Sensitive",4,5
+"B","Moderately Sensitive",4,4
+"C","Moderately Insensitive",4,4
+"D","Highly Insensitive",4,5
+"E","Excluded",4,
+"A","Highly Sensitive",5,5
+"B","Moderately Sensitive",5,4
+"C","Moderately Insensitive",5,4
+"D","Highly Insensitive",5,5
+"E","Excluded",5,
+"A","Highly Sensitive",6,5
+"B","Moderately Sensitive",6,4
+"C","Moderately Insensitive",6,4
+"D","Highly Insensitive",6,5
+"E","Excluded",6,

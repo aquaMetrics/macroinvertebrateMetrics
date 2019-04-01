@@ -59,13 +59,13 @@ calcSpear <- function(ecologyResults, recoveryArea = "unknown", taxaList = NULL)
       abundanceLogSumScoring <- sum(sample$scoringTaxaLog[sample$SPEAR_SPECIES == "TRUE"])
 
       # calculate sum of log abundance of all taxa (scoring or non-scoring)
-      abundanceLogSumNoNScoring <- sum(sample$scoringTaxaLog)
+      abundanceLogSumNonScoring <- sum(sample$scoringTaxaLog)
 
       # calculate number Of Taxa
       numberOfTaxa <- length(sample$RESULT)
 
       # calcualte SPEAR ratio
-      spearRatio <- (numberOfTaxa * abundanceLogSumScoring) /  (numberOfTaxa * abundanceLogSumNoNScoring)
+      spearRatio <- (numberOfTaxa * abundanceLogSumScoring) /  (numberOfTaxa * abundanceLogSumNonScoring)
       # calculate SPEAR ratio as percentage
       spearRatio <- spearRatio * 100
       # regression coefficients for Toxicant Exposure calculation
@@ -91,7 +91,7 @@ calcSpear <- function(ecologyResults, recoveryArea = "unknown", taxaList = NULL)
           upperlimit = c(11, 22, 33, 44, 100),
           value = seq(1:5)
         )
-      # calculate SPEAR condition using psiCondition dataframe saved in package
+      # calculate SPEAR condition using spearWaterQuality dataframe
       intervals <-
         data.frame(value = table(cut(
           spearRatio,
@@ -112,8 +112,8 @@ calcSpear <- function(ecologyResults, recoveryArea = "unknown", taxaList = NULL)
       # create dataframe of results and add results into it
       samplePsi <- data.frame(
         SAMPLE_ID = unique(sample$SAMPLE_ID),
-        ANALYSIS_REPNAME = "SPEAR Metric",
-        ANALYSIS_NAME = "SPEAR METRIC",
+        ANALYSIS_REPNAME = "Species At Risk from pesticides (SPEAR)",
+        ANALYSIS_NAME = "METRIC SPEARpesticides",
         DETERMINAND = c("SPEAR ratio", "SPEAR toxic ratio", "SPEAR class"),
         RESULT = spearResult
       )
