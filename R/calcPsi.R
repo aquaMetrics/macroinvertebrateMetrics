@@ -67,8 +67,8 @@ calcPsi <- function(ecologyResults, taxaList = "TL3") {
       # create dataframe of results
       samplePsi <- data.frame(
         SAMPLE_ID = unique(sample$SAMPLE_ID),
-        ANALYSIS_REPNAME = paste0("METRIC PSI ", taxaList),
-        ANALYSIS_NAME = paste0("Proportion of Sediment-sensitive Inverts ", taxaList),
+        ANALYSIS_REPNAME = paste0("Proportion of Sediment-sensitive Inverts"),
+        ANALYSIS_NAME = paste0("METRIC PSI"),
         DETERMINAND = c(paste0("PSI Score ", taxaList), paste0("PSI Condition ", taxaList)),
         RESULT = psiResult
       )

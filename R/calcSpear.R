@@ -40,7 +40,7 @@
 #' sample <- filterSpear(ecologyResults, taxaList = "TL2")
 #' spearOutput <- calcSpear(sample, taxaList = "TL2")
 
-calcSpear <- function(ecologyResults, recoveryArea = "unknown", taxaList = NULL) {
+calcSpear <- function(ecologyResults, recoveryArea = "unknown", taxaList = "TL2") {
   sampleMetric <-
     lapply(split(ecologyResults, ecologyResults$SAMPLE_ID), function(sample) {
 
@@ -51,21 +51,24 @@ calcSpear <- function(ecologyResults, recoveryArea = "unknown", taxaList = NULL)
       # for TL5, though, the Log of abundance is 0 if SPEAR is null, that is,
       # the taxon does not have score in SPEAR database. I think the TL5 method
       # should be the correct way to go.
-
-      # calculate Log10 of the abundance (RESULT) for each taxa
       sample$scoringTaxaLog <- log10(sample$RESULT + 1)
 
+      if (taxaList == "TL5") {
+        # remove taxa not included in SPEAR
+        sample$scoringTaxaLog[is.na(sample$SPEAR_SPECIES)] <- 0
+      }
+
       # calculate sum of Log10 of the abundance (RESULT) for each scoring taxa
-      abundanceLogSumScoring <- sum(sample$scoringTaxaLog[sample$SPEAR_SPECIES == "TRUE"])
+      abundanceLogSumScoring <- sum(sample$scoringTaxaLog[sample$SPEAR_SPECIES == "TRUE"], na.rm = T)
 
       # calculate sum of log abundance of all taxa (scoring or non-scoring)
       abundanceLogSumNonScoring <- sum(sample$scoringTaxaLog)
 
       # calculate number Of Taxa
-      numberOfTaxa <- length(sample$RESULT)
+      numberOfTaxa <- length(sample$RESULT[!is.na(sample$SPEAR_SPECIES)])
 
       # calcualte SPEAR ratio
-      spearRatio <- (numberOfTaxa * abundanceLogSumScoring) /  (numberOfTaxa * abundanceLogSumNonScoring)
+      spearRatio <- (numberOfTaxa * abundanceLogSumScoring) / (numberOfTaxa * abundanceLogSumNonScoring)
       # calculate SPEAR ratio as percentage
       spearRatio <- spearRatio * 100
       # regression coefficients for Toxicant Exposure calculation
@@ -78,7 +81,7 @@ calcSpear <- function(ecologyResults, recoveryArea = "unknown", taxaList = NULL)
       # toxicant exposure, depending on availability of Recovery area information
       spearToxicantRatio <-
         toxicantExposureCoeff$p1[toxicantExposureCoeff$recoveryArea == recoveryArea] *
-        spearRatio +   toxicantExposureCoeff$p2[toxicantExposureCoeff$recoveryArea == recoveryArea]
+        spearRatio + toxicantExposureCoeff$p2[toxicantExposureCoeff$recoveryArea == recoveryArea]
       # SPEAR water quality classes
       # Bad:      <= 11% SPEAR
       # Poor:     > 11% and <= 22% SPEAR
@@ -117,12 +120,9 @@ calcSpear <- function(ecologyResults, recoveryArea = "unknown", taxaList = NULL)
         DETERMINAND = c("SPEAR ratio", "SPEAR toxic ratio", "SPEAR class"),
         RESULT = spearResult
       )
-
-
     })
   metric <- do.call("rbind", sampleMetric)
-  # need to identify SEPAR outputs by the Taxa list to separate TL5 and TL2 outputs
-  metric$ANALYSIS_REPNAME <- paste(metric$ANALYSIS_REPNAME, taxaList)
-  metric$ANALYSIS_NAME <- paste(metric$ANALYSIS_NAME, taxaList)
+  # need to identify SPEAR outputs by the Taxa list to separate TL5 and TL2 outputs
+  metric$DETERMINAND <- paste(metric$DETERMINAND, taxaList)
   return(metric)
 }

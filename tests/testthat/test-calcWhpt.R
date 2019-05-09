@@ -1,36 +1,39 @@
-context("calcPsi")
+context("calcWhpt")
 
-test_that("creates dataframe", {
+test_that("WHPT scores match previously calculated scores in demo dataset", {
+
+  results  <- demoEcologyResults
+  results  <- filter(results, ANALYSIS_REPNAME == "Invert Taxa Family Lab")
+
   metricResults <-
-    calcWhpt(demoEcologyResults)
+    calcWhpt(results)
 
-  expect_equal(class(metricResults), expected = c("tbl_df", "tbl", "data.frame"))
+  results <- demoEcologyResults
+  results <- filter(results, ANALYSIS_REPNAME == "Invert Summary Whpt")
 
-  # library(sepaTools)
-  #
-  # results <- getNemsResults(sampleNumber = 3436402)
-  #
-  # resultsMetric <- sepaTools:::transformNemsToMetric(results)
-  # calcWhpt(resultsMetric)
-  # resultsMetric <- resultsMetric[resultsMetric$DETERMINAND == "Taxon abundance",]
-  # macroinvertebrateTaxa <- macroinvertebrateTaxa
-  #
-  # resultsTaxa <- merge(resultsMetric,macroinvertebrateTaxa,by.x = "TAXON",by.y = "TAXON_NAME")
-  #
-  # groupTaxa <- group_by(resultsTaxa, TL2_TAXON)
-  #
-  #
-  # groupTaxa <- select(groupTaxa, RESULT = VALUE, TAXON = TL2_TAXON, SAMPLE_ID = SAMPLE_NUMBER, DETERMINAND)
-  #
-  # groupTaxa <- mutate(groupTaxa, SUM = sum(RESULT))
-  #
-  # groupTaxa <- select(groupTaxa, RESULT = SUM, TAXON, SAMPLE_ID, DETERMINAND)
-  #
-  # groupTaxa <- distinct(groupTaxa)
-  #
-  # groupTaxa <- groupTaxa[groupTaxa$TAXON != "",]
-  #
-  # groupTaxa <- ungroup(groupTaxa)
-  #
-  # calcWhpt(groupTaxa)
+  results <- dplyr::filter(results, DETERMINAND %in% c("WHPT ASPT Abund",
+                                                       "WHPT NTAXA Abund",
+                                                       "WHPT Score")) %>%
+  dplyr::select(SAMPLE_ID, DETERMINAND, RESULT)
+
+  results$DETERMINAND <- as.character(results$DETERMINAND)
+  results$RESULT <- as.character(results$RESULT)
+  results$RESULT <- as.numeric(results$RESULT)
+
+
+  results <- results[!duplicated(results),]
+  metricResults <- metricResults[!duplicated(metricResults),]
+  results <- tidyr::spread(results, key = DETERMINAND, value = RESULT)
+
+  results <- arrange(results, SAMPLE_ID)
+
+  metricResults <- arrange(metricResults, SAMPLE_ID)
+  metricResults <- tidyr::spread(metricResults, key = DETERMINAND, value = RESULT)
+
+  test <- inner_join(metricResults, results)
+
+   # remove know errors in demo data WHPT scores and then compare:
+  expect_equal(test$WHPT_NTAXA[c(1:2, 4, 6:11, 13:14, 16:19, 21:26, 28:32)],
+       test$`WHPT NTAXA Abund`[c(1:2, 4, 6:11, 13:14, 16:19, 21:26, 28:32)])
+
 })

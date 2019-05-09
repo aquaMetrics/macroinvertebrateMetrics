@@ -4,7 +4,7 @@
 \alias{calcSpear}
 \title{SPEcies At Risk (SPEAR) metric}
 \usage{
-calcSpear(ecologyResults, recoveryArea = "unknown", taxaList = NULL)
+calcSpear(ecologyResults, recoveryArea = "unknown", taxaList = "TL2")
 }
 \arguments{
 \item{recoveryArea}{There are 3 different paramaters depending on availability of "Recovery areas" information:

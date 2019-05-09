@@ -28,7 +28,7 @@ filterSpear <- function(ecologyResults, taxaList = NULL) {
           by.y = "TAXON_NAME")
 
   # Remove oligochaeta - not counted at TL2 in SPEAR metric
-  if(taxaList %in% c("TL2","TL3")) {
+  if (taxaList %in% c("TL2", "TL3")) {
   taxaMetricValues <- taxaMetricValues[taxaMetricValues$TAXON != "Oligochaeta", ]
    }
   # if nothing in data.frame
@@ -48,16 +48,24 @@ filterSpear <- function(ecologyResults, taxaList = NULL) {
       ),
       FUN = sum
     )
+
   } else if (taxaList == "TL5") {
     taxaMetricValues <- aggregate(
       taxaMetricValues[, c("RESULT")],
       by = list(
         taxaMetricValues$SAMPLE_ID,
-        taxaMetricValues$TL5_TAXON,
-        taxaMetricValues$SPEAR_SPECIES
+        taxaMetricValues$TL5_TAXON
       ),
       FUN = sum
     )
+    # merge SPEAR_SPECIES back in because of NULL SPEAR_SPECIES not pick up if aggregated
+    taxaMetricValues <-
+      merge(taxaMetricValues,
+            macroinvertebrates[, c("TAXON_NAME", "SPEAR_SPECIES")],
+            by.x = "Group.2",
+            by.y = "TAXON_NAME")
+    taxaMetricValues <- taxaMetricValues[, c("Group.1", "Group.2", "SPEAR_SPECIES", "x")]
+
   } else {
     taxaMetricValues <- aggregate(
       taxaMetricValues[, c("RESULT")],

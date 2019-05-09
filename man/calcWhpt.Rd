@@ -7,10 +7,18 @@
 calcWhpt(ecologyResults, taxonTable = NULL)
 }
 \arguments{
-\item{ecologyResults}{dataframe of taxonomic results with mandatory four columns
-SAMPLE_ID, DETERMINAND, RESULT, TAXON}
+\item{ecologyResults}{Dataframe of taxonomic results with mandatory four columns:
+\describe{
+  \item{SAMPLE_ID}{Unique sample identifier}
+  \item{DETERMINAND}{Must include values matching 'Taxon abundance'}
+  \item{RESULT}{Numeric}
+  \item{TAXON}{TL2 WHPT taxon name}
+  }
+Columns names must match these exactly, but the column order does not matter.
+See demoEcologyResults for example dataset.}
 
-\item{taxonTable}{dataframe with WHPT scores and taxa}
+\item{taxonTable}{Optional Dataframe with WHPT scores and taxa. Default is NULL and will use built in WHPT scores. But
+you could supply custom dataframe if required for experimenation/development purposes.}
 }
 \value{
 Dataframe with four columns: SAMPLE_ID, DETERMINAND, RESULT, ANALYSIS_NAME, ANALYSIS_REPNAME
