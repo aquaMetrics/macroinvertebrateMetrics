@@ -77,8 +77,8 @@ calcEpsi <- function(ecologyResults, taxaList = "TL2", logAbundance = TRUE) {
       # create dataframe of results
       samplePsi <- data.frame(
         SAMPLE_ID = unique(sample$SAMPLE_ID),
-        ANALYSIS_REPNAME = paste0("Enhanced Proportion of Sediment-sensitive Inverts ", taxaList),
-        ANALYSIS_NAME = paste0("METRIC EPSI ", taxaList),
+        ANALYSIS_REPNAME = paste0("Enhanced Proportion of Sediment-sensitive Inverts"),
+        ANALYSIS_NAME = paste0("METRIC EPSI"),
         DETERMINAND = c(paste0("EPSI Score ", taxaList), paste0("EPSI Condition ", taxaList)),
         RESULT = psiResult
       )

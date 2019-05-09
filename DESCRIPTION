@@ -1,8 +1,8 @@
 Package: macroinvertebrateMetrics
 Type: Package
 Title: Macroinvertebrate Biotic indices
-Version: 0.98-2
-Date: 2017-03-30
+Version: 0.9.9
+Date: 2019-04-05
 Authors@R: c(person("Carlos","Ruiz",role="aut"),
              person("Tim","Foster",email = "tim.foster@sepa.org.uk",role=c("ctb","cre"))) 
 Description: Metrics and biotic indices for assessing ecological indicators of biodiversity in rivers and lakes.
