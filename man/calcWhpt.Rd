@@ -10,7 +10,6 @@ calcWhpt(ecologyResults, taxonTable = NULL)
 \item{ecologyResults}{Dataframe of taxonomic results with mandatory four columns:
 \describe{
   \item{SAMPLE_ID}{Unique sample identifier}
-  \item{DETERMINAND}{Must include values matching 'Taxon abundance'}
   \item{RESULT}{Numeric}
   \item{TAXON}{TL2 WHPT taxon name}
   }

@@ -3,8 +3,8 @@ context("calcWhpt")
 test_that("WHPT scores match previously calculated scores in demo dataset", {
 
   results  <- demoEcologyResults
-  results  <- filter(results, ANALYSIS_REPNAME == "Invert Taxa Family Lab")
-
+  results  <- filter(results, ANALYSIS_REPNAME == "Invert Taxa Family Lab" & DETERMINAND == "Taxon abundance")
+  results <- select(results, SAMPLE_ID, TAXON, RESULT)
   metricResults <-
     calcWhpt(results)
 

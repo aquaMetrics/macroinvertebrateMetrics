@@ -4,9 +4,12 @@
 #' describe the extent to which the surface of river bed are composed, or
 #' covered by sediments. It can be calculated at Taxonomic Levels 2 & 5
 #' @param ecologyResults
-#' Dataframe with at least two columns
+#' Dataframe with at least three columns
 #' item{SAMPLE_ID} - unique idenftier for each sample
 #' item{TAXON} - Taxon name that matches to macroinvertebrateTaxa dataset
+#' item{RESULT} - Numeric log abundance category
+#' @param logAbundance If RESULT column in ecologyResults not log category then
+#' set to FALSE. This will calculate log value from your numeric abundance.
 #' @return Dataframe with
 #' item{SAMPLE_ID}
 #' item{ANALYSIS_NAME}
@@ -16,7 +19,7 @@
 #'
 #' @examples
 #' sample <- demoEcologyResults
-#' sample <- filterPsi(sample,taxaList = "TL3")
+#' sample <- filterPsi(sample, taxaList = "TL3")
 #' calcPsi(ecologyResults= sample)
 calcEpsi <- function(ecologyResults, taxaList = "TL2", logAbundance = TRUE) {
   if (!taxaList %in% c("TL2", "TL5")) {

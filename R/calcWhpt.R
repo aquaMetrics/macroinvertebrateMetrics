@@ -1,12 +1,11 @@
 #' Calculate WHPT scores
 #'
 #' @param ecologyResults
-#' Dataframe of taxonomic results with mandatory four columns:
+#' Dataframe of taxonomic results with mandatory three columns:
 #' \describe{
 #'   \item{SAMPLE_ID}{Unique sample identifier}
-#'   \item{DETERMINAND}{Must include values matching 'Taxon abundance'}
-#'   \item{RESULT}{Numeric}
-#'   \item{TAXON}{TL2 WHPT taxon name}
+#'   \item{RESULT}{Numeric abundance}
+#'   \item{TAXON}{Character - TL2 WHPT taxon name}
 #'   }
 #' Columns names must match these exactly, but the column order does not matter.
 #' See demoEcologyResults for example dataset.
@@ -16,23 +15,26 @@
 #' @return
 #' Dataframe with four columns: SAMPLE_ID, DETERMINAND, RESULT, ANALYSIS_NAME, ANALYSIS_REPNAME
 #' @export
-#'
+#' @importFrom magrittr "%>%"
 #' @examples
 #' metricResults <- calcWhpt(demoEcologyResults)
 calcWhpt <- function(ecologyResults, taxonTable = NULL) {
+
+  # tidy TAXON name incase of whitespace
+  ecologyResults$TAXON <- trimws(ecologyResults$TAXON)
+
   # get macroinvertebrtae taxa table
   macroinvertebrates <-  macroinvertebrateMetrics::macroinvertebrateTaxa
-  ecologyResults$TAXON <- trimws(ecologyResults$TAXON)
+
   if (!is.null(taxonTable)){
     macroinvertebrates <- taxonTable
   }
 
   # filter results so only Taxon abundance results and greater zero as these
-  # are the results required for to calculate abundance based WHPT
+  # are the results required to calculate abundance based WHPT
   ecologyResults <-
-    dplyr::filter(ecologyResults,
-                  DETERMINAND %in% c("Taxon abundance", "Taxon Abundance")) %>%
-    mutate(RESULT = as.numeric(as.character(RESULT))) %>% filter(RESULT > 0)
+    mutate(ecologyResults, RESULT = as.numeric(as.character(RESULT))) %>%
+    filter(RESULT > 0)
 
   # TAXON_NAME is factor so convert to character to match ecology results dataframe
   macroinvertebrates$TAXON_NAME <- as.character(macroinvertebrates$TAXON_NAME)
@@ -61,8 +63,7 @@ calcWhpt <- function(ecologyResults, taxonTable = NULL) {
                                            )))
 
   # calculate WHPT score
-  metricResults <- metricResults %>%
-    dplyr::summarise(
+  metricResults <-  dplyr::summarise(metricResults,
       WHPT_SCORE = sum(score, na.rm = T),
       WHPT_ASPT = mean(score, na.rm = T),
       WHPT_NTAXA = length(score[!is.na(score)])
@@ -71,7 +72,7 @@ calcWhpt <- function(ecologyResults, taxonTable = NULL) {
   # create final output in standard 'long' format
   whptResult <- metricResults %>%
     tidyr::gather(key = DETERMINAND, value = RESULT, -SAMPLE_ID) %>%
-    dplyr::mutate(ANALYSIS_NAME = "WHPT Metric", ANALYSIS_REPNAME = "WHPT Metric")
+    dplyr::mutate(ANALYSIS_NAME = "METRIC WHPT", ANALYSIS_REPNAME = "WHPT Metric")
 
   return(whptResult)
 }
