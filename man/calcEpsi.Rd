@@ -2,14 +2,23 @@
 % Please edit documentation in R/calcEpsi.R
 \name{calcEpsi}
 \alias{calcEpsi}
-\title{Enchanced Proportion of Sediment-sensitive Invertebrates (EPSI)}
+\title{Empirically-weighted Proportion of Sediment-sensitive Invertebrates (E-PSI)}
 \usage{
 calcEpsi(ecologyResults, taxaList = "TL2", logAbundance = TRUE)
 }
 \arguments{
-\item{ecologyResults}{Dataframe with at least two columns
+\item{ecologyResults}{Dataframe with at least three columns
 item{SAMPLE_ID} - unique idenftier for each sample
-item{TAXON} - Taxon name that matches to macroinvertebrateTaxa dataset}
+item{TAXON} - Taxon name that matches to macroinvertebrateTaxa dataset
+item{RESULT} - Numeric log abundance category}
+
+\item{taxaList}{The taxonomic level the sample(s) have been identified at
+according to specificed taxa lists as described in WFD100 Further
+Development of River Invertebrate Classification Tool. Either "TL2" - Taxa
+or  "TL5" - Taxa list 5.}
+
+\item{logAbundance}{If RESULT column in ecologyResults not log category then
+set to FALSE. This will calculate log value from your numeric abundance.#'}
 }
 \value{
 Dataframe with
@@ -25,6 +34,13 @@ covered by sediments. It can be calculated at Taxonomic Levels 2 & 5
 }
 \examples{
 sample <- demoEcologyResults
-sample <- filterPsi(sample,taxaList = "TL3")
+sample <- filterPsi(sample, taxaList = "TL3")
 calcPsi(ecologyResults= sample)
+}
+\references{
+Turley, Matt & Bilotta, Gary & Chadd, Richard & A Extence, Chris & E Brazier,
+Richard & Burnside, Niall & Pickwell, Alex. (2016). A sediment-specific
+family-level biomonitoring tool to identify the impacts of fine sediment in
+temperate rivers and streams. Ecological Indicators. 70. 151-165.
+10.1016/j.ecolind.2016.05.040.
 }

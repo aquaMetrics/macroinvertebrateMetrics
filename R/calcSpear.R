@@ -4,7 +4,7 @@
 #' non-target freshwater invertebrate organisms. It can be calculated at Taxonomic
 #' Levels 2, 4 and 5.
 #'
-#' @param ecologyresults
+#' @param ecologyResults
 #' Dataframe of results with four columns: SAMPLE_NUMBER, TAXON, SPEAR_SPECIES, RESULT
 #' @param recoveryArea
 #' There are 3 different paramaters depending on availability of "Recovery areas" information:
@@ -13,10 +13,10 @@
 #'   \item "Present" - Presence of recovery areas
 #'   \item "Unknown" - No information available
 #' }
-#' @param taxaList
-#' The taxonomic level the sample(s) have been identified at according to specificed taxa lists
-#' as described in WFD100 Further Development of River Invertebrate Classification Tool.
-#' Either "TL2" - Taxa list 2, "TL4" - Taxa list 4 or  "TL5" - Taxa list 5.
+#' @param taxaList The taxonomic level the sample(s) have been identified at
+#'   according to specificed taxa lists as described in WFD100 Further
+#'   Development of River Invertebrate Classification Tool. Either "TL2" - Taxa
+#'   list 2, "TL4" - Taxa list 4 or  "TL5" - Taxa list 5.
 #' @return dataframe with metric outputs
 #' @references
 #' Liess M. & Von der Ohe P. 2005. \emph{Analyzing effects of pesticides on invertebrate
@@ -34,7 +34,7 @@
 #' @export
 #'
 #' @examples
-#' ecologyResults <- demoEcologyResults
+#' ecologyResults <- macroinvertebrateMetrics::demoEcologyResults
 #' ecologyResults <- ecologyResults[ecologyResults$SAMPLE_NUMBER == 3201863,]
 #' ecologyResults <- ecologyResults[ecologyResults$ANALYSIS_NAME == "FW_TAX_ID",]
 #' sample <- filterSpear(ecologyResults, taxaList = "TL2")

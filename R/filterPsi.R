@@ -42,7 +42,7 @@ filterPsi <- function(ecologyResults, taxaList = "TL3") {
     taxaMetricValues$TL3_TAXON <- as.character(taxaMetricValues$TL3_TAXON)
     taxaMetricValues$TL3_TAXON[taxaMetricValues$TAXON == "Oligochaeta"] <- "Oligochaeta"
 
-    taxaMetricValues <- aggregate(
+    taxaMetricValues <- stats::aggregate(
       taxaMetricValues[, c("RESULT")],
       by = list(
         taxaMetricValues$SAMPLE_ID,
@@ -54,7 +54,7 @@ filterPsi <- function(ecologyResults, taxaList = "TL3") {
   }
 
     if (taxaList == "TL2") {
-    taxaMetricValues <- aggregate(
+    taxaMetricValues <- stats::aggregate(
       taxaMetricValues[, c("RESULT")],
       by = list(
         taxaMetricValues$SAMPLE_ID,
@@ -66,7 +66,7 @@ filterPsi <- function(ecologyResults, taxaList = "TL3") {
   }
 
   if (taxaList == "TL4") {
-    taxaMetricValues <- aggregate(
+    taxaMetricValues <- stats::aggregate(
       taxaMetricValues[, c("RESULT")],
       by = list(
         taxaMetricValues$SAMPLE_ID,
@@ -78,7 +78,7 @@ filterPsi <- function(ecologyResults, taxaList = "TL3") {
   }
 
  if (taxaList == "TL5") {
-    taxaMetricValues <- aggregate(
+    taxaMetricValues <- stats::aggregate(
       taxaMetricValues[, c("RESULT")],
       by = list(
         taxaMetricValues$SAMPLE_ID,
@@ -90,7 +90,7 @@ filterPsi <- function(ecologyResults, taxaList = "TL3") {
   }
 
   if (taxaList == "TL4"){
-    taxaMetricValues <- aggregate(
+    taxaMetricValues <- stats::aggregate(
       taxaMetricValues[, c("RESULT")],
       by = list(
         taxaMetricValues$SAMPLE_ID,

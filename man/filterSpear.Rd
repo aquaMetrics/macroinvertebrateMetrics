@@ -21,5 +21,5 @@ SAMPLE_NUMBER, TAXON, SPEAR_SPECIES, RESULT
 Filter data before calculating SPEAR metric
 }
 \examples{
-filterSpear(demoEcoloyResults, taxaList = "TL2")
+filtered <- filterSpear(demoEcologyResults, taxaList = "TL2")
 }

@@ -6,4 +6,6 @@
 ^codecov\.yml$
 dev
 backup
-
+^\.lintr$
+^\CODE_OF_CONDUCT.md$
+^\CONTRIBUTING.md$

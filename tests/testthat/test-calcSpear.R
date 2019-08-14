@@ -22,6 +22,7 @@ test_that("compare TL2 against aquaMetric package scores", {
 
 
 test_that("compare TL5 against aquaMetric package scores", {
+  skip("Requires defunct aquaMetrics package to be installed")
   # check first sample
   ecologyResults <- demoEcologyResults
   # Spring 8175 2016

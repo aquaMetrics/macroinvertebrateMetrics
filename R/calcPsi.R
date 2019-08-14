@@ -8,11 +8,20 @@
 #' item{SAMPLE_ID} - unique idenftier for each sample
 #' item{TAXON} - Taxon name that matches to macroinvertebrateTaxa dataset
 #' item{RESULT} - Log abundance category
+#' @param taxaList The taxonomic level the sample(s) have been identified at
+#' according to specificed taxa lists as described in WFD100 Further
+#' Development of River Invertebrate Classification Tool. Either "TL3" - Taxa
+#' list 3, "TL4" - Taxa list 4 or  "TL5" - Taxa list 5.
 #' @return Dataframe with
 #' item{SAMPLE_ID}
 #' item{ANALYSIS_NAME}
 #' item{DETERMINAND}
 #' item{RESULT}
+#' @references
+#' Extence, Chris & Chadd, Richard & England, Judy & Dunbar, M.J. & Wood, Paul &
+#' Taylor, E.D.. (2010). The Assessment of Fine Sediment Accumulation in Rivers
+#' Using Macro-Invertebrate Community Response. River Research and Applications.
+#' 29. 10.1002/rra.1569.
 #' @export
 #'
 #' @examples

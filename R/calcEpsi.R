@@ -1,4 +1,4 @@
-#' Enchanced Proportion of Sediment-sensitive Invertebrates (EPSI)
+#' Empirically-weighted Proportion of Sediment-sensitive Invertebrates (E-PSI)
 #'
 #' A sediment-sensitive macro-invertebrate metric that provides a proxy to
 #' describe the extent to which the surface of river bed are composed, or
@@ -8,13 +8,23 @@
 #' item{SAMPLE_ID} - unique idenftier for each sample
 #' item{TAXON} - Taxon name that matches to macroinvertebrateTaxa dataset
 #' item{RESULT} - Numeric log abundance category
+#' @param taxaList The taxonomic level the sample(s) have been identified at
+#' according to specificed taxa lists as described in WFD100 Further
+#' Development of River Invertebrate Classification Tool. Either "TL2" - Taxa
+#' or  "TL5" - Taxa list 5.
 #' @param logAbundance If RESULT column in ecologyResults not log category then
-#' set to FALSE. This will calculate log value from your numeric abundance.
+#' set to FALSE. This will calculate log value from your numeric abundance.#'
 #' @return Dataframe with
 #' item{SAMPLE_ID}
 #' item{ANALYSIS_NAME}
 #' item{DETERMINAND}
 #' item{RESULT}
+#' @references
+#' Turley, Matt & Bilotta, Gary & Chadd, Richard & A Extence, Chris & E Brazier,
+#' Richard & Burnside, Niall & Pickwell, Alex. (2016). A sediment-specific
+#' family-level biomonitoring tool to identify the impacts of fine sediment in
+#' temperate rivers and streams. Ecological Indicators. 70. 151-165.
+#' 10.1016/j.ecolind.2016.05.040.
 #' @export
 #'
 #' @examples

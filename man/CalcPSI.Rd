@@ -11,6 +11,11 @@ calcPsi(ecologyResults, taxaList = "TL3")
 item{SAMPLE_ID} - unique idenftier for each sample
 item{TAXON} - Taxon name that matches to macroinvertebrateTaxa dataset
 item{RESULT} - Log abundance category}
+
+\item{taxaList}{The taxonomic level the sample(s) have been identified at
+according to specificed taxa lists as described in WFD100 Further
+Development of River Invertebrate Classification Tool. Either "TL3" - Taxa
+list 3, "TL4" - Taxa list 4 or  "TL5" - Taxa list 5.}
 }
 \value{
 Dataframe with
@@ -28,4 +33,10 @@ covered by sediments. It can be calculated at Taxonomic Levels 3, 4 & 5
 sample <- demoEcologyResults
 sample <- filterPsi(sample,taxaList = "TL3")
 calcPsi(ecologyResults= sample)
+}
+\references{
+Extence, Chris & Chadd, Richard & England, Judy & Dunbar, M.J. & Wood, Paul &
+Taylor, E.D.. (2010). The Assessment of Fine Sediment Accumulation in Rivers
+Using Macro-Invertebrate Community Response. River Research and Applications.
+29. 10.1002/rra.1569.
 }

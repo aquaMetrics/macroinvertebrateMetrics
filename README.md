@@ -8,7 +8,7 @@ Please don't use in production
 
 # aquaMetrics package
 
-An R package to calculate aquatic metrics  
+An R package to calculate macroinverebrate metrics  
 
 In R: Install the development version from GitHub:  
 ``install.packages("devtools")``  

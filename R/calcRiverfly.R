@@ -7,7 +7,8 @@
 #' @return
 #' A data frame 5 variables
 #' @export
-#'
+#' @importFrom rlang .data
+#' @importFrom magrittr "%>%"
 #' @examples
 #' ecologyResults <- demoEcologyResults
 #' ecologyResults <- ecologyResults[ecologyResults$ANALYSIS_NAME == "FW_TAX_ID", ]
@@ -31,7 +32,7 @@ SEPAresults <-
 
 
 # this table has a lookup list for riverfly taxon groups against TL2 families
-taxonTable <- read.csv(system.file("extdata",
+taxonTable <- utils::read.csv(system.file("extdata",
                      "riverfly.csv",
                      package = "macroinvertebrateMetrics"),
          stringsAsFactors = F)

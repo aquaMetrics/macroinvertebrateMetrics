@@ -12,7 +12,7 @@
 #' @export
 #'
 #' @examples
-#' filterSpear(demoEcoloyResults, taxaList = "TL2")
+#' filtered <- filterSpear(demoEcologyResults, taxaList = "TL2")
 filterSpear <- function(ecologyResults, taxaList = NULL) {
   # only need Taxon abundance determinand
   ecologyResults <-
@@ -39,7 +39,7 @@ filterSpear <- function(ecologyResults, taxaList = NULL) {
   taxaMetricValues$RESULT <-  as.character(taxaMetricValues$RESULT)
   taxaMetricValues$RESULT <-  as.numeric(taxaMetricValues$RESULT)
   if (taxaList == "TL2") {
-    taxaMetricValues <- aggregate(
+    taxaMetricValues <- stats::aggregate(
       taxaMetricValues[, c("RESULT")],
       by = list(
         taxaMetricValues$SAMPLE_ID,
@@ -50,7 +50,7 @@ filterSpear <- function(ecologyResults, taxaList = NULL) {
     )
 
   } else if (taxaList == "TL5") {
-    taxaMetricValues <- aggregate(
+    taxaMetricValues <- stats::aggregate(
       taxaMetricValues[, c("RESULT")],
       by = list(
         taxaMetricValues$SAMPLE_ID,
@@ -67,7 +67,7 @@ filterSpear <- function(ecologyResults, taxaList = NULL) {
     taxaMetricValues <- taxaMetricValues[, c("Group.1", "Group.2", "SPEAR_SPECIES", "x")]
 
   } else {
-    taxaMetricValues <- aggregate(
+    taxaMetricValues <- stats::aggregate(
       taxaMetricValues[, c("RESULT")],
       by = list(
         taxaMetricValues$SAMPLE_ID,

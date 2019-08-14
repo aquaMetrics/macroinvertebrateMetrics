@@ -1,7 +1,7 @@
 context("calcPsi")
 
 test_that("creates dataframe", {
-  ecologyResults <- filterPsi(demoEcologyResults)
+  ecologyResults <- filterPsi(macroinvertebrateMetrics::demoEcologyResults)
   metricResults <- calcPsi(ecologyResults)
   expect_equal(class(metricResults), expected = "data.frame")
 
@@ -10,23 +10,23 @@ test_that("creates dataframe", {
   expect_equal(class(metricResults), expected = "data.frame")
 })
 
-  test_that("test against old aquaMetric value", {
-  demoEcologyResults <- demoEcologyResults
+test_that("test against old aquaMetric value", {
+  ecologyResults <- macroinvertebrateMetrics::demoEcologyResults
 
-  ecologyResults <- filterPsi(demoEcologyResults[demoEcologyResults$LOCATION_CODE == 8175 &
-                                                   demoEcologyResults$SAMPLE_NUMBER == 3201863, ])
+  ecologyResults <- filterPsi(ecologyResults[ecologyResults$LOCATION_CODE == 8175 &
+                                               ecologyResults$SAMPLE_NUMBER == 3201863, ])
 
   metricResults <- calcPsi(ecologyResults)
-  ### Compare against value from aquaMetrics package
+  ### Compare against value from older aquaMetrics package (now defunct)
   expect_equal(as.character(metricResults$RESULT[1]), "62.5")
 
   })
 
-  test_that("test directly against old aquaMetric function", {
+test_that("test directly against old aquaMetric function", {
     skip("Requires defunct aquaMetrics package to be installed")
   ###  Code below to convert ecologyResults into dataframe used in aquaMetric package 'CalcPSI' function
   ### for testing against old package only - no longer used
-  ecologyResults <- demoEcologyResults[demoEcologyResults$LOCATION_CODE == 8175 &
+  ecologyResults <- macroinvertebrateMetrics::demoEcologyResults[demoEcologyResults$LOCATION_CODE == 8175 &
                        demoEcologyResults$SAMPLE_NUMBER == 3201863, ]
   standardTaxa <- ecologyResults[ecologyResults$DETERMINAND == "Taxon abundance" &
   ecologyResults$ANALYSIS_NAME == "FW_TAX_ID",
