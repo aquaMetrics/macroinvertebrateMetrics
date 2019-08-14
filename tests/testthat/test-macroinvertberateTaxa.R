@@ -12,9 +12,9 @@ test_that("Test .csv source file matches binary file", {
   # the package
   taxonDictionaryBinary <- macroinvertebrateTaxa
   # check that the binary file matches the plain text csv file
-  mismatches <- all.equal(taxonDictionarySource,
+  matches <- all.equal(taxonDictionarySource,
                           taxonDictionaryBinary)
-  expect_true(mismatches == T)
+  expect_true(matches == T)
   # If this test fails, check if either file has been changed. Changes in
   # taxonomy / scores should flow from taxonDictionarySource to
   # taxonDictionaryBinary - if changes agreed by all
