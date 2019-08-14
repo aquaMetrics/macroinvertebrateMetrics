@@ -7,11 +7,11 @@
 calcWhpt(ecologyResults, taxonTable = NULL)
 }
 \arguments{
-\item{ecologyResults}{Dataframe of taxonomic results with mandatory four columns:
+\item{ecologyResults}{Dataframe of taxonomic results with mandatory three columns:
 \describe{
   \item{SAMPLE_ID}{Unique sample identifier}
-  \item{RESULT}{Numeric}
-  \item{TAXON}{TL2 WHPT taxon name}
+  \item{RESULT}{Numeric abundance}
+  \item{TAXON}{Character - TL2 WHPT taxon name}
   }
 Columns names must match these exactly, but the column order does not matter.
 See demoEcologyResults for example dataset.}

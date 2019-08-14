@@ -16,6 +16,7 @@
 #' Dataframe with four columns: SAMPLE_ID, DETERMINAND, RESULT, ANALYSIS_NAME, ANALYSIS_REPNAME
 #' @export
 #' @importFrom magrittr "%>%"
+#' @importFrom rlang .data
 #' @examples
 #' metricResults <- calcWhpt(demoEcologyResults)
 calcWhpt <- function(ecologyResults, taxonTable = NULL) {
@@ -33,8 +34,8 @@ calcWhpt <- function(ecologyResults, taxonTable = NULL) {
   # filter results so only Taxon abundance results and greater zero as these
   # are the results required to calculate abundance based WHPT
   ecologyResults <-
-    mutate(ecologyResults, RESULT = as.numeric(as.character(RESULT))) %>%
-    filter(RESULT > 0)
+    dplyr::mutate(ecologyResults, RESULT = as.numeric(as.character(RESULT))) %>%
+    dplyr:: filter(RESULT > 0)
 
   # TAXON_NAME is factor so convert to character to match ecology results dataframe
   macroinvertebrates$TAXON_NAME <- as.character(macroinvertebrates$TAXON_NAME)
@@ -57,9 +58,9 @@ calcWhpt <- function(ecologyResults, taxonTable = NULL) {
   # Find correct WHPT score based on abundance categories to use
   # and add to new column 'score'
   metricResults <-
-    dplyr::mutate(metricResults, score = if_else(RESULT > 999, WHPT_D,
-                                           if_else(RESULT > 99, WHPT_C,
-                                             if_else(RESULT > 9, WHPT_B, WHPT_A)
+    dplyr::mutate(metricResults, score = dplyr::if_else(RESULT > 999, WHPT_D,
+                                            dplyr::if_else(RESULT > 99, WHPT_C,
+                                               dplyr::if_else(RESULT > 9, WHPT_B, WHPT_A)
                                            )))
 
   # calculate WHPT score

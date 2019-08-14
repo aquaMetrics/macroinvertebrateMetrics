@@ -1,15 +1,13 @@
 context("calcWhpt")
 
 test_that("WHPT scores match previously calculated scores in demo dataset", {
-
-  results  <- demoEcologyResults
-  results  <- filter(results, ANALYSIS_REPNAME == "Invert Taxa Family Lab" & DETERMINAND == "Taxon abundance")
-  results <- select(results, SAMPLE_ID, TAXON, RESULT)
-  metricResults <-
-    calcWhpt(results)
+  results  <- macroinvertebrateMetrics::demoEcologyResults
+  results  <- dplyr::filter(results, ANALYSIS_REPNAME == "Invert Taxa Family Lab" & DETERMINAND == "Taxon abundance")
+  results <- dplyr::select(results, SAMPLE_ID, TAXON, RESULT)
+  metricResults <- calcWhpt(results)
 
   results <- demoEcologyResults
-  results <- filter(results, ANALYSIS_REPNAME == "Invert Summary Whpt")
+  results <- dplyr::filter(results, ANALYSIS_REPNAME == "Invert Summary Whpt")
 
   results <- dplyr::filter(results, DETERMINAND %in% c("WHPT ASPT Abund",
                                                        "WHPT NTAXA Abund",
@@ -20,17 +18,14 @@ test_that("WHPT scores match previously calculated scores in demo dataset", {
   results$RESULT <- as.character(results$RESULT)
   results$RESULT <- as.numeric(results$RESULT)
 
-
-  results <- results[!duplicated(results),]
-  metricResults <- metricResults[!duplicated(metricResults),]
   results <- tidyr::spread(results, key = DETERMINAND, value = RESULT)
 
-  results <- arrange(results, SAMPLE_ID)
+  results <- dplyr::arrange(results, SAMPLE_ID)
 
-  metricResults <- arrange(metricResults, SAMPLE_ID)
+  metricResults <- dplyr::arrange(metricResults, SAMPLE_ID)
   metricResults <- tidyr::spread(metricResults, key = DETERMINAND, value = RESULT)
 
-  test <- inner_join(metricResults, results)
+  test <- dplyr::inner_join(metricResults, results)
 
    # remove know errors in demo data WHPT scores and then compare:
   expect_equal(test$WHPT_NTAXA[c(1:2, 4, 6:11, 13:14, 16:19, 21:26, 28:32)],
