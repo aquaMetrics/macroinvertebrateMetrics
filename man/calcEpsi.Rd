@@ -34,8 +34,8 @@ covered by sediments. It can be calculated at Taxonomic Levels 2 & 5
 }
 \examples{
 sample <- demoEcologyResults
-sample <- filterPsi(sample, taxaList = "TL3")
-calcPsi(ecologyResults= sample)
+sample <- filterPsi(sample, taxaList = "TL2")
+calcPsi(ecologyResults = sample)
 }
 \references{
 Turley, Matt & Bilotta, Gary & Chadd, Richard & A Extence, Chris & E Brazier,

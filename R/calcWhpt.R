@@ -27,7 +27,7 @@ calcWhpt <- function(ecologyResults, taxonTable = NULL) {
   # get macroinvertebrtae taxa table
   macroinvertebrates <-  macroinvertebrateMetrics::macroinvertebrateTaxa
 
-  if (!is.null(taxonTable)){
+  if (!is.null(taxonTable)) {
     macroinvertebrates <- taxonTable
   }
 

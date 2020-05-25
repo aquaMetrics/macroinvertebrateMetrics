@@ -14,10 +14,10 @@ test_that("Test .csv source file matches binary file", {
   # check that the binary file matches the plain text csv file
   matches <- all.equal(taxonDictionarySource,
                           taxonDictionaryBinary)
-  expect_true(matches == T)
+  expect_equal(matches[1], TRUE)
   # If this test fails, check if either file has been changed. Changes in
   # taxonomy / scores should flow from taxonDictionarySource to
   # taxonDictionaryBinary - if changes agreed by all
-  # Follow guidance for updating the macrophyteTaxonDictionary binary data:
+  # Follow guidance for updating the macroinvertebrateTaxa binary data:
   # http://r-pkgs.had.co.nz/data.html#data-sysdata
 })

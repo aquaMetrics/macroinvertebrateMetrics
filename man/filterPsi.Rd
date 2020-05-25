@@ -7,12 +7,20 @@
 filterPsi(ecologyResults, taxaList = "TL3")
 }
 \arguments{
-\item{ecologyResults}{Dataframe with ecology results...}
+\item{ecologyResults}{Dataframe of ecology results with mandatory four columns:
+\itemize{
+ \item RESULT - Numeric count result.
+ \item TAXON - Taxon name matching names in macroinvertebrates::macroinvertebrateTaxa table
+ \item DETERMINAND - 'Taxon abundance'
+ \item SAMPLE_ID - Unique identifier for each sample (number or text)
+}}
 
-\item{taxaList}{The taxonomic level the sample(s) have been identified at according to specificed taxa lists
-as described in WFD100 Further Development of River Invertebrate Classification Tool.
-Either "TL3" - Taxa list 2 or "TL5" Taxa list 3 or "TL4". PSI TL lists don't match RIVPACS species e.g.
-TL3 list includes 'Oligochaeta' even though it is not a TL3 taxa according to WFD100.}
+\item{taxaList}{The taxonomic level the sample(s) have been identified at according to
+specified taxa lists as described in WFD100 Further Development of River
+Invertebrate Classification Tool. Either "TL2" - Taxa list 2, "TL3" - Taxa
+list 2 or "TL5" Taxa list 5 or "TL4". PSI TL lists don't match RIVPACS
+species e.g. TL3 list includes 'Oligochaeta' even though it is not a TL3 taxa
+according to WFD100.}
 }
 \value{
 Dataframe

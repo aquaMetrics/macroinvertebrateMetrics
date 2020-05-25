@@ -47,8 +47,8 @@ riverflyTaxa <-
   )
 # Issue with linting "RIVERFLY_GROUP" below - 'no visible binding for global variable'
 # Begin Exclude Linting
-riverflySum <- dplyr::group_by(riverflyTaxa, RIVERFLY_GROUP, SAMPLE_ID) %>%
-               dplyr::summarise(VALUE = sum(VALUE))
+riverflySum <- dplyr::group_by(riverflyTaxa, .data$RIVERFLY_GROUP, .data$SAMPLE_ID) %>%
+               dplyr::summarise(VALUE = sum(.data$VALUE))
 
 # riverfly abundance categories
 category <- function(x) {
@@ -59,7 +59,7 @@ category <- function(x) {
 riverflySum$VALUE_LOG <- c(apply(riverflySum[, "VALUE"], 2, category))
 
 # group_by sample_id and sum log abundance
-riverflyScore <- dplyr::group_by(riverflySum, SAMPLE_ID) %>% dplyr::summarise(RESULT = sum(VALUE_LOG))
+riverflyScore <- dplyr::group_by(riverflySum, .data$SAMPLE_ID) %>% dplyr::summarise(RESULT = sum(.data$VALUE_LOG))
 # if no relevant data return NULL object
 if(nrow(riverflyScore) == 0) {
  return()
