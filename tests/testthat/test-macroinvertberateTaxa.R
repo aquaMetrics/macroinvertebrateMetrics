@@ -5,7 +5,7 @@ test_that("Test .csv source file matches binary file", {
   # 1. "INVERT-TAXON-DICTIONARY" is in csv file for easy reading and
   # comparison on github i.e. this is plain text and easy to track changes
 
-  taxonDictionarySource <- utils::read.csv(
+    taxonDictionarySource <- utils::read.csv(
     system.file("extdata",
                 "invert-taxon-dictionary.csv",
                 package = "macroinvertebrateMetrics"))
@@ -15,8 +15,7 @@ test_that("Test .csv source file matches binary file", {
   # check that the binary file matches the plain text csv file
   matches <- all.equal(taxonDictionarySource,
                           taxonDictionaryBinary)
-  print(matches)
-  expect_equal(matches[1], "TRUE")
+  expect_equal(matches[1], TRUE)
   # If this test fails, check if either file has been changed. Changes in
   # taxonomy / scores should flow from taxonDictionarySource to
   # taxonDictionaryBinary - if changes agreed by all
