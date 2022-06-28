@@ -35,7 +35,7 @@ SEPAresults <-
 taxonTable <- utils::read.csv(system.file("extdata",
                      "riverfly.csv",
                      package = "macroinvertebrateMetrics"),
-         stringsAsFactors = F)
+         stringsAsFactors = FALSE)
 
 # merge only works for TL2 currently - will need to merge with invert taxa table to do Tl3, Tl5 etc
 riverflyTaxa <-
