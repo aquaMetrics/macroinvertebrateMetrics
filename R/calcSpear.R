@@ -59,7 +59,8 @@ calcSpear <- function(ecologyResults, recoveryArea = "unknown", taxaList = "TL2"
       }
 
       # calculate sum of Log10 of the abundance (RESULT) for each scoring taxa
-      abundanceLogSumScoring <- sum(sample$scoringTaxaLog[sample$SPEAR_SPECIES == "TRUE"], na.rm = T)
+      abundanceLogSumScoring <-
+        sum(sample$scoringTaxaLog[sample$SPEAR_SPECIES == "TRUE"], na.rm = TRUE)
 
       # calculate sum of log abundance of all taxa (scoring or non-scoring)
       abundanceLogSumNonScoring <- sum(sample$scoringTaxaLog)

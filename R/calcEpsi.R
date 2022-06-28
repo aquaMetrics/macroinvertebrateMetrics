@@ -54,7 +54,7 @@ calcEpsi <- function(ecologyResults, taxaList = "TL2", logAbundance = TRUE) {
       }
       if (taxaList == "TL2") {
         # if no scoring families present return error
-        if (sum(sample$EPSI_WEIGHT_FAM, na.rm = T) == 0) {
+        if (sum(sample$EPSI_WEIGHT_FAM, na.rm = TRUE) == 0) {
           samplePsi <- data.frame(SAMPLE_ID = unique(sample$SAMPLE_ID),
             ANALYSIS_REPNAME = paste0("Enhanced Proportion of Sediment-sensitive InvertsEPSI Metric ", taxaList),
             ANALYSIS_NAME = paste0("EPSI Metric ", taxaList),
@@ -69,7 +69,7 @@ calcEpsi <- function(ecologyResults, taxaList = "TL2", logAbundance = TRUE) {
       sample$PSI_SENSITIVE_SUM <-  sum(sample$PSI_VALUE[sample$EPSI_WEIGHT_TL5 >= 0.5], na.rm = T)
       }
 
-      sample$PSI_ALL_SUM <- sum(sample$PSI_VALUE, na.rm = T)
+      sample$PSI_ALL_SUM <- sum(sample$PSI_VALUE, na.rm = TRUE)
       sample$PSI_SCORE <- (sample$PSI_SENSITIVE_SUM / sample$PSI_ALL_SUM) * 100
       sampleMetric <-  unique(sample$PSI_SCORE)
       # calculate PSI condition using psiCondition dataframe saved in package

@@ -57,7 +57,8 @@ calcPsi <- function(ecologyResults, taxaList = "TL3") {
       # calculate PSI score
       sampleMetric <-
         sum(sample$SEDIMENT.SS[sample$PSI_GROUP %in% c("A", "B")], na.rm = TRUE) /
-        sum(sample$SEDIMENT.SS[sample$SEDIMENT.SS != "" | is.na(sample$SEDIMENT.SS)], na.rm = T) * 100
+        sum(sample$SEDIMENT.SS[sample$SEDIMENT.SS != "" |
+                                 is.na(sample$SEDIMENT.SS)], na.rm = TRUE) * 100
       # calculate PSI condition using psiCondition dataframe saved in package
        psiConditions <- macroinvertebrateMetrics::psiCondition
       intervals <-

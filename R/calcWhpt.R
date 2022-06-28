@@ -65,8 +65,8 @@ calcWhpt <- function(ecologyResults, taxonTable = NULL) {
 
   # calculate WHPT score
   metricResults <-  dplyr::summarise(metricResults,
-      WHPT_SCORE = sum(score, na.rm = T),
-      WHPT_ASPT = mean(score, na.rm = T),
+      WHPT_SCORE = sum(score, na.rm = TRUE),
+      WHPT_ASPT = mean(score, na.rm = TRUE),
       WHPT_NTAXA = length(score[!is.na(score)])
     )
 
