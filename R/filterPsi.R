@@ -28,15 +28,16 @@ filterPsi <- function(ecologyResults, taxaList = "TL3") {
   # only need Taxon abundance determinand
   ecologyResults <-
     ecologyResults[ecologyResults$DETERMINAND == "Taxon abundance" |
-                     ecologyResults$DETERMINAND == "Taxon Abundance", ]
+      ecologyResults$DETERMINAND == "Taxon Abundance", ]
   # merge ecology results with taxa metric scores based on taxon name
   macroinvertebrateTaxa <- macroinvertebrateMetrics::macroinvertebrateTaxa
   ecologyResults$TAXON <- trimws(ecologyResults$TAXON)
   taxaMetricValues <-
     merge(ecologyResults,
-         macroinvertebrateTaxa,
-          by.x = "TAXON",
-          by.y = "TAXON_NAME")
+      macroinvertebrateTaxa,
+      by.x = "TAXON",
+      by.y = "TAXON_NAME"
+    )
   # if nothing in data.frame
   if (length(taxaMetricValues$TAXON) == 0) {
     return(taxaMetricValues)
@@ -61,7 +62,7 @@ filterPsi <- function(ecologyResults, taxaList = "TL3") {
     )
   }
 
-    if (taxaList == "TL2") {
+  if (taxaList == "TL2") {
     taxaMetricValues <- stats::aggregate(
       taxaMetricValues[, c("RESULT")],
       by = list(
@@ -85,7 +86,7 @@ filterPsi <- function(ecologyResults, taxaList = "TL3") {
     )
   }
 
- if (taxaList == "TL5") {
+  if (taxaList == "TL5") {
     taxaMetricValues <- stats::aggregate(
       taxaMetricValues[, c("RESULT")],
       by = list(
@@ -114,7 +115,7 @@ filterPsi <- function(ecologyResults, taxaList = "TL3") {
   taxaMetricValues$PSI_GROUP <- NULL
   # remove 'blank' taxa if not scores for PSI
   taxaMetricValues <- taxaMetricValues[taxaMetricValues$TAXON != "", ]
-  taxaMetricValues <- taxaMetricValues[! is.na(taxaMetricValues$TAXON), ]
+  taxaMetricValues <- taxaMetricValues[!is.na(taxaMetricValues$TAXON), ]
   # log Abundance
   taxaMetricValues$RESULT <- floor(log10(taxaMetricValues$RESULT) + 1)
   taxaMetricValues$RESULT[taxaMetricValues$RESULT > 6] <- 6

@@ -17,27 +17,28 @@ filterSpear <- function(ecologyResults, taxaList = NULL) {
   # only need Taxon abundance determinand
   ecologyResults <-
     ecologyResults[ecologyResults$DETERMINAND == "Taxon abundance" |
-                     ecologyResults$DETERMINAND == "Taxon Abundance", ]
+      ecologyResults$DETERMINAND == "Taxon Abundance", ]
   # merge ecology results with taxa metric scores based on taxon name
   macroinvertebrates <- macroinvertebrateMetrics::macroinvertebrateTaxa
   ecologyResults$TAXON <- trimws(ecologyResults$TAXON)
   taxaMetricValues <-
     merge(ecologyResults,
-          macroinvertebrates,
-          by.x = "TAXON",
-          by.y = "TAXON_NAME")
+      macroinvertebrates,
+      by.x = "TAXON",
+      by.y = "TAXON_NAME"
+    )
 
   # Remove oligochaeta - not counted at TL2 in SPEAR metric
   if (taxaList %in% c("TL2", "TL3")) {
-  taxaMetricValues <- taxaMetricValues[taxaMetricValues$TAXON != "Oligochaeta", ]
-   }
+    taxaMetricValues <- taxaMetricValues[taxaMetricValues$TAXON != "Oligochaeta", ]
+  }
   # if nothing in data.frame
   if (length(taxaMetricValues$TAXON) == 0) {
     return(taxaMetricValues)
   }
   # aggregate to correct Taxa List (TL) level
-  taxaMetricValues$RESULT <-  as.character(taxaMetricValues$RESULT)
-  taxaMetricValues$RESULT <-  as.numeric(taxaMetricValues$RESULT)
+  taxaMetricValues$RESULT <- as.character(taxaMetricValues$RESULT)
+  taxaMetricValues$RESULT <- as.numeric(taxaMetricValues$RESULT)
   if (taxaList == "TL2") {
     taxaMetricValues <- stats::aggregate(
       taxaMetricValues[, c("RESULT")],
@@ -48,7 +49,6 @@ filterSpear <- function(ecologyResults, taxaList = NULL) {
       ),
       FUN = sum
     )
-
   } else if (taxaList == "TL5") {
     taxaMetricValues <- stats::aggregate(
       taxaMetricValues[, c("RESULT")],
@@ -61,11 +61,11 @@ filterSpear <- function(ecologyResults, taxaList = NULL) {
     # merge SPEAR_SPECIES back in because of NULL SPEAR_SPECIES not pick up if aggregated
     taxaMetricValues <-
       merge(taxaMetricValues,
-            macroinvertebrates[, c("TAXON_NAME", "SPEAR_SPECIES")],
-            by.x = "Group.2",
-            by.y = "TAXON_NAME")
+        macroinvertebrates[, c("TAXON_NAME", "SPEAR_SPECIES")],
+        by.x = "Group.2",
+        by.y = "TAXON_NAME"
+      )
     taxaMetricValues <- taxaMetricValues[, c("Group.1", "Group.2", "SPEAR_SPECIES", "x")]
-
   } else {
     taxaMetricValues <- stats::aggregate(
       taxaMetricValues[, c("RESULT")],

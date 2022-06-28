@@ -1,11 +1,12 @@
 #' SPEcies At Risk (SPEAR) metric
 #'
 #' Indicator based on biological traits used to detect effects of pesticides on
-#' non-target freshwater invertebrate organisms. It can be calculated at Taxonomic
-#' Levels 2, 4 and 5.
+#' non-target freshwater invertebrate organisms. It can be calculated at
+#' Taxonomic Levels 2, 4 and 5.
 #'
 #' @param ecologyResults
-#' Dataframe of results with four columns: SAMPLE_NUMBER, TAXON, SPEAR_SPECIES, RESULT
+#' Dataframe of results with four columns: SAMPLE_NUMBER, TAXON, SPEAR_SPECIES,
+#' RESULT
 #' @param recoveryArea
 #' There are 3 different paramaters depending on availability of "Recovery areas" information:
 #' \itemize{
@@ -19,27 +20,27 @@
 #'   list 2, "TL4" - Taxa list 4 or  "TL5" - Taxa list 5.
 #' @return dataframe with metric outputs
 #' @references
-#' Liess M. & Von der Ohe P. 2005. \emph{Analyzing effects of pesticides on invertebrate
-#' communities in streams}. Environ Toxicol Chem. 24: 954-965.
+#' Liess M. & Von der Ohe P. 2005. \emph{Analyzing effects of pesticides on
+#' invertebrate communities in streams}. Environ Toxicol Chem. 24: 954-965.
 #'
-#' Wogram J. & Liess M. 2001. \emph{Rank ordering of macroinvertebrate species sensitivity
-#' to toxic compounds by comparison with that of Daphnia magna}. Bull Environ Contam
-#' Toxicol. 67: 360-367
+#' Wogram J. & Liess M. 2001. \emph{Rank ordering of macroinvertebrate species
+#' sensitivity to toxic compounds by comparison with that of Daphnia magna}.
+#' Bull Environ Contam Toxicol. 67: 360-367
 #'
-#' Liess M., Schaefer R., Schriever C. 2008. \emph{The footprint of pesticide stress in
-#' communities - Species traits reveal community effects of toxicants}. Science of
-#' the Total Environment. 406: 484-490
+#' Liess M., Schaefer R., Schriever C. 2008. \emph{The footprint of pesticide
+#' stress in communities - Species traits reveal community effects of
+#' toxicants}. Science of the Total Environment. 406: 484-490
 #' @seealso
 #' \code{\link{filterSpear}}
 #' @export
 #'
 #' @examples
 #' ecologyResults <- macroinvertebrateMetrics::demoEcologyResults
-#' ecologyResults <- ecologyResults[ecologyResults$SAMPLE_NUMBER == 3201863,]
-#' ecologyResults <- ecologyResults[ecologyResults$ANALYSIS_NAME == "FW_TAX_ID",]
+#' ecologyResults <- ecologyResults[ecologyResults$SAMPLE_NUMBER == 3201863, ]
+#' ecologyResults <- ecologyResults[ecologyResults$ANALYSIS_NAME == "FW_TAX_ID", ]
 #' sample <- filterSpear(ecologyResults, taxaList = "TL2")
 #' spearOutput <- calcSpear(sample, taxaList = "TL2")
-
+#'
 calcSpear <- function(ecologyResults, recoveryArea = "unknown", taxaList = "TL2") {
   sampleMetric <-
     lapply(split(ecologyResults, ecologyResults$SAMPLE_ID), function(sample) {
@@ -69,7 +70,8 @@ calcSpear <- function(ecologyResults, recoveryArea = "unknown", taxaList = "TL2"
       numberOfTaxa <- length(sample$RESULT[!is.na(sample$SPEAR_SPECIES)])
 
       # calcualte SPEAR ratio
-      spearRatio <- (numberOfTaxa * abundanceLogSumScoring) / (numberOfTaxa * abundanceLogSumNonScoring)
+      spearRatio <- (numberOfTaxa * abundanceLogSumScoring) /
+                    (numberOfTaxa * abundanceLogSumNonScoring)
       # calculate SPEAR ratio as percentage
       spearRatio <- spearRatio * 100
       # regression coefficients for Toxicant Exposure calculation
@@ -79,10 +81,13 @@ calcSpear <- function(ecologyResults, recoveryArea = "unknown", taxaList = "TL2"
           p1 = c(1 / -8.02, 1 / -6.16, 1 / -7),
           p2 = c(-1.28 / -8.02, -20.07 / -6.16, -10.675 / -7)
         )
-      # toxicant exposure, depending on availability of Recovery area information
+      # toxicant exposure, depending on availability of Recovery area
+      # information
       spearToxicantRatio <-
-        toxicantExposureCoeff$p1[toxicantExposureCoeff$recoveryArea == recoveryArea] *
-        spearRatio + toxicantExposureCoeff$p2[toxicantExposureCoeff$recoveryArea == recoveryArea]
+        toxicantExposureCoeff$p1[
+          toxicantExposureCoeff$recoveryArea == recoveryArea] *
+        spearRatio + toxicantExposureCoeff$p2[
+          toxicantExposureCoeff$recoveryArea == recoveryArea]
       # SPEAR water quality classes
       # Bad:      <= 11% SPEAR
       # Poor:     > 11% and <= 22% SPEAR
@@ -106,13 +111,17 @@ calcSpear <- function(ecologyResults, recoveryArea = "unknown", taxaList = "TL2"
       # merge condition lookup table with results
       intervalCondition <-
         merge(spearWaterQuality,
-              intervals,
-              by.x = "value",
-              by.y = "row")
-      # create list of the three results: SPEAR score, SPEAR condition, SPEAR class
-      spearResult <- c(spearRatio,
-                       spearToxicantRatio,
-                       as.character(intervalCondition$class[intervalCondition$value.Freq == 1]))
+          intervals,
+          by.x = "value",
+          by.y = "row"
+        )
+      # create list of the three results: SPEAR score, SPEAR condition, SPEAR
+      # class
+      spearResult <- c(
+        spearRatio,
+        spearToxicantRatio,
+        as.character(intervalCondition$class[intervalCondition$value.Freq == 1])
+      )
       # create dataframe of results and add results into it
       samplePsi <- data.frame(
         SAMPLE_ID = unique(sample$SAMPLE_ID),
@@ -123,7 +132,8 @@ calcSpear <- function(ecologyResults, recoveryArea = "unknown", taxaList = "TL2"
       )
     })
   metric <- do.call("rbind", sampleMetric)
-  # need to identify SPEAR outputs by the Taxa list to separate TL5 and TL2 outputs
+  # need to identify SPEAR outputs by the Taxa list to separate TL5 and TL2
+  # outputs
   metric$DETERMINAND <- paste(metric$DETERMINAND, taxaList)
   return(metric)
 }

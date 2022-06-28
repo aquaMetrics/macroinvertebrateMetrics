@@ -36,44 +36,47 @@ calcEpsi <- function(ecologyResults, taxaList = "TL2", logAbundance = TRUE) {
     stop("taxaList argument must be either 'TL2' or 'TL5'")
   }
   # merge ecology results with taxa metric scores based on taxon name
-  macroinvertebrates <-  macroinvertebrateMetrics::macroinvertebrateTaxa
+  macroinvertebrates <- macroinvertebrateMetrics::macroinvertebrateTaxa
   ecologyResults <-
     merge(ecologyResults,
-          macroinvertebrates,
-          by.x = "TAXON",
-          by.y = "TAXON_NAME")
+      macroinvertebrates,
+      by.x = "TAXON",
+      by.y = "TAXON_NAME"
+    )
 
-# split by sample number
+  # split by sample number
   sampleMetric <-
     lapply(split(ecologyResults, ecologyResults$SAMPLE_ID), function(sample) {
       # calculate PSI score
       if (logAbundance == FALSE) {
-      sample$CAT <- floor(log10(sample$RESULT) + 1)
+        sample$CAT <- floor(log10(sample$RESULT) + 1)
       } else {
         sample$CAT <- sample$RESULT
       }
       if (taxaList == "TL2") {
         # if no scoring families present return error
         if (sum(sample$EPSI_WEIGHT_FAM, na.rm = TRUE) == 0) {
-          samplePsi <- data.frame(SAMPLE_ID = unique(sample$SAMPLE_ID),
+          samplePsi <- data.frame(
+            SAMPLE_ID = unique(sample$SAMPLE_ID),
             ANALYSIS_REPNAME = paste0("Enhanced Proportion of Sediment-sensitive InvertsEPSI Metric ", taxaList),
             ANALYSIS_NAME = paste0("EPSI Metric ", taxaList),
             DETERMINAND = paste0("Error"),
-            RESULT = "No EPSI scoring families in sample")
+            RESULT = "No EPSI scoring families in sample"
+          )
           return(samplePsi)
         }
-      sample$PSI_VALUE <- sample$CAT * sample$EPSI_WEIGHT_FAM
-      sample$PSI_SENSITIVE_SUM <-  sum(sample$PSI_VALUE[sample$EPSI_WEIGHT_FAM >= 0.5], na.rm = T)
+        sample$PSI_VALUE <- sample$CAT * sample$EPSI_WEIGHT_FAM
+        sample$PSI_SENSITIVE_SUM <- sum(sample$PSI_VALUE[sample$EPSI_WEIGHT_FAM >= 0.5], na.rm = T)
       } else {
-      sample$PSI_VALUE <- sample$CAT * sample$EPSI_WEIGHT_TL5
-      sample$PSI_SENSITIVE_SUM <-  sum(sample$PSI_VALUE[sample$EPSI_WEIGHT_TL5 >= 0.5], na.rm = T)
+        sample$PSI_VALUE <- sample$CAT * sample$EPSI_WEIGHT_TL5
+        sample$PSI_SENSITIVE_SUM <- sum(sample$PSI_VALUE[sample$EPSI_WEIGHT_TL5 >= 0.5], na.rm = T)
       }
 
       sample$PSI_ALL_SUM <- sum(sample$PSI_VALUE, na.rm = TRUE)
       sample$PSI_SCORE <- (sample$PSI_SENSITIVE_SUM / sample$PSI_ALL_SUM) * 100
-      sampleMetric <-  unique(sample$PSI_SCORE)
+      sampleMetric <- unique(sample$PSI_SCORE)
       # calculate PSI condition using psiCondition dataframe saved in package
-       psiConditions <- macroinvertebrateMetrics::psiCondition
+      psiConditions <- macroinvertebrateMetrics::psiCondition
       intervals <-
         data.frame(value = table(cut(
           sampleMetric,
@@ -85,8 +88,10 @@ calcEpsi <- function(ecologyResults, taxaList = "TL2", logAbundance = TRUE) {
       intervalCondition <-
         merge(psiConditions, intervals, by.x = "value", by.y = "row")
       # create list of psi score and psi condition
-      psiResult <- c(sampleMetric,
-                     as.character(intervalCondition$condition[intervalCondition$value.Freq == 1]))
+      psiResult <- c(
+        sampleMetric,
+        as.character(intervalCondition$condition[intervalCondition$value.Freq == 1])
+      )
       # create dataframe of results
       samplePsi <- data.frame(
         SAMPLE_ID = unique(sample$SAMPLE_ID),
