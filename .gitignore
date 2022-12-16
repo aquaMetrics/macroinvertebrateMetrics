@@ -4,3 +4,6 @@
 .Ruserdata
 inst/doc
 inst/references
+macroinvertebrateMetrics.Rcheck/
+macroinvertebrateMetrics*.tar.gz
+macroinvertebrateMetrics*.tgz
