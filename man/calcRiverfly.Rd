@@ -19,4 +19,5 @@ Function to calculate riverfly scores
 ecologyResults <- demoEcologyResults
 ecologyResults <- ecologyResults[ecologyResults$ANALYSIS_NAME == "FW_TAX_ID", ]
 spearOutput <- calcRiverfly(ecologyResults)
+
 }

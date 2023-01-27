@@ -4,7 +4,9 @@
 \name{psiSensitivityScore}
 \alias{psiSensitivityScore}
 \title{PSI Sensitivity Score table}
-\format{A data frame}
+\format{
+A data frame
+}
 \usage{
 psiSensitivityScore
 }
