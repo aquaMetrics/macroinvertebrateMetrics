@@ -4,7 +4,9 @@
 \name{psiCondition}
 \alias{psiCondition}
 \title{PSI condition definition table}
-\format{A data frame}
+\format{
+A data frame
+}
 \usage{
 psiCondition
 }

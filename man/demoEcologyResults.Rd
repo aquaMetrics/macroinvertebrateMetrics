@@ -4,7 +4,9 @@
 \name{demoEcologyResults}
 \alias{demoEcologyResults}
 \title{Demo Ecology results for testing purposes}
-\format{A data frame}
+\format{
+A data frame
+}
 \usage{
 demoEcologyResults
 }

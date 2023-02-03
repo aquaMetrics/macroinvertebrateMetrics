@@ -9,3 +9,7 @@ backup
 ^\.lintr$
 ^\CODE_OF_CONDUCT.md$
 ^\CONTRIBUTING.md$
+^macroinvertebrateMetrics\.Rcheck$
+^macroinvertebrateMetrics.*\.tar\.gz$
+^macroinvertebrateMetrics.*\.tgz$
+^\.github$

@@ -7,7 +7,8 @@
 calcSpear(ecologyResults, recoveryArea = "unknown", taxaList = "TL2")
 }
 \arguments{
-\item{ecologyResults}{Dataframe of results with four columns: SAMPLE_NUMBER, TAXON, SPEAR_SPECIES, RESULT}
+\item{ecologyResults}{Dataframe of results with four columns: SAMPLE_NUMBER, TAXON, SPEAR_SPECIES,
+RESULT}
 
 \item{recoveryArea}{There are 3 different paramaters depending on availability of "Recovery areas" information:
 \itemize{
@@ -26,27 +27,28 @@ dataframe with metric outputs
 }
 \description{
 Indicator based on biological traits used to detect effects of pesticides on
-non-target freshwater invertebrate organisms. It can be calculated at Taxonomic
-Levels 2, 4 and 5.
+non-target freshwater invertebrate organisms. It can be calculated at
+Taxonomic Levels 2, 4 and 5.
 }
 \examples{
 ecologyResults <- macroinvertebrateMetrics::demoEcologyResults
-ecologyResults <- ecologyResults[ecologyResults$SAMPLE_NUMBER == 3201863,]
-ecologyResults <- ecologyResults[ecologyResults$ANALYSIS_NAME == "FW_TAX_ID",]
+ecologyResults <- ecologyResults[ecologyResults$SAMPLE_NUMBER == 3201863, ]
+ecologyResults <- ecologyResults[ecologyResults$ANALYSIS_NAME == "FW_TAX_ID", ]
 sample <- filterSpear(ecologyResults, taxaList = "TL2")
 spearOutput <- calcSpear(sample, taxaList = "TL2")
+
 }
 \references{
-Liess M. & Von der Ohe P. 2005. \emph{Analyzing effects of pesticides on invertebrate
-communities in streams}. Environ Toxicol Chem. 24: 954-965.
+Liess M. & Von der Ohe P. 2005. \emph{Analyzing effects of pesticides on
+invertebrate communities in streams}. Environ Toxicol Chem. 24: 954-965.
 
-Wogram J. & Liess M. 2001. \emph{Rank ordering of macroinvertebrate species sensitivity
-to toxic compounds by comparison with that of Daphnia magna}. Bull Environ Contam
-Toxicol. 67: 360-367
+Wogram J. & Liess M. 2001. \emph{Rank ordering of macroinvertebrate species
+sensitivity to toxic compounds by comparison with that of Daphnia magna}.
+Bull Environ Contam Toxicol. 67: 360-367
 
-Liess M., Schaefer R., Schriever C. 2008. \emph{The footprint of pesticide stress in
-communities - Species traits reveal community effects of toxicants}. Science of
-the Total Environment. 406: 484-490
+Liess M., Schaefer R., Schriever C. 2008. \emph{The footprint of pesticide
+stress in communities - Species traits reveal community effects of
+toxicants}. Science of the Total Environment. 406: 484-490
 }
 \seealso{
 \code{\link{filterSpear}}

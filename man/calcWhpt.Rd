@@ -16,11 +16,13 @@ calcWhpt(ecologyResults, taxonTable = NULL)
 Columns names must match these exactly, but the column order does not matter.
 See demoEcologyResults for example dataset.}
 
-\item{taxonTable}{Optional Dataframe with WHPT scores and taxa. Default is NULL and will use built in WHPT scores. But
-you could supply custom dataframe if required for experimenation/development purposes.}
+\item{taxonTable}{Optional Dataframe with WHPT scores and taxa. Default is NULL and will use
+built in WHPT scores. But you could supply custom dataframe if required for
+experimenation/development purposes.}
 }
 \value{
-Dataframe with four columns: SAMPLE_ID, DETERMINAND, RESULT, ANALYSIS_NAME, ANALYSIS_REPNAME
+Dataframe with four columns: SAMPLE_ID, DETERMINAND, RESULT, ANALYSIS_NAME,
+ANALYSIS_REPNAME
 }
 \description{
 Calculate WHPT scores
