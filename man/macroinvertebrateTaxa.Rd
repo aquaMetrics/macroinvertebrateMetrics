@@ -4,7 +4,9 @@
 \name{macroinvertebrateTaxa}
 \alias{macroinvertebrateTaxa}
 \title{Macroinvertebrate Taxa}
-\format{A data frame}
+\format{
+A data frame
+}
 \usage{
 macroinvertebrateTaxa
 }

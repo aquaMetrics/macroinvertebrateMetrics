@@ -1,6 +1,15 @@
 
 
-
+#' Acid WFD-AWIC metric
+#'
+#' @param data dataframe containing mixtaxon invertebrates
+#'
+#' @return dataframe
+#' @export
+#' @importFrom dplyr n
+#' @examples
+#' metricResults <- calc_awic(demoEcologyResults)
+calc_awic <- function(data) {
 data <- data[data$ANALYSIS_NAME == "MIXTAX_TST" &
                data$DETERMINAND == "Taxon abundance", ]
 
@@ -31,31 +40,34 @@ results$awic_score[results$VALUE > 99] <- results$AWIC_C[results$VALUE > 99]
 results <- na.omit(results)
 
 # Group by SAMPLE_NUMBER to calculate score per sample
-results <- group_by(results, SAMPLE_NUMBER)
+results <- dplyr::group_by(results, SAMPLE_NUMBER)
 
 # `summarise` calculates `sum()` and `n()` on what we grouped by(sample_number)
-scores <- summarise(results,
+scores <- dplyr::summarise(results,
                     sample_score = sum(awic_score),
                     ntaxa = n())
 
 
 # Create (or 'mutate') a new column called wfd_awic (sample_score / ntaxa)
-scores <- scores %>% mutate(wfd_awic = sample_score / ntaxa)
+scores <- scores %>% dplyr::mutate(wfd_awic = sample_score / ntaxa)
 scores
 # Note, we can use |> or %>%  to pass or pipe a data frame into the first
 # argument of a function (less too type!)
 
 # Or without using |> or %>%
-mutate(score, wfd_awic = sample_score / ntaxa)
+dplyr::mutate(scores, wfd_awic = sample_score / ntaxa)
 
 # We've done it!!! wfd_awic is the metric we need!
 
 
 # Alternatively...we could combine `mutate` and `unique` instead of `summarise`
 results |>
-  mutate(sample_score = sum(awic_score),
-         ntaxa = n())  |>
-  select(SAMPLE_NUMBER, sample_score, ntaxa) |>
+  dplyr::mutate(sample_score = sum(awic_score),
+                ntaxa = n())  |>
+  dplyr::select(SAMPLE_NUMBER, sample_score, ntaxa) |>
   unique() |>
-  mutate(wfd_awic = sample_score / ntaxa)
+  dplyr::mutate(wfd_awic = sample_score / ntaxa)
+return(results)
+
+}
 
