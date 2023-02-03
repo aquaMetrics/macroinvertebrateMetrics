@@ -12,3 +12,4 @@ backup
 ^macroinvertebrateMetrics\.Rcheck$
 ^macroinvertebrateMetrics.*\.tar\.gz$
 ^macroinvertebrateMetrics.*\.tgz$
+^\.github$
