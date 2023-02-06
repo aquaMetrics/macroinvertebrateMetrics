@@ -7,6 +7,7 @@
 #' @return dataframe
 #' @export
 #' @importFrom dplyr n
+#' @importFrom magrittr "%>%"
 #' @examples
 #' metricResults <- calc_awic(demoEcologyResults)
 calc_awic <- function(data) {
@@ -61,11 +62,11 @@ dplyr::mutate(scores, wfd_awic = sample_score / ntaxa)
 
 
 # Alternatively...we could combine `mutate` and `unique` instead of `summarise`
-results |>
+results %>%
   dplyr::mutate(sample_score = sum(awic_score),
-                ntaxa = n())  |>
-  dplyr::select(SAMPLE_NUMBER, sample_score, ntaxa) |>
-  unique() |>
+                ntaxa = n())  %>%
+  dplyr::select(SAMPLE_NUMBER, sample_score, ntaxa) %>%
+  unique() %>%
   dplyr::mutate(wfd_awic = sample_score / ntaxa)
 return(results)
 
