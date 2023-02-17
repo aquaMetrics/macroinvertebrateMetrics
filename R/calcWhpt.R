@@ -58,8 +58,8 @@ calcWhpt <- function(ecologyResults, taxonTable = NULL) {
       WHPT_D = mean(WHPT_D),
       WHPT_C = mean(WHPT_C),
       WHPT_B = mean(WHPT_B),
-      WHPT_A = mean(WHPT_A)
-    )
+      WHPT_A = mean(WHPT_A),
+      WHPT_P = mean(WHPT_P) )
 
   # Find correct WHPT score based on abundance categories to use
   # and add to new column 'score'
