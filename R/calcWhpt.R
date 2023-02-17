@@ -48,7 +48,7 @@ calcWhpt <- function(ecologyResults, taxonTable = NULL) {
       macroinvertebrates,
       by = c("TAXON" = "TAXON_NAME")
     )
-
+browser()
   # group by sample so WHPT scores are produce by sample
   # and group by TL2_TAXON to sum abundance across sub-families/genus
   metricResults <- ecologyResults %>%
@@ -76,7 +76,11 @@ calcWhpt <- function(ecologyResults, taxonTable = NULL) {
     WHPT_ASPT = mean(score, na.rm = TRUE),
     WHPT_NTAXA = length(score[!is.na(score)])
   )
-
+  metricResults <- dplyr::summarise(metricResults,
+                                    WHPTP_SCORE = sum(WHPT_P, na.rm = TRUE),
+                                    WHPTP_ASPT = mean(WHPT_P, na.rm = TRUE),
+                                    WHPTP_NTAXA = length(WHPT_P[!is.na(WHPT_P)])
+  )
   # create final output in standard 'long' format
   whptResult <- metricResults %>%
     tidyr::gather(key = DETERMINAND, value = RESULT, -SAMPLE_ID) %>%
