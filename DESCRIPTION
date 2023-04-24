@@ -19,7 +19,7 @@ Suggests:
   devtools,
   rmarkdown
 Depends:
-  R (>= 3.1)
+  R (>= 4.0)
 License: MIT + file LICENSE
 URL: https://github.com/aquaMetrics/macroinvertebrateMetrics
 LazyLoad: yes

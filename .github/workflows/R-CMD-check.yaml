@@ -5,6 +5,8 @@ on:
     branches: [main, master]
   pull_request:
     branches: [main, master]
+  schedule:
+    - cron: "0 0 1 * *"
 
 name: R-CMD-check
 
@@ -20,7 +22,7 @@ jobs:
         config:
           - {os: macos-latest,   r: 'release'}
           - {os: windows-latest, r: 'release'}
-          - {os: windows-latest, r: '4.0.5'}
+          - {os: windows-latest, r: '4.0.2'}
           - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
           - {os: ubuntu-latest,   r: 'release'}
 
