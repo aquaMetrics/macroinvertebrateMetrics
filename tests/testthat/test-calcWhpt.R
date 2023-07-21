@@ -29,7 +29,7 @@ test_that("WHPT scores match previously calculated scores in demo dataset", {
 
   test <- dplyr::inner_join(metricResults, results)
 
-  # remove know errors in demo data WHPT scores and then compare:
+  # remove known errors in demo data WHPT scores and then compare:
   expect_equal(
     test$WHPT_NTAXA[c(1:2, 4, 6:11, 13:14, 16:19, 21:26, 28:32)],
     test$`WHPT NTAXA Abund`[c(1:2, 4, 6:11, 13:14, 16:19, 21:26, 28:32)]
