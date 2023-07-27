@@ -3,6 +3,8 @@
 
 # macroinvertebrateMetrics
 
+<img src='https://github.com/aquaMetrics/macroinvertebrateMetrics/blob/master/man/figures/macro_logo.png?raw=true' align="right" width="200" />
+
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/laiaroviracraven/macroinvertebrateMetrics/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/laiaroviracraven/macroinvertebrateMetrics/actions/workflows/R-CMD-check.yaml)
