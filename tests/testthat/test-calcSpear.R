@@ -1,7 +1,7 @@
 context("calc_spear")
 
 test_that("creates dataframe", {
-  ecologyResults <- filterSpear(demoEcologyResults, taxaList = "TL2")
+  ecologyResults <- filter_spear(demoEcologyResults, taxaList = "TL2")
   metricResults <- calc_spear(ecologyResults, taxaList = "TL2")
   expect_equal(class(metricResults), expected = "data.frame")
 })
@@ -11,7 +11,7 @@ test_that("compare TL2 against aquaMetric package scores", {
   ecologyResults <- demoEcologyResults
   ecologyResults <- ecologyResults[ecologyResults$SAMPLE_NUMBER == 3201863, ]
   ecologyResults <- ecologyResults[ecologyResults$ANALYSIS_NAME == "FW_TAX_ID", ]
-  ecologyResults <- filterSpear(ecologyResults, taxaList = "TL2")
+  ecologyResults <- filter_spear(ecologyResults, taxaList = "TL2")
   spearOutput <- calc_spear(ecologyResults, recoveryArea = "unknown", taxaList = "TL2")
 
   # results taken from internal DAVE Ecology tool 16/10/2018 which uses aquaMetrics package
@@ -49,7 +49,7 @@ test_that("compare TL5 against aquaMetric package scores", {
     TL = 5L, recovery.area.info = FALSE
   )
 
-  ecologyResults <- filterSpear(ecologyResults, taxaList = "TL5")
+  ecologyResults <- filter_spear(ecologyResults, taxaList = "TL5")
   spearOutput <- calc_spear(ecologyResults, recoveryArea = "unknown", taxaList = "TL5")
 
   # results taken from internal DAVE Ecology tool 16/10/2018 which uses aquaMetrics package
@@ -84,7 +84,7 @@ test_that("compare directly against aquaMetric package", {
   test <- aquaMetrics::StandardiseRawTaxa(family.df = standardTaxa, species.df = standardTaxa, aggregate = "season")
   aquaMetricOutput <- aquaMetrics::Calc_SPEAR(test$standard.taxa, season = 3)
 
-  ecologyResults <- filterSpear(ecologyResults, taxaList = "TL2")
+  ecologyResults <- filter_spear(ecologyResults, taxaList = "TL2")
   spearOutput <- calc_spear(ecologyResults, recoveryArea = "unknown", taxaList = "TL2")
 
   expect_equal(
@@ -102,6 +102,6 @@ test_that("compare TL2 against aquaMetric package scores", {
   # currently DAVE Ecology not working for TL5?
   ecologyResults <- demoEcologyResults
   ecologyResults <- ecologyResults[ecologyResults$ANALYSIS_NAME == "MIXTAX_TST", ]
-  ecologyResults <- filterSpear(ecologyResults, taxaList = "TL5")
+  ecologyResults <- filter_spear(ecologyResults, taxaList = "TL5")
   spearOutput <- calc_spear(ecologyResults, recoveryArea = "unknown", taxaList = "TL5")
 })

@@ -26,7 +26,7 @@ calc_metric <- function(data,
     }
 
     if (any(metric %in% c("epsi"))) {
-      epsi <- calcEpsi(data, taxaList = taxa_list)
+      epsi <- calc_epsi(data, taxaList = taxa_list)
       return(epsi)
     }
     if (any(metric %in% c("riverfly"))) {
@@ -36,7 +36,7 @@ calc_metric <- function(data,
     }
     if (any(metric %in% c("spear"))) {
       # These metrics need specific Taxa List to run correctly
-      spear_data <- filterSpear(data, taxaList = taxa_list)
+      spear_data <- filter_spear(data, taxaList = taxa_list)
       if (nrow(spear_data) > 0) {
         spear <- calc_spear(spear_data)
         return(spear)

@@ -13,8 +13,8 @@
 #' @export
 #'
 #' @examples
-#' filtered <- filterSpear(demoEcologyResults, taxaList = "TL2")
-filterSpear <- function(ecologyResults, taxaList = NULL) {
+#' filtered <- filter_spear(demoEcologyResults, taxaList = "TL2")
+filter_spear <- function(ecologyResults, taxaList = NULL) {
   # only need Taxon abundance determinand
   ecologyResults <-
     ecologyResults[ecologyResults$DETERMINAND == "Taxon abundance" |
