@@ -7,7 +7,7 @@
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/aquaMetrics/macroinvertebrateMetrics/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/laiaroviracraven/macroinvertebrateMetrics/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/aquaMetrics/macroinvertebrateMetrics/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/aquaMetrics/macroinvertebrateMetrics/actions/workflows/R-CMD-check.yaml)
 [![codecov](https://codecov.io/gh/aquaMetrics/macroinvertebratesMetrics/branch/master/graph/badge.svg)](https://codecov.io/gh/aquaMetrics/macroinvertebratesMetrics)
 <!-- badges: end -->
 

@@ -35,7 +35,7 @@ logo <- function() {
           h_color = "#d66853",
           h_size = 2,
           filename = "man/figures/macro_logo.png",
-          white_around_sticker = T,
+          white_around_sticker = FALSE,
           l_x = 1,
           l_y = 0.8,
           spotlight = TRUE,
