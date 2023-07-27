@@ -44,7 +44,6 @@
 calcSpear <- function(ecologyResults, recoveryArea = "unknown", taxaList = "TL2") {
   sampleMetric <-
     lapply(split(ecologyResults, ecologyResults$SAMPLE_ID), function(sample) {
-
       # Calculate log10 of Abundance
       # RIVPACS has different criteria when dealing for TL2 and TL5 items
       # which do not score against SPEAR. Maybe it is a "bug"...
@@ -71,7 +70,7 @@ calcSpear <- function(ecologyResults, recoveryArea = "unknown", taxaList = "TL2"
 
       # calcualte SPEAR ratio
       spearRatio <- (numberOfTaxa * abundanceLogSumScoring) /
-                    (numberOfTaxa * abundanceLogSumNonScoring)
+        (numberOfTaxa * abundanceLogSumNonScoring)
       # calculate SPEAR ratio as percentage
       spearRatio <- spearRatio * 100
       # regression coefficients for Toxicant Exposure calculation
@@ -85,9 +84,11 @@ calcSpear <- function(ecologyResults, recoveryArea = "unknown", taxaList = "TL2"
       # information
       spearToxicantRatio <-
         toxicantExposureCoeff$p1[
-          toxicantExposureCoeff$recoveryArea == recoveryArea] *
+          toxicantExposureCoeff$recoveryArea == recoveryArea
+        ] *
         spearRatio + toxicantExposureCoeff$p2[
-          toxicantExposureCoeff$recoveryArea == recoveryArea]
+          toxicantExposureCoeff$recoveryArea == recoveryArea
+        ]
       # SPEAR water quality classes
       # Bad:      <= 11% SPEAR
       # Poor:     > 11% and <= 22% SPEAR

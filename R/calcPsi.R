@@ -77,15 +77,18 @@ calcPsi <- function(ecologyResults, taxaList = "TL3") {
       psiResult <- c(
         sampleMetric,
         as.character(intervalCondition$condition[
-          intervalCondition$value.Freq == 1])
+          intervalCondition$value.Freq == 1
+        ])
       )
       # create dataframe of results
       samplePsi <- data.frame(
         SAMPLE_ID = unique(sample$SAMPLE_ID),
         ANALYSIS_REPNAME = paste0("Proportion of Sediment-sensitive Inverts"),
         ANALYSIS_NAME = paste0("METRIC PSI"),
-        DETERMINAND = c(paste0("PSI Score ", taxaList),
-                        paste0("PSI Condition ", taxaList)),
+        DETERMINAND = c(
+          paste0("PSI Score ", taxaList),
+          paste0("PSI Condition ", taxaList)
+        ),
         RESULT = psiResult
       )
 

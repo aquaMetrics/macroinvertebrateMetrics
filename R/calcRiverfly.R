@@ -35,11 +35,12 @@ calcRiverfly <- function(ecologyResults) {
 
 
   # this table has a lookup list for riverfly taxon groups against TL2 families
-  taxonTable <- utils::read.csv(system.file("extdata",
-    "riverfly.csv",
-    package = "macroinvertebrateMetrics"
-  ),
-  stringsAsFactors = FALSE
+  taxonTable <- utils::read.csv(
+    system.file("extdata",
+      "riverfly.csv",
+      package = "macroinvertebrateMetrics"
+    ),
+    stringsAsFactors = FALSE
   )
 
   # merge only works for TL2 currently - will need to merge with invert taxa

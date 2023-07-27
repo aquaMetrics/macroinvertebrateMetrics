@@ -2,7 +2,11 @@ context("calcWhpt")
 
 test_that("WHPT scores match previously calculated scores in demo dataset", {
   results <- macroinvertebrateMetrics::demoEcologyResults
-  results <- dplyr::filter(results, ANALYSIS_REPNAME == "Invert Taxa Family Lab" & DETERMINAND == "Taxon abundance")
+  results <- dplyr::filter(
+    results,
+    ANALYSIS_REPNAME == "Invert Taxa Family Lab" &
+      DETERMINAND == "Taxon abundance"
+  )
   results <- dplyr::select(results, SAMPLE_ID, TAXON, RESULT)
   metricResults <- calcWhpt(results)
 
@@ -29,9 +33,34 @@ test_that("WHPT scores match previously calculated scores in demo dataset", {
 
   test <- dplyr::inner_join(metricResults, results)
 
-  # remove known errors in demo data WHPT scores and then compare:
+  # Remove known errors in demo data WHPT scores and then compare:
   expect_equal(
     test$WHPT_NTAXA[c(1:2, 4, 6:11, 13:14, 16:19, 21:26, 28:32)],
     test$`WHPT NTAXA Abund`[c(1:2, 4, 6:11, 13:14, 16:19, 21:26, 28:32)]
+  )
+
+  # WHPT present only
+  # Don't have any pre-calculated results - just a static regression test based
+  # on values calculated by this package
+  metricResults <- calcWhpt(demoEcologyResults)
+  metricResults <- dplyr::arrange(metricResults, SAMPLE_ID)
+  test <- dplyr::filter(metricResults, DETERMINAND %in% c(
+    "WHPT_P_ASPT",
+    "WHPT_P_NTAXA",
+    "WHPT_P_SCORE"
+  ))
+  expect_equal(
+    round(test$RESULT[1:9], 6),
+    c(
+      76.700000,
+      5.478571,
+      14.000000,
+      67.800000,
+      5.215385,
+      13.000000,
+      77.500000,
+      4.843750,
+      16.000000
+    )
   )
 })

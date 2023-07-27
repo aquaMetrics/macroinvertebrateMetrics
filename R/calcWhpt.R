@@ -22,7 +22,6 @@
 #' @examples
 #' metricResults <- calcWhpt(demoEcologyResults)
 calcWhpt <- function(ecologyResults, taxonTable = NULL) {
-
   # tidy TAXON name incase of whitespace
   ecologyResults$TAXON <- trimws(ecologyResults$TAXON)
 
@@ -35,9 +34,12 @@ calcWhpt <- function(ecologyResults, taxonTable = NULL) {
 
   # filter results so only Taxon abundance results and greater zero as these
   # are the results required to calculate abundance based WHPT
+
   ecologyResults <-
-    dplyr::mutate(ecologyResults, RESULT = as.numeric(as.character(RESULT))) %>%
-    dplyr::filter(RESULT > 0)
+    dplyr::mutate(ecologyResults, RESULT = suppressWarnings(
+      as.numeric(as.character(.data$RESULT))
+    )) %>%
+    dplyr::filter(.data$RESULT > 0)
 
   # TAXON_NAME is factor so convert to character to match ecology results
   # dataframe
@@ -49,42 +51,46 @@ calcWhpt <- function(ecologyResults, taxonTable = NULL) {
       by = c("TAXON" = "TAXON_NAME")
     )
 
-
   # group by sample so WHPT scores are produce by sample
   # and group by TL2_TAXON to sum abundance across sub-families/genus
   metricResults <- ecologyResults %>%
-    dplyr::group_by(SAMPLE_ID, TL2_TAXON) %>%
+    dplyr::group_by(.data$SAMPLE_ID, .data$TL2_TAXON) %>%
     dplyr::summarise(
-      RESULT = sum(RESULT),
-      WHPT_D = mean(WHPT_D),
-      WHPT_C = mean(WHPT_C),
-      WHPT_B = mean(WHPT_B),
-      WHPT_A = mean(WHPT_A),
-      WHPT_P = mean(WHPT_P) )
+      RESULT = sum(.data$RESULT),
+      WHPT_D = mean(.data$WHPT_D),
+      WHPT_C = mean(.data$WHPT_C),
+      WHPT_B = mean(.data$WHPT_B),
+      WHPT_A = mean(.data$WHPT_A),
+      WHPT_P = mean(.data$WHPT_P)
+    )
 
   # Find correct WHPT score based on abundance categories to use
   # and add to new column 'score'
   metricResults <-
-    dplyr::mutate(metricResults, score = dplyr::if_else(RESULT > 999, WHPT_D,
-      dplyr::if_else(RESULT > 99, WHPT_C,
-        dplyr::if_else(RESULT > 9, WHPT_B, WHPT_A)
+    dplyr::mutate(metricResults,
+      score = dplyr::if_else(.data$RESULT > 999, .data$WHPT_D,
+        dplyr::if_else(.data$RESULT > 99, .data$WHPT_C,
+          dplyr::if_else(.data$RESULT > 9, .data$WHPT_B, .data$WHPT_A)
+        )
       )
-    ))
+    )
 
   # calculate WHPT score
   metricResults <- dplyr::summarise(metricResults,
-    WHPT_SCORE = sum(score, na.rm = TRUE),
-    WHPT_ASPT = mean(score, na.rm = TRUE),
-    WHPT_NTAXA = length(score[!is.na(score)]),
-    WHPT_P_SCORE = sum(WHPT_P, na.rm = TRUE),
-    WHPT_P_ASPT = mean(WHPT_P, na.rm = TRUE),
-    WHPT_P_NTAXA = length(WHPT_P[!is.na(WHPT_P)])
+    WHPT_SCORE = sum(.data$score, na.rm = TRUE),
+    WHPT_ASPT = mean(.data$score, na.rm = TRUE),
+    WHPT_NTAXA = length(.data$score[!is.na(.data$score)]),
+    WHPT_P_SCORE = sum(.data$WHPT_P, na.rm = TRUE),
+    WHPT_P_ASPT = mean(.data$WHPT_P, na.rm = TRUE),
+    WHPT_P_NTAXA = length(.data$WHPT_P[!is.na(.data$WHPT_P)])
   )
   # create final output in standard 'long' format
   whptResult <- metricResults %>%
     tidyr::gather(key = DETERMINAND, value = RESULT, -SAMPLE_ID) %>%
-    dplyr::mutate(ANALYSIS_NAME = "METRIC WHPT",
-                  ANALYSIS_REPNAME = "WHPT Metric")
+    dplyr::mutate(
+      ANALYSIS_NAME = "METRIC WHPT",
+      ANALYSIS_REPNAME = "WHPT Metric"
+    )
 
   return(whptResult)
 }

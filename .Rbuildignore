@@ -13,3 +13,4 @@ backup
 ^macroinvertebrateMetrics.*\.tar\.gz$
 ^macroinvertebrateMetrics.*\.tgz$
 ^\.github$
+^README\.Rmd$

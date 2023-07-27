@@ -3,12 +3,13 @@
 #' @param ecologyResults
 #' Dataframe with ecology results...
 #' @param taxaList
-#' The taxonomic level the sample(s) have been identified at according to specificed taxa lists
-#' as described in WFD100 Further Development of River Invertebrate Classification Tool.
-#' Either "TL2" - Taxa list 2, "TL4" - Taxa list 4 or  "TL5" - Taxa list 5.
+#' The taxonomic level the sample(s) have been identified at according to
+#' specified taxa lists as described in WFD100 Further Development of River
+#' Invertebrate Classification Tool. Either "TL2" - Taxa List 2, "TL4" - Taxa
+#' List 4 or  "TL5" - Taxa List 5.
 #' @return
-#' Dataframe of filtered and aggregated results (based on Taxa List) with four columns:
-#' SAMPLE_NUMBER, TAXON, SPEAR_SPECIES, RESULT
+#' Dataframe of filtered and aggregated results (based on Taxa List) with four
+#' columns: SAMPLE_NUMBER, TAXON, SPEAR_SPECIES, RESULT
 #' @export
 #'
 #' @examples
