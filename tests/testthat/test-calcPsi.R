@@ -1,29 +1,29 @@
-context("calcPsi")
+context("calc_psi")
 
 test_that("creates dataframe", {
-  ecologyResults <- filterPsi(macroinvertebrateMetrics::demoEcologyResults)
-  metricResults <- calcPsi(ecologyResults)
+  ecologyResults <- filter_psi(macroinvertebrateMetrics::demoEcologyResults)
+  metricResults <- calc_psi(ecologyResults)
   expect_equal(class(metricResults), expected = "data.frame")
 
-  ecologyResults <- filterPsi(demoEcologyResults, taxaList = "TL5")
-  metricResults <- calcPsi(ecologyResults, taxaList = "TL5")
+  ecologyResults <- filter_psi(demoEcologyResults, taxaList = "TL5")
+  metricResults <- calc_psi(ecologyResults, taxaList = "TL5")
   expect_equal(class(metricResults), expected = "data.frame")
 })
 
 test_that("test against old aquaMetric value", {
   ecologyResults <- macroinvertebrateMetrics::demoEcologyResults
 
-  ecologyResults <- filterPsi(ecologyResults[ecologyResults$LOCATION_CODE == 8175 &
+  ecologyResults <- filter_psi(ecologyResults[ecologyResults$LOCATION_CODE == 8175 &
     ecologyResults$SAMPLE_NUMBER == 3201863, ])
 
-  metricResults <- calcPsi(ecologyResults)
+  metricResults <- calc_psi(ecologyResults)
   ### Compare against value from older aquaMetrics package (now defunct)
   expect_equal(as.character(metricResults$RESULT[1]), "62.5")
 })
 
 test_that("test directly against old aquaMetric function", {
   skip("Requires defunct aquaMetrics package to be installed")
-  ###  Code below to convert ecologyResults into dataframe used in aquaMetric package 'CalcPSI' function
+  ###  Code below to convert ecologyResults into dataframe used in aquaMetric package 'calc_psi' function
   ### for testing against old package only - no longer used
   library(aquaMetrics)
   ecologyResults <- macroinvertebrateMetrics::demoEcologyResults[
@@ -74,8 +74,8 @@ test_that("test directly against old aquaMetric function", {
 
 
 
-  checkResults <- filterPsi(macroinvertebrateMetrics::demoEcologyResults)
-  checkResults <- calcPsi(ecologyResults)
+  checkResults <- filter_psi(macroinvertebrateMetrics::demoEcologyResults)
+  checkResults <- calc_psi(ecologyResults)
   checkResults <- inner_join(checkResults,
     ecologyResults[, c("SAMPLE_ID", "DATE_TAKEN")],
     by = c("SAMPLE_ID" = "SAMPLE_ID")

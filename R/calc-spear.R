@@ -39,9 +39,9 @@
 #' ecologyResults <- ecologyResults[ecologyResults$SAMPLE_NUMBER == 3201863, ]
 #' ecologyResults <- ecologyResults[ecologyResults$ANALYSIS_NAME == "FW_TAX_ID", ]
 #' sample <- filterSpear(ecologyResults, taxaList = "TL2")
-#' spearOutput <- calcSpear(sample, taxaList = "TL2")
+#' spearOutput <- calc_spear(sample, taxaList = "TL2")
 #'
-calcSpear <- function(ecologyResults, recoveryArea = "unknown", taxaList = "TL2") {
+calc_spear <- function(ecologyResults, recoveryArea = "unknown", taxaList = "TL2") {
   sampleMetric <-
     lapply(split(ecologyResults, ecologyResults$SAMPLE_ID), function(sample) {
       # Calculate log10 of Abundance

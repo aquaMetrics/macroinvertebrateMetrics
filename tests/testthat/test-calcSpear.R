@@ -1,8 +1,8 @@
-context("calcSpear")
+context("calc_spear")
 
 test_that("creates dataframe", {
   ecologyResults <- filterSpear(demoEcologyResults, taxaList = "TL2")
-  metricResults <- calcSpear(ecologyResults, taxaList = "TL2")
+  metricResults <- calc_spear(ecologyResults, taxaList = "TL2")
   expect_equal(class(metricResults), expected = "data.frame")
 })
 
@@ -12,7 +12,7 @@ test_that("compare TL2 against aquaMetric package scores", {
   ecologyResults <- ecologyResults[ecologyResults$SAMPLE_NUMBER == 3201863, ]
   ecologyResults <- ecologyResults[ecologyResults$ANALYSIS_NAME == "FW_TAX_ID", ]
   ecologyResults <- filterSpear(ecologyResults, taxaList = "TL2")
-  spearOutput <- calcSpear(ecologyResults, recoveryArea = "unknown", taxaList = "TL2")
+  spearOutput <- calc_spear(ecologyResults, recoveryArea = "unknown", taxaList = "TL2")
 
   # results taken from internal DAVE Ecology tool 16/10/2018 which uses aquaMetrics package
   expect_equal(round(as.numeric(as.character(spearOutput$RESULT[1])), 2), 32.24)
@@ -44,13 +44,13 @@ test_that("compare TL5 against aquaMetric package scores", {
   standardTaxa$Abundance <- as.character(standardTaxa$Abundance)
   standardTaxa$Abundance <- as.numeric(standardTaxa$Abundance)
   test <- aquaMetrics::StandardiseRawTaxa(family.df = standardTaxa, species.df = standardTaxa, aggregate = "season")
-  aquaMetricOutput <- aquaMetrics::CalcSPEAR(
+  aquaMetricOutput <- aquaMetrics::Calc_SPEAR(
     data = test$standard.taxa, season = 1,
     TL = 5L, recovery.area.info = FALSE
   )
 
   ecologyResults <- filterSpear(ecologyResults, taxaList = "TL5")
-  spearOutput <- calcSpear(ecologyResults, recoveryArea = "unknown", taxaList = "TL5")
+  spearOutput <- calc_spear(ecologyResults, recoveryArea = "unknown", taxaList = "TL5")
 
   # results taken from internal DAVE Ecology tool 16/10/2018 which uses aquaMetrics package
   expect_equal(round(as.numeric(as.character(spearOutput$RESULT[1])), 2), 29.19)
@@ -82,10 +82,10 @@ test_that("compare directly against aquaMetric package", {
   standardTaxa$Abundance <- as.character(standardTaxa$Abundance)
   standardTaxa$Abundance <- as.numeric(standardTaxa$Abundance)
   test <- aquaMetrics::StandardiseRawTaxa(family.df = standardTaxa, species.df = standardTaxa, aggregate = "season")
-  aquaMetricOutput <- aquaMetrics::CalcSPEAR(test$standard.taxa, season = 3)
+  aquaMetricOutput <- aquaMetrics::Calc_SPEAR(test$standard.taxa, season = 3)
 
   ecologyResults <- filterSpear(ecologyResults, taxaList = "TL2")
-  spearOutput <- calcSpear(ecologyResults, recoveryArea = "unknown", taxaList = "TL2")
+  spearOutput <- calc_spear(ecologyResults, recoveryArea = "unknown", taxaList = "TL2")
 
   expect_equal(
     round(as.numeric(as.character(spearOutput$RESULT[1])), 2),
@@ -103,5 +103,5 @@ test_that("compare TL2 against aquaMetric package scores", {
   ecologyResults <- demoEcologyResults
   ecologyResults <- ecologyResults[ecologyResults$ANALYSIS_NAME == "MIXTAX_TST", ]
   ecologyResults <- filterSpear(ecologyResults, taxaList = "TL5")
-  spearOutput <- calcSpear(ecologyResults, recoveryArea = "unknown", taxaList = "TL5")
+  spearOutput <- calc_spear(ecologyResults, recoveryArea = "unknown", taxaList = "TL5")
 })

@@ -11,11 +11,11 @@
 #' This package contains several functions which compute multiple ecological
 #' metrics at different Taxonomic Levels (TL) using multiple season combinations.
 #' \itemize{
-#'  \item SPEAR (\code{\link{calcSpear}})\cr Species at Risk
-#'  \item PSI (\code{\link{calcPsi}})\cr Proportion of Sediment-sensitive Invertebrates
-#'  \item PSI (\code{\link{calcEpsi}})\cr Empirically-weighted Proportion of Sediment-sensitive Invertebrates
-#'  \item Riverfly score (\code{\link{calcRiverfly}})\cr Riverfly Angler's Score Index
-#'  \item WHPT (\code{\link{calcWhpt}})\cr WHPT Score Index
+#'  \item SPEAR (\code{\link{calc_spear}})\cr Species at Risk
+#'  \item PSI (\code{\link{calc_psi}})\cr Proportion of Sediment-sensitive Invertebrates
+#'  \item PSI (\code{\link{calc_epsi}})\cr Empirically-weighted Proportion of Sediment-sensitive Invertebrates
+#'  \item Riverfly score (\code{\link{calc_siverfly}})\cr Riverfly Angler's Score Index
+#'  \item WHPT (\code{\link{calc_whpt}})\cr WHPT Score Index
 #' }
 #'
 #' Taxonomic Levels are the different output options developed by RIVAPCS

@@ -1,10 +1,10 @@
-context("calcRiverfly")
+context("calc_riverfly")
 
 
 test_that("test riverfly scores", {
   ecologyResults <- demoEcologyResults
   ecologyResults <- ecologyResults[ecologyResults$ANALYSIS_NAME == "FW_TAX_ID", ]
-  riverflyOutput <- calcRiverfly(ecologyResults)
+  riverflyOutput <- calc_riverfly(ecologyResults)
 
   expect_equal(riverflyOutput$RESULT[1], 10)
   expect_equal(riverflyOutput$RESULT[2], 7)
@@ -15,7 +15,7 @@ test_that("test riverfly scores", {
 test_that("test riverfly returns nothing if no relevantdata", {
   ecologyResults <- demoEcologyResults
   ecologyResults <- ecologyResults[ecologyResults$ANALYSIS_NAME == "MAC_R_TST", ]
-  riverflyOutput <- calcRiverfly(ecologyResults)
+  riverflyOutput <- calc_riverfly(ecologyResults)
 
   expect_equal(riverflyOutput$RESULT[1], NULL)
 })

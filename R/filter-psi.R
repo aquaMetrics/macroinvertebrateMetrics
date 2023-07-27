@@ -20,8 +20,8 @@
 #' @export
 #'
 #' @examples
-#' filterPsi(demoEcologyResults, taxaList = "TL2")
-filterPsi <- function(ecologyResults, taxaList = "TL3") {
+#' filter_psi(demoEcologyResults, taxaList = "TL2")
+filter_psi <- function(ecologyResults, taxaList = "TL3") {
   if (!taxaList %in% c("TL2", "TL3", "TL5", "TL4")) {
     stop("taxaList arugment must be either 'TL2', 'TL3', 'TL4' or 'TL5'")
   }

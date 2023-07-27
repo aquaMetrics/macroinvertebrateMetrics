@@ -29,9 +29,9 @@
 #'
 #' @examples
 #' sample <- demoEcologyResults
-#' sample <- filterPsi(sample, taxaList = "TL2")
-#' calcPsi(ecologyResults = sample)
-calcEpsi <- function(ecologyResults, taxaList = "TL2", logAbundance = TRUE) {
+#' sample <- filter_psi(sample, taxaList = "TL2")
+#' calc_epsi(ecologyResults = sample)
+calc_epsi <- function(ecologyResults, taxaList = "TL2", logAbundance = TRUE) {
   if (!taxaList %in% c("TL2", "TL5")) {
     stop("taxaList argument must be either 'TL2' or 'TL5'")
   }

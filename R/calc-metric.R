@@ -30,7 +30,7 @@ calc_metric <- function(data,
       return(epsi)
     }
     if (any(metric %in% c("riverfly"))) {
-      riverfly <- calcRiverfly(data)
+      riverfly <- calc_riverfly(data)
       riverfly$RESULT <- as.character(riverfly$RESULT)
       return(riverfly)
     }
@@ -38,14 +38,14 @@ calc_metric <- function(data,
       # These metrics need specific Taxa List to run correctly
       spear_data <- filterSpear(data, taxaList = taxa_list)
       if (nrow(spear_data) > 0) {
-        spear <- calcSpear(spear_data)
+        spear <- calc_spear(spear_data)
         return(spear)
       } else {
         return(NULL)
       }
     }
     if (any(metric %in% c("whpt"))) {
-      whpt <- calcWhpt(data)
+      whpt <- calc_whpt(data)
       whpt$RESULT <- as.character(whpt$RESULT)
       return(whpt)
     }

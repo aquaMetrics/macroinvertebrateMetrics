@@ -20,8 +20,8 @@
 #' @importFrom magrittr "%>%"
 #' @importFrom rlang .data
 #' @examples
-#' metricResults <- calcWhpt(demoEcologyResults)
-calcWhpt <- function(ecologyResults, taxonTable = NULL) {
+#' metricResults <- calc_whpt(demoEcologyResults)
+calc_whpt <- function(ecologyResults, taxonTable = NULL) {
   # tidy TAXON name incase of whitespace
   ecologyResults$TAXON <- trimws(ecologyResults$TAXON)
 

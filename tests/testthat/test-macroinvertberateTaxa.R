@@ -6,7 +6,7 @@ test_that("Test .csv source file matches binary file", {
   # comparison on github i.e. this is plain text and easy to track changes
   skip("works locally fails on CI")
   taxonDictionarySource <- utils::read.csv(
-    system.file("extdata",
+    system.file("extdat",
       "invert-taxon-dictionary.csv",
       package = "macroinvertebrateMetrics"
     )

@@ -26,9 +26,9 @@
 #'
 #' @examples
 #' sample <- demoEcologyResults
-#' sample <- filterPsi(sample, taxaList = "TL3")
-#' calcPsi(ecologyResults = sample)
-calcPsi <- function(ecologyResults, taxaList = "TL3") {
+#' sample <- filter_psi(sample, taxaList = "TL3")
+#' calc_psi(ecologyResults = sample)
+calc_psi <- function(ecologyResults, taxaList = "TL3") {
   if (!taxaList %in% c("TL3", "TL5", "TL4")) {
     stop("taxaList arugment must be either 'TL3', 'TL4' or 'TL5'")
   }

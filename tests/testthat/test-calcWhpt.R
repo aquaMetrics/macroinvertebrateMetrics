@@ -1,4 +1,4 @@
-context("calcWhpt")
+context("calc_whpt")
 
 test_that("WHPT scores match previously calculated scores in demo dataset", {
   results <- macroinvertebrateMetrics::demoEcologyResults
@@ -8,7 +8,7 @@ test_that("WHPT scores match previously calculated scores in demo dataset", {
       DETERMINAND == "Taxon abundance"
   )
   results <- dplyr::select(results, SAMPLE_ID, TAXON, RESULT)
-  metricResults <- calcWhpt(results)
+  metricResults <- calc_whpt(results)
 
   results <- demoEcologyResults
   results <- dplyr::filter(results, ANALYSIS_REPNAME == "Invert Summary Whpt")
@@ -42,7 +42,7 @@ test_that("WHPT scores match previously calculated scores in demo dataset", {
   # WHPT present only
   # Don't have any pre-calculated results - just a static regression test based
   # on values calculated by this package
-  metricResults <- calcWhpt(demoEcologyResults)
+  metricResults <- calc_whpt(demoEcologyResults)
   metricResults <- dplyr::arrange(metricResults, SAMPLE_ID)
   test <- dplyr::filter(metricResults, DETERMINAND %in% c(
     "WHPT_P_ASPT",

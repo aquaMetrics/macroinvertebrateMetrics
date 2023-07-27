@@ -12,9 +12,9 @@
 #' @examples
 #' ecologyResults <- demoEcologyResults
 #' ecologyResults <- ecologyResults[ecologyResults$ANALYSIS_NAME == "FW_TAX_ID", ]
-#' spearOutput <- calcRiverfly(ecologyResults)
+#' spearOutput <- calc_riverfly(ecologyResults)
 #'
-calcRiverfly <- function(ecologyResults) {
+calc_riverfly <- function(ecologyResults) {
   # need to create riverfly score for each sample number
   macroinvertebrates <- macroinvertebrateMetrics::macroinvertebrateTaxa
 
@@ -36,7 +36,7 @@ calcRiverfly <- function(ecologyResults) {
 
   # this table has a lookup list for riverfly taxon groups against TL2 families
   taxonTable <- utils::read.csv(
-    system.file("extdata",
+    system.file("extdat",
       "riverfly.csv",
       package = "macroinvertebrateMetrics"
     ),
