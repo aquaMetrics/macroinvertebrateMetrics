@@ -9,7 +9,7 @@
 #' List 4 or  "TL5" - Taxa List 5.
 #' @return
 #' Dataframe of filtered and aggregated results (based on Taxa List) with four
-#' columns: SAMPLE_NUMBER, TAXON, SPEAR_SPECIES, RESULT
+#' columns: SAMPLE_ID, TAXON, SPEAR_SPECIES, RESULT
 #' @export
 #'
 #' @examples

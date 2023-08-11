@@ -6,7 +6,7 @@ test_that("AWIC scores match previously calculated scores in demo dataset", {
   # Create values for all the species we can expect (need to make sure we have
   # correct scores for all species and abundance categories)
   data <- tibble::tribble(
-    ~VALUE, ~TAXON,
+    ~response, ~label,
     1, "Agapetus",
     1, "Caenis",
     1, "Alainites muticus",
@@ -58,37 +58,37 @@ test_that("AWIC scores match previously calculated scores in demo dataset", {
   )
 
   # Need to add in other columns our function expects to find in the data
-  data$SAMPLE_NUMBER <- 1
-  data$ANALYSIS_NAME <- "MIXTAX_TST"
-  data$DETERMINAND <- "Taxon abundance"
+  data$sample_id <- 1
+  data$parameter <- "TL5 River Invertberate"
+  data$question <- "Taxon abundance"
 
   # Run the data through the function
   test <- calc_awic(data)
 
   # Use `expect_equal()` function from the testthat package
   testthat::expect_equal(
-    round(test$RESULT[test$DETERMINAND == "wfd_awic"], 2), 8.19
+    round(test$response[test$question == "wfd_awic"], 2), 8.19
   )
-  expect_equal(test$RESULT[test$DETERMINAND == "ntaxa"], 48)
-  expect_equal(test$RESULT[test$DETERMINAND == "sample_score"], 393)
+  expect_equal(test$response[test$question == "ntaxa"], 48)
+  expect_equal(test$response[test$question == "sample_score"], 393)
 
   # Test against Abundance category > 9 (in case of any copy paste / typos)
-  data$VALUE <- 10
+  data$response <- 10
   test_10 <- calc_awic(data)
 
   expect_equal(
-    round(test_10$RESULT[test_10$DETERMINAND == "wfd_awic"], 2), 8.48
+    round(test_10$response[test_10$question == "wfd_awic"], 2), 8.48
   )
-  expect_equal(test_10$RESULT[test_10$DETERMINAND == "ntaxa"], 48)
-  expect_equal(test_10$RESULT[test_10$DETERMINAND == "sample_score"], 407)
+  expect_equal(test_10$response[test_10$question == "ntaxa"], 48)
+  expect_equal(test_10$response[test_10$question == "sample_score"], 407)
 
   # Test against Abundance category > 99
-  data$VALUE <- 100
+  data$response <- 100
   test_100 <- calc_awic(data)
 
   expect_equal(
-    round(test_100$RESULT[test_100$DETERMINAND == "wfd_awic"], 2), 8.77
+    round(test_100$response[test_100$question == "wfd_awic"], 2), 8.77
   )
-  expect_equal(test_100$RESULT[test_100$DETERMINAND == "ntaxa"], 48)
-  expect_equal(test_100$RESULT[test_100$DETERMINAND == "sample_score"], 421)
+  expect_equal(test_100$response[test_100$question == "ntaxa"], 48)
+  expect_equal(test_100$response[test_100$question == "sample_score"], 421)
 })

@@ -49,9 +49,9 @@ calc_epsi <- function(ecologyResults, taxaList = "TL2", logAbundance = TRUE) {
     lapply(split(ecologyResults, ecologyResults$SAMPLE_ID), function(sample) {
       # calculate PSI score
       if (logAbundance == FALSE) {
-        sample$CAT <- floor(log10(sample$RESULT) + 1)
+        sample$CAT <- floor(log10(as.numeric(sample$RESULT)) + 1)
       } else {
-        sample$CAT <- sample$RESULT
+        sample$CAT <- as.numeric(sample$RESULT)
       }
       if (taxaList == "TL2") {
         # if no scoring families present return error

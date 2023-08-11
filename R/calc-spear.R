@@ -36,7 +36,7 @@
 #'
 #' @examples
 #' ecologyResults <- macroinvertebrateMetrics::demoEcologyResults
-#' ecologyResults <- ecologyResults[ecologyResults$SAMPLE_NUMBER == 3201863, ]
+#' ecologyResults <- ecologyResults[ecologyResults$SAMPLE_ID == 3201863, ]
 #' ecologyResults <- ecologyResults[ecologyResults$ANALYSIS_NAME == "FW_TAX_ID", ]
 #' sample <- filter_spear(ecologyResults, taxaList = "TL2")
 #' spearOutput <- calc_spear(sample, taxaList = "TL2")

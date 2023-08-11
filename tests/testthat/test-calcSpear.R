@@ -26,7 +26,7 @@ test_that("compare TL5 against aquaMetric package scores", {
   # check first sample
   ecologyResults <- demoEcologyResults
   # Spring 8175 2016
-  ecologyResults <- ecologyResults[ecologyResults$SAMPLE_NUMBER == 2959448, ]
+  ecologyResults <- ecologyResults[ecologyResults$SAMPLE_ID == 2959448, ]
   ecologyResults <- ecologyResults[ecologyResults$ANALYSIS_NAME == "MIXTAX_TST", ]
   standardTaxa <- ecologyResults[
     ecologyResults$DETERMINAND == "Taxon abundance",

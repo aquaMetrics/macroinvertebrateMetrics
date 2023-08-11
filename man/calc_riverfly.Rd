@@ -4,10 +4,20 @@
 \alias{calc_riverfly}
 \title{Riverfly metric}
 \usage{
-calc_riverfly(ecologyResults)
+calc_riverfly(
+  data,
+  names = column_attributes$name,
+  questions = c("Taxon abundance", "Taxon Abundance")
+)
 }
 \arguments{
-\item{ecologyResults}{A data frame of ecology data}
+\item{data}{A data frame of ecology data as defined in `column_attributes`.}
+
+\item{names}{Optional, user provided list of column names different to those used
+in `column_attributes` to match with input data}
+
+\item{questions}{Optional, user provided 'question' default is 'Taxon abundance', which
+filters only abundance values.}
 }
 \value{
 A data frame 5 variables
@@ -16,8 +26,8 @@ A data frame 5 variables
 Function to calculate riverfly scores
 }
 \examples{
-ecologyResults <- demoEcologyResults
-ecologyResults <- ecologyResults[ecologyResults$ANALYSIS_NAME == "FW_TAX_ID", ]
-spearOutput <- calc_riverfly(ecologyResults)
+data <- demo_data
+data <- data[data$parameter == "River Family Inverts", ]
+output <- calc_riverfly(data)
 
 }

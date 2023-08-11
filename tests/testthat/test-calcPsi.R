@@ -29,8 +29,6 @@ test_that("test directly against old aquaMetric function", {
   ecologyResults <- macroinvertebrateMetrics::demoEcologyResults[
     demoEcologyResults$SEASON == "SPR",
   ]
-  #  demoEcologyResults$LOCATION_CODE == 8175 &
-  #  demoEcologyResults$SAMPLE_NUMBER == 3201863, ]
   standardTaxa <- ecologyResults[
     ecologyResults$DETERMINAND == "Taxon abundance" &
       ecologyResults$ANALYSIS_NAME == "FW_TAX_ID",

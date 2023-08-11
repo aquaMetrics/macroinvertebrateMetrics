@@ -4,10 +4,20 @@
 \alias{calc_awic}
 \title{Acid WFD-AWIC metric}
 \usage{
-calc_awic(data)
+calc_awic(
+  data,
+  names = column_attributes$name,
+  questions = c("Taxon abundance", "Taxon Abundance")
+)
 }
 \arguments{
 \item{data}{dataframe containing mixtaxon invertebrates}
+
+\item{names}{Optional, user provided list of column names different to those used
+in `column_attributes` to match with input data}
+
+\item{questions}{Optional, user provided 'question' default is 'Taxon abundance', which
+filters only abundance values.}
 }
 \value{
 dataframe
@@ -16,5 +26,5 @@ dataframe
 Acid WFD-AWIC metric
 }
 \examples{
-metricResults <- calc_awic(demoEcologyResults)
+metricResults <- calc_awic(demo_data)
 }

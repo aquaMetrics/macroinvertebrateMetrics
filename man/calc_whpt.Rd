@@ -4,9 +4,24 @@
 \alias{calc_whpt}
 \title{Calculate WHPT scores}
 \usage{
-calc_whpt(ecologyResults, taxonTable = NULL)
+calc_whpt(
+  data,
+  taxonTable = NULL,
+  names = column_attributes$name,
+  questions = c("Taxon abundance", "Taxon Abundance")
+)
 }
 \arguments{
+\item{taxonTable}{Optional Dataframe with WHPT scores and taxa. Default is NULL and will use
+built in WHPT scores. But you could supply custom dataframe if required for
+experimenation/development purposes.}
+
+\item{names}{Optional, user provided list of column names different to those used
+in `column_attributes` to match with input data}
+
+\item{questions}{Optional, user provided 'question' default is 'Taxon abundance', which
+filters only abundance values.}
+
 \item{ecologyResults}{Dataframe of taxonomic results with mandatory three columns:
 \describe{
   \item{SAMPLE_ID}{Unique sample identifier}
@@ -15,10 +30,6 @@ calc_whpt(ecologyResults, taxonTable = NULL)
   }
 Columns names must match these exactly, but the column order does not matter.
 See demoEcologyResults for example dataset.}
-
-\item{taxonTable}{Optional Dataframe with WHPT scores and taxa. Default is NULL and will use
-built in WHPT scores. But you could supply custom dataframe if required for
-experimenation/development purposes.}
 }
 \value{
 Dataframe with four columns: SAMPLE_ID, DETERMINAND, RESULT, ANALYSIS_NAME,
@@ -28,5 +39,5 @@ ANALYSIS_REPNAME
 Calculate WHPT scores
 }
 \examples{
-metricResults <- calc_whpt(demoEcologyResults)
+metricResults <- calc_whpt(demo_data)
 }
