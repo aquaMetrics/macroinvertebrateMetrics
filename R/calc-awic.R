@@ -19,7 +19,6 @@ calc_awic <- function(data,
                       names = column_attributes$name,
                       questions = c("Taxon abundance",
                                     "Taxon Abundance")) {
-  browser()
   # To allow user to specify the names of the columns to match the columns in
   # their dataset update package column name data with column names provided to
   # function
