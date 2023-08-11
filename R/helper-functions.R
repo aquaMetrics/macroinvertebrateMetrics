@@ -1,7 +1,8 @@
 validate_input <- function(data,
   names = column_attributes$name,
   questions = c("Taxon abundance",
-                "Taxon Abundance")
+                "Taxon Abundance",
+                "Live abundance")
 ){
   column_attributes$name <- names
   stopifnot(ncol(data[, names(data) %in% column_attributes$name[c(1,3:5)]]) == 4)

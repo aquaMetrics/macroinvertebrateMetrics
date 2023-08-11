@@ -22,13 +22,15 @@
 #' output <- calc_riverfly(data)
 #'
 calc_riverfly <- function(data,
-                          names = column_attributes$name,
+                          names = macroinvertebrateMetrics::column_attributes$name,
                           questions = c("Taxon abundance",
-                                        "Taxon Abundance")
+                                        "Taxon Abundance",
+                                        "Live abundance")
                           ){
   # To allow user to specify the names of the columns to match the columns in
   # their dataset update package column name data with column names provided to
   # function
+  column_attributes <- macroinvertebrateMetrics::column_attributes
   column_attributes$name <- names
   # Validate and format input data - column names are user provided or revert to
   # default. After this point, columns names are referred by index/number rather

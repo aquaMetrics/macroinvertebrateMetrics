@@ -33,7 +33,8 @@ calc_whpt <- function(data,
                       taxonTable = NULL,
                       names = macroinvertebrateMetrics::column_attributes$name,
                       questions = c("Taxon abundance",
-                                    "Taxon Abundance")) {
+                                    "Taxon Abundance",
+                                    "Live abundance")) {
   # To allow user to specify the names of the columns to match the columns in
   # their dataset update package column name data with column names provided to
   # function
