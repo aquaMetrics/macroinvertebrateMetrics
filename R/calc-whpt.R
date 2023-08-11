@@ -31,12 +31,13 @@
 #' metricResults <- calc_whpt(demo_data)
 calc_whpt <- function(data,
                       taxonTable = NULL,
-                      names = column_attributes$name,
+                      names = macroinvertebrateMetrics::column_attributes$name,
                       questions = c("Taxon abundance",
                                     "Taxon Abundance")) {
   # To allow user to specify the names of the columns to match the columns in
   # their dataset update package column name data with column names provided to
   # function
+  column_attributes <- macroinvertebrateMetrics::column_attributes
   column_attributes$name <- names
   # Validate and format input data - column names are user provided or revert to
   # default. After this point, columns names are referred by index/number rather
