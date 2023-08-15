@@ -7,25 +7,7 @@ validate_input <- function(
       "Live abundance"
     ),
     taxon_table = macroinvertebrateMetrics::macroinvertebrateTaxa,
-    metric_cols = c(
-      "TAXON_NAME",
-      "AWIC_A",
-      "AWIC_B",
-      "AWIC_C",
-      "WHPT_A",
-      "WHPT_B",
-      "WHPT_C",
-      "WHPT_D",
-      "PSI_GROUP",
-      "EPSI_WEIGHT_TL5",
-      "EPSI_WEIGHT_FAM",
-      "LIFE_GROUP",
-      "SPEAR_SPECIES",
-      "LAMM_ACID_SENS",
-      "LAMM_WEIGHTING",
-      "LAMM_TAXON",
-      "LAMM_TL"
-    )) {
+    metric_cols = macroinvertebrateMetrics::metric_cols) {
   column_attributes <- macroinvertebrateMetrics::column_attributes
   column_attributes$name <- names
   stopifnot(ncol(data[, names(data) %in% column_attributes$name[c(1, 3:5)]]) == 4)
@@ -78,7 +60,7 @@ validate_input <- function(
   # Filter results so only Taxon abundance greater zero
   # (sometimes errors and zero or less are accidentally recorded)
   data <- dplyr::filter(data, .data$response > 0)
-
+  browser()
   # Select metric score columns and taxon name from taxon table
   taxon_table <- taxon_table[, c("TAXON_NAME", metric_cols$metric_names)]
 
