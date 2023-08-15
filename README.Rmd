@@ -34,3 +34,23 @@ In R: Install the development version from GitHub:
 ``library(devtools)``   
 ``install_github("aquaMetrics/macroinvertebrateMetrics")``  
   
+# Concepts
+
+To calculate any metric you need:
+
+## Input Data
+- Usually dataframe with at least three columns: sample_id, taxon name and abundance
+
+## Input Data Metadata
+- For each metric a table identifying the column names used for sample_id, taxon_name and abundance
+- A list of validation rules for each column in the input data
+- See 'column_attributes'
+
+## Metric scores
+- A list of scores given to each taxa based on expert opinion or some relationship with pressure
+
+## Metric Scores Metadata
+- See 'metric_cols'
+- The name of the metric
+- The names of the columns required to calculate a particular metric
+
