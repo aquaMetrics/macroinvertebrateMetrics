@@ -1,8 +1,8 @@
 #' Filter data before calculating SPEAR metric
 #'
-#' @param ecologyResults
+#' @param data
 #' Dataframe with ecology results...
-#' @param taxaList
+#' @param taxa_list
 #' The taxonomic level the sample(s) have been identified at according to
 #' specified taxa lists as described in WFD100 Further Development of River
 #' Invertebrate Classification Tool. Either "TL2" - Taxa List 2, "TL4" - Taxa
@@ -13,65 +13,72 @@
 #' @export
 #'
 #' @examples
-#' filtered <- filter_spear(demoEcologyResults, taxaList = "TL2")
-filter_spear <- function(ecologyResults, taxaList = NULL) {
+#' filtered <- filter_spear(demo_data, taxa_list = "TL2")
+filter_spear <- function(data, taxa_list = NULL) {
   # only need Taxon abundance determinand
-  ecologyResults <-
-    ecologyResults[ecologyResults$DETERMINAND == "Taxon abundance" |
-      ecologyResults$DETERMINAND == "Taxon Abundance", ]
-  # merge ecology results with taxa metric scores based on taxon name
-  macroinvertebrates <- macroinvertebrateMetrics::macroinvertebrateTaxa
-  ecologyResults$TAXON <- trimws(ecologyResults$TAXON)
-  taxaMetricValues <-
-    merge(ecologyResults,
-      macroinvertebrates,
-      by.x = "TAXON",
-      by.y = "TAXON_NAME"
-    )
-
+  # ecologyResults <-
+  #   data[data$question == "Taxon abundance" |
+  #          data$question == "Taxon Abundance", ]
+  # # merge ecology results with taxa metric scores based on taxon name
+  # macroinvertebrates <- macroinvertebrateMetrics::macroinvertebrateTaxa
+  # ecologyResults$label <- trimws(ecologyResults$label)
+  # taxaMetricValues <-
+  #   merge(ecologyResults,
+  #     macroinvertebrates,
+  #     by.x = "label",
+  #     by.y = "TAXON_NAME"
+  #   )
+  taxaMetricValues <- data
   # Remove oligochaeta - not counted at TL2 in SPEAR metric
-  if (taxaList %in% c("TL2", "TL3")) {
-    taxaMetricValues <- taxaMetricValues[taxaMetricValues$TAXON != "Oligochaeta", ]
+  if (taxa_list %in% c("TL2", "TL3")) {
+    taxaMetricValues <- taxaMetricValues[taxaMetricValues$label != "Oligochaeta", ]
   }
   # if nothing in data.frame
-  if (length(taxaMetricValues$TAXON) == 0) {
+  if (nrow(taxaMetricValues) == 0) {
     return(taxaMetricValues)
   }
+
+  # Remove SPEAR_SPECIES is NA
+  taxaMetricValues <- taxaMetricValues[!is.na(taxaMetricValues$SPEAR_SPECIES), ]
   # aggregate to correct Taxa List (TL) level
-  taxaMetricValues$RESULT <- as.character(taxaMetricValues$RESULT)
-  taxaMetricValues$RESULT <- as.numeric(taxaMetricValues$RESULT)
-  if (taxaList == "TL2") {
+  taxaMetricValues$response <- as.character(taxaMetricValues$response)
+  taxaMetricValues$response <- as.numeric(taxaMetricValues$response)
+  if (taxa_list == "TL2") {
     taxaMetricValues <- stats::aggregate(
-      taxaMetricValues[, c("RESULT")],
+      taxaMetricValues[, c("response")],
       by = list(
-        taxaMetricValues$SAMPLE_ID,
+        taxaMetricValues$sample_id,
         taxaMetricValues$TL2_TAXON,
         taxaMetricValues$SPEAR_SPECIES
       ),
       FUN = sum
     )
-  } else if (taxaList == "TL5") {
-    taxaMetricValues <- stats::aggregate(
-      taxaMetricValues[, c("RESULT")],
-      by = list(
-        taxaMetricValues$SAMPLE_ID,
-        taxaMetricValues$TL5_TAXON
-      ),
-      FUN = sum
-    )
+  } else if (taxa_list == "TL5") {
+    # taxaMetricValues <- stats::aggregate(
+    #   taxaMetricValues[, c("response")],
+    #   by = list(
+    #     taxaMetricValues$sampled_id,
+    #     taxaMetricValues$TL5_TAXON,
+    #     taxaMetricValues$SPEAR_SPECIES
+    #   ),
+    #   FUN = sum
+    # )
+    taxaMetricValues <- taxaMetricValues %>%
+      dplyr::group_by(sample_id, TL5_TAXON, SPEAR_SPECIES) %>%
+      dplyr::summarise(value = sum(response))
     # merge SPEAR_SPECIES back in because of NULL SPEAR_SPECIES not pick up if aggregated
     taxaMetricValues <-
       merge(taxaMetricValues,
         macroinvertebrates[, c("TAXON_NAME", "SPEAR_SPECIES")],
-        by.x = "Group.2",
+        by.x = "TL5_TAXON",
         by.y = "TAXON_NAME"
       )
-    taxaMetricValues <- taxaMetricValues[, c("Group.1", "Group.2", "SPEAR_SPECIES", "x")]
+    taxaMetricValues <- taxaMetricValues[, c("sample_id", "TL5_TAXON", "SPEAR_SPECIES.x", "value")]
   } else {
     taxaMetricValues <- stats::aggregate(
-      taxaMetricValues[, c("RESULT")],
+      taxaMetricValues[, c("response")],
       by = list(
-        taxaMetricValues$SAMPLE_ID,
+        taxaMetricValues$sample_id,
         taxaMetricValues$TL4_TAXON,
         taxaMetricValues$SPEAR_SPECIES
       ),
@@ -80,9 +87,9 @@ filter_spear <- function(ecologyResults, taxaList = NULL) {
   }
   # update names after aggregation
   names(taxaMetricValues) <-
-    c("SAMPLE_ID", "TAXON", "SPEAR_SPECIES", "RESULT")
+    c("sample_id", "label", "SPEAR_SPECIES", "response")
   # only return results for records that match TL
-  taxaMetricValues <- taxaMetricValues[taxaMetricValues$TAXON != "", ]
+  taxaMetricValues <- taxaMetricValues[taxaMetricValues$label != "", ]
 
   return(taxaMetricValues)
 }

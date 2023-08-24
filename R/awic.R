@@ -37,7 +37,7 @@ awic <- function(data,
   )
   # Create (or 'mutate') a new column called wfd_awic (sample_score / ntaxa)
   scores <- scores %>%
-    mutate(wfd_awic = .data$sample_score / .data$ntaxa)
+    dplyr::mutate(wfd_awic = .data$sample_score / .data$ntaxa)
 
   scores <- pivot_longer(scores,
     cols = c("sample_score", "ntaxa", "wfd_awic"),
@@ -45,11 +45,13 @@ awic <- function(data,
     values_to = column_attributes$name[3]
   )
 
-  scores <- mutate(
+  scores <- dplyr::mutate(
     scores,
     !!column_attributes$name[5] := "WFD_AWIC",
     !!column_attributes$name[6] := "WFD AWIC"
   )
 
+  scores <- dplyr::mutate_at(scores,
+                           column_attributes$name[3], as.character)
   return(scores)
 }

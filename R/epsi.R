@@ -70,6 +70,6 @@ epsi <- function(data,
       return(samplePsi)
     })
   output <- do.call("rbind", sampleMetric)
-
+  output <- tibble::as_tibble(output)
   return(output)
 }

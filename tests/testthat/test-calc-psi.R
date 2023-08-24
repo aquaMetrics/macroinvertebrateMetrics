@@ -5,7 +5,7 @@ test_that("creates dataframe", {
   metricResults <- calc_psi(ecologyResults)
   expect_equal(class(metricResults), expected = "data.frame")
 
-  ecologyResults <- filter_psi(demoEcologyResults, taxaList = "TL5")
+  ecologyResults <- filter_psi(demoEcologyResults, taxa_list = "TL5")
   metricResults <- calc_psi(ecologyResults, taxaList = "TL5")
   expect_equal(class(metricResults), expected = "data.frame")
 })

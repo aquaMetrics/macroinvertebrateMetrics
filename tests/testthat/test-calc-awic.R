@@ -64,7 +64,8 @@ test_that("AWIC scores match previously calculated scores in demo dataset", {
 
   # Run the data through the function
   test <- calc_awic(data)
-
+  # Convert all responses to numeric before testing
+  test$response <- as.numeric(test$response)
   # Use `expect_equal()` function from the testthat package
   testthat::expect_equal(
     round(test$response[test$question == "wfd_awic"], 2), 8.19
@@ -75,7 +76,8 @@ test_that("AWIC scores match previously calculated scores in demo dataset", {
   # Test against Abundance category > 9 (in case of any copy paste / typos)
   data$response <- 10
   test_10 <- calc_awic(data)
-
+  # Convert all responses to numeric before testing
+  test_10$response <- as.numeric(test_10$response)
   expect_equal(
     round(test_10$response[test_10$question == "wfd_awic"], 2), 8.48
   )
@@ -85,7 +87,8 @@ test_that("AWIC scores match previously calculated scores in demo dataset", {
   # Test against Abundance category > 99
   data$response <- 100
   test_100 <- calc_awic(data)
-
+  # Convert all responses to numeric before testing
+  test_100$response <- as.numeric(test_100$response)
   expect_equal(
     round(test_100$response[test_100$question == "wfd_awic"], 2), 8.77
   )

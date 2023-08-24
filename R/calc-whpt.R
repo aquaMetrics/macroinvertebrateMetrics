@@ -9,7 +9,7 @@
 #'   }
 #' Columns names must match these exactly, but the column order does not matter.
 #' See demoEcologyResults for example dataset.
-#' @param taxonTable
+#' @param taxon_table
 #' Optional Dataframe with WHPT scores and taxa. Default is NULL and will use
 #' built in WHPT scores. But you could supply custom dataframe if required for
 #' experimenation/development purposes.
@@ -30,11 +30,12 @@
 #' @examples
 #' metricResults <- calc_whpt(demo_data)
 calc_whpt <- function(data,
-                      taxonTable = NULL,
+                      taxon_table = macroinvertebrateMetrics::macroinvertebrateTaxa,
                       names = macroinvertebrateMetrics::column_attributes$name,
                       questions = c("Taxon abundance",
                                     "Taxon Abundance",
-                                    "Live abundance")) {
+                                    "Live abundance"),
+                      metric_cols = macroinvertebrateMetrics::metric_cols) {
   # To allow user to specify the names of the columns to match the columns in
   # their dataset update package column name data with column names provided to
   # function
@@ -44,38 +45,42 @@ calc_whpt <- function(data,
   # default. After this point, columns names are referred by index/number rather
   # than text of column name, this allows the default column names to be update
   # easily in future
-  data <- validate_input(data, names = names)
+  data <- validate_input(data,
+                         names = names,
+                         taxon_table = taxon_table,
+                         questions = questions,
+                         metric_cols = metric_cols)
 
-  # tidy TAXON name incase of whitespace
-
-  data$label <- trimws(data$label)
-
-  # get macroinvertebrtae taxa table
-  macroinvertebrates <- macroinvertebrateMetrics::macroinvertebrateTaxa
-
-  if (!is.null(taxonTable)) {
-    macroinvertebrates <- taxonTable
-  }
-
-  # filter results so only Taxon abundance results and greater zero as these
-  # are the results required to calculate abundance based WHPT
-
-  data <-
-    dplyr::mutate(data, response = suppressWarnings(
-      as.numeric(as.character(.data$response))
-    )) %>%
-    dplyr::filter(.data$response > 0)
-
-  # TAXON_NAME is factor so convert to character to match ecology results
-  # dataframe
-  macroinvertebrates$TAXON_NAME <- as.character(macroinvertebrates$TAXON_NAME)
-  # Need to join ecology results to reference table of WHPT scores
-  data <-
-    merge(data,
-          macroinvertebrates,
-          by.x = column_attributes$name[4],
-          by.y = "TAXON_NAME"
-    )
+  # # tidy TAXON name incase of whitespace
+  #
+  # data$label <- trimws(data$label)
+  #
+  # # get macroinvertebrtae taxa table
+  # macroinvertebrates <- macroinvertebrateMetrics::macroinvertebrateTaxa
+  #
+  # if (!is.null(taxonTable)) {
+  #   macroinvertebrates <- taxonTable
+  # }
+  #
+  # # filter results so only Taxon abundance results and greater zero as these
+  # # are the results required to calculate abundance based WHPT
+  #
+  # data <-
+  #   dplyr::mutate(data, response = suppressWarnings(
+  #     as.numeric(as.character(.data$response))
+  #   )) %>%
+  #   dplyr::filter(.data$response > 0)
+  #
+  # # TAXON_NAME is factor so convert to character to match ecology results
+  # # dataframe
+  # macroinvertebrates$TAXON_NAME <- as.character(macroinvertebrates$TAXON_NAME)
+  # # Need to join ecology results to reference table of WHPT scores
+  # data <-
+  #   merge(data,
+  #         macroinvertebrates,
+  #         by.x = column_attributes$name[4],
+  #         by.y = "TAXON_NAME"
+  #   )
 
 
   # group by sample so WHPT scores are produce by sample
@@ -121,6 +126,9 @@ calc_whpt <- function(data,
       !!column_attributes$name[5] := "WHPT Metric",
       !!column_attributes$name[6] := "WHPT Metric"
     )
+
+  whpt_result <- dplyr::mutate_at(whpt_result,
+                              column_attributes$name[3], as.character)
 
   return(whpt_result)
 }

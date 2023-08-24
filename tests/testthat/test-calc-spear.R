@@ -1,23 +1,23 @@
 context("calc_spear")
 
 test_that("creates dataframe", {
-  ecologyResults <- filter_spear(demoEcologyResults, taxaList = "TL2")
-  metricResults <- calc_spear(ecologyResults, taxaList = "TL2")
-  expect_equal(class(metricResults), expected = "data.frame")
+  metricResults <- calc_spear(demo_data, taxa_list = "TL2")
+  expect_equal(class(metricResults), expected = c("tbl_df", "tbl", "data.frame"))
 })
 
 test_that("compare TL2 against aquaMetric package scores", {
   # check first sample
-  ecologyResults <- demoEcologyResults
-  ecologyResults <- ecologyResults[ecologyResults$SAMPLE_NUMBER == 3201863, ]
-  ecologyResults <- ecologyResults[ecologyResults$ANALYSIS_NAME == "FW_TAX_ID", ]
-  ecologyResults <- filter_spear(ecologyResults, taxaList = "TL2")
-  spearOutput <- calc_spear(ecologyResults, recoveryArea = "unknown", taxaList = "TL2")
+  ecologyResults <- demo_data
+  ecologyResults <- ecologyResults[ecologyResults$sample_id == 3201863, ]
+  ecologyResults <- ecologyResults[ecologyResults$analysis_name == "FW_TAX_ID", ]
+  # ecologyResults <- filter_spear(ecologyResults, taxa_list = "TL2")
+  spearOutput <- calc_spear(ecologyResults, recoveryArea = "unknown", taxa_list = "TL2")
 
   # results taken from internal DAVE Ecology tool 16/10/2018 which uses aquaMetrics package
-  expect_equal(round(as.numeric(as.character(spearOutput$RESULT[1])), 2), 32.24)
-  expect_equal(round(as.numeric(as.character(spearOutput$RESULT[2])), 2), -3.08)
-  expect_equal(as.character(spearOutput$RESULT[3]), "Moderate")
+  expect_equal(round(as.numeric(as.character(purrr::pluck(spearOutput, column_attributes$name[3], 1))), 2), 32.24)
+  expect_equal(round(as.numeric(as.character(purrr::pluck(spearOutput, column_attributes$name[3], 2))), 2), -3.08)
+  expect_equal(as.character(purrr::pluck(spearOutput, column_attributes$name[3], 3)), "Moderate")
+
 })
 
 
@@ -100,8 +100,8 @@ test_that("compare directly against aquaMetric package", {
 
 test_that("compare TL2 against aquaMetric package scores", {
   # currently DAVE Ecology not working for TL5?
-  ecologyResults <- demoEcologyResults
-  ecologyResults <- ecologyResults[ecologyResults$ANALYSIS_NAME == "MIXTAX_TST", ]
-  ecologyResults <- filter_spear(ecologyResults, taxaList = "TL5")
-  spearOutput <- calc_spear(ecologyResults, recoveryArea = "unknown", taxaList = "TL5")
+  ecologyResults <- demo_data
+  ecologyResults <- ecologyResults[ecologyResults$analysis_name == "MIXTAX_TST", ]
+  #  ecologyResults <- filter_spear(ecologyResults, taxa_list = "TL5")
+  spearOutput <- calc_spear(ecologyResults, recoveryArea = "unknown", taxa_list = "TL5")
 })
