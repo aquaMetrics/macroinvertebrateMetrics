@@ -23,6 +23,7 @@ calc_metric <- function(
     metrics = c(
       "awic",
       "epsi",
+      "psi",
       "riverfly",
       "spear",
       "whpt"
@@ -36,8 +37,7 @@ calc_metric <- function(
       "Live abundance"
     ),
     metric_cols = macroinvertebrateMetrics::metric_cols,
-    ...
-    ) {
+    ...) {
   # To allow user to specify the names of the columns to match the columns in
   # their dataset update package column name data with column names provided to
   # function
@@ -48,9 +48,10 @@ calc_metric <- function(
   # than text of column name, this allows the default column names to be update
   # easily in future
   data <- validate_input(data,
-                         names = column_attributes$name,
-                         taxon_table = taxon_table,
-                         metric_cols = metric_cols)
+    names = column_attributes$name,
+    taxon_table = taxon_table,
+    metric_cols = metric_cols
+  )
 
   output <- purrr::map_df(metrics, function(metric) {
     if (any(metric %in% c("awic"))) {
@@ -62,6 +63,12 @@ calc_metric <- function(
       epsi <- epsi(data, taxa_list = taxa_list, metric_cols = metric_cols, ...)
       return(epsi)
     }
+    if (any(metric %in% c("psi"))) {
+      # These metrics need specific Taxa List to run correctly
+      psi_data <- filter_psi(data, taxa_list = taxa_list)
+      whpt <- psi(psi_data)
+      return(whpt)
+    }
     if (any(metric %in% c("riverfly"))) {
       riverfly <- calc_riverfly(data)
       return(riverfly)
@@ -69,12 +76,8 @@ calc_metric <- function(
     if (any(metric %in% c("spear"))) {
       # These metrics need specific Taxa List to run correctly
       spear_data <- filter_spear(data, taxa_list = taxa_list)
-      if (nrow(spear_data) > 0) {
-        spear <- spear(spear_data)
-        return(spear)
-      } else {
-        return(NULL)
-      }
+      spear <- spear(spear_data)
+      return(spear)
     }
     if (any(metric %in% c("whpt"))) {
       whpt <- calc_whpt(data)

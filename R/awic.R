@@ -1,12 +1,12 @@
 awic <- function(data,
-                      names = macroinvertebrateMetrics::column_attributes$name,
-                      questions = c(
-                        "Taxon abundance",
-                        "Taxon Abundance"
-                      ),
-                      metric_cols = metric_cols) {
+                 names = macroinvertebrateMetrics::column_attributes$name,
+                 questions = c(
+                   "Taxon abundance",
+                   "Taxon Abundance"
+                 ),
+                 metric_cols = metric_cols) {
   metric_cols <- metric_cols[metric_cols$metric == "awic", ]
-  data <- select(data, any_of(c(names,  metric_cols$metric_names)))
+  data <- select(data, any_of(c(names, metric_cols$metric_names)))
 
   # Replace value in awic_score column with matching values in AWIC_A, AWIC_B,
   # AWIC_C based on 'RESULT' in this case value is Abundance.
@@ -51,7 +51,9 @@ awic <- function(data,
     !!column_attributes$name[6] := "WFD AWIC"
   )
 
-  scores <- dplyr::mutate_at(scores,
-                           column_attributes$name[3], as.character)
+  scores <- dplyr::mutate_at(
+    scores,
+    column_attributes$name[3], as.character
+  )
   return(scores)
 }

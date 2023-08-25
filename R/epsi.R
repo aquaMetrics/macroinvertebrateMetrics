@@ -1,11 +1,12 @@
 epsi <- function(data,
-                      names = macroinvertebrateMetrics::column_attributes$name,
-                      questions = c("Taxon abundance",
-                                    "Taxon Abundance"),
-                      taxa_list = "TL2",
-                      log_abundance = TRUE,
+                 names = macroinvertebrateMetrics::column_attributes$name,
+                 questions = c(
+                   "Taxon abundance",
+                   "Taxon Abundance"
+                 ),
+                 taxa_list = "TL2",
+                 log_abundance = TRUE,
                  metric_cols = metric_cols) {
-
   if (!taxa_list %in% c("TL2", "TL5")) {
     stop("taxa_list argument must be either 'TL2' or 'TL5'")
   }

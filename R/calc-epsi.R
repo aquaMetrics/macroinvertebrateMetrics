@@ -35,22 +35,24 @@
 #'
 #' @examples
 #' sample <- demo_data
-#' sample <- filter_psi(sample, taxaList = "TL2")
-#' calc_epsi(data = sample)
+#' calc_epsi(data = sample, taxa_list = "TL2")
 calc_epsi <- function(data,
                       names = macroinvertebrateMetrics::column_attributes$name,
-                      questions = c("Taxon abundance",
-                                    "Taxon Abundance"),
+                      questions = c(
+                        "Taxon abundance",
+                        "Taxon Abundance"
+                      ),
                       taxa_list = "TL2",
                       log_abundance = TRUE,
                       metric_cols = macroinvertebrateMetrics::metric_cols) {
   metric <- calc_metric(data,
-              metrics = "epsi",
-              taxa_list = taxa_list,
-              names = names,
-              questions = questions,
-              metric_cols = metric_cols,
-              log_abundance = log_abundance)
+    metrics = "epsi",
+    taxa_list = taxa_list,
+    names = names,
+    questions = questions,
+    metric_cols = metric_cols,
+    log_abundance = log_abundance
+  )
 
   return(metric)
 }

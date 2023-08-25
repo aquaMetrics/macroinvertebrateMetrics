@@ -1,24 +1,22 @@
 context("calc_psi")
 
 test_that("creates dataframe", {
-  ecologyResults <- filter_psi(macroinvertebrateMetrics::demoEcologyResults)
-  metricResults <- calc_psi(ecologyResults)
-  expect_equal(class(metricResults), expected = "data.frame")
+  metricResults <- calc_psi(demo_data)
+  expect_equal(class(metricResults), expected = c("tbl_df", "tbl", "data.frame"))
 
-  ecologyResults <- filter_psi(demoEcologyResults, taxa_list = "TL5")
-  metricResults <- calc_psi(ecologyResults, taxaList = "TL5")
-  expect_equal(class(metricResults), expected = "data.frame")
+  metricResults <- calc_psi(demo_data, taxa_list = "TL5")
+  expect_equal(class(metricResults), expected = c("tbl_df", "tbl", "data.frame"))
 })
 
 test_that("test against old aquaMetric value", {
-  ecologyResults <- macroinvertebrateMetrics::demoEcologyResults
+  data <- macroinvertebrateMetrics::demo_data
 
-  ecologyResults <- filter_psi(ecologyResults[ecologyResults$LOCATION_CODE == 8175 &
-    ecologyResults$SAMPLE_NUMBER == 3201863, ])
+  data <- data[data$location_id == 8175 &
+    data$sample_id == 3201863, ]
 
-  metricResults <- calc_psi(ecologyResults)
+  metricResults <- calc_psi(data, taxa_list = "TL3")
   ### Compare against value from older aquaMetrics package (now defunct)
-  expect_equal(as.character(metricResults$RESULT[1]), "62.5")
+  expect_equal(as.character(metricResults$response[1]), "62.5")
 })
 
 test_that("test directly against old aquaMetric function", {

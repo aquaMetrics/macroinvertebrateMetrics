@@ -3,7 +3,8 @@ context("calc_riverfly")
 test_that("test riverfly scores", {
   ecology_results <- demo_data
   ecology_results <- ecology_results[
-    ecology_results$parameter  == "River Family Inverts", ]
+    ecology_results$parameter == "River Family Inverts",
+  ]
   riverfly_output <- calc_riverfly(ecology_results)
 
   riverfly_output$response <- as.numeric(riverfly_output$response)
@@ -17,7 +18,8 @@ test_that("test riverfly scores", {
 test_that("test riverfly scores without question", {
   ecology_results <- demo_data
   ecology_results <- ecology_results[
-    ecology_results$parameter  == "River Family Inverts", ]
+    ecology_results$parameter == "River Family Inverts",
+  ]
   ecology_results$question <- NULL
   riverfly_output <- calc_riverfly(ecology_results)
   riverfly_output$response <- as.numeric(riverfly_output$response)
@@ -29,7 +31,8 @@ test_that("test riverfly scores without question", {
 test_that("test riverfly returns nothing if no relevant data", {
   ecology_results <- demo_data
   ecology_results <- ecology_results[
-    ecology_results$analysis_name == "MAC_R_TST", ]
+    ecology_results$analysis_name == "MAC_R_TST",
+  ]
   riverflyOutput <- calc_riverfly(ecology_results)
 
   expect_equal(riverflyOutput$RESULT[1], NULL)

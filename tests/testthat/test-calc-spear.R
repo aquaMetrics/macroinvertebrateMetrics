@@ -17,7 +17,6 @@ test_that("compare TL2 against aquaMetric package scores", {
   expect_equal(round(as.numeric(as.character(purrr::pluck(spearOutput, column_attributes$name[3], 1))), 2), 32.24)
   expect_equal(round(as.numeric(as.character(purrr::pluck(spearOutput, column_attributes$name[3], 2))), 2), -3.08)
   expect_equal(as.character(purrr::pluck(spearOutput, column_attributes$name[3], 3)), "Moderate")
-
 })
 
 

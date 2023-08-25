@@ -23,10 +23,11 @@
 #'
 calc_riverfly <- function(data,
                           names = macroinvertebrateMetrics::column_attributes$name,
-                          questions = c("Taxon abundance",
-                                        "Taxon Abundance",
-                                        "Live abundance")
-                          ){
+                          questions = c(
+                            "Taxon abundance",
+                            "Taxon Abundance",
+                            "Live abundance"
+                          )) {
   # To allow user to specify the names of the columns to match the columns in
   # their dataset update package column name data with column names provided to
   # function
@@ -100,18 +101,20 @@ calc_riverfly <- function(data,
     riverfly_sum,
     across(column_attributes$name[1])
   ) %>%
-    dplyr::summarise(`Riverfly Score` = sum(.data$VALUE_LOG),
-                     `Riverfly NTAXA` = n(),
-                     `Riverfly ASPT` = sum(.data$VALUE_LOG) / n())
+    dplyr::summarise(
+      `Riverfly Score` = sum(.data$VALUE_LOG),
+      `Riverfly NTAXA` = n(),
+      `Riverfly ASPT` = sum(.data$VALUE_LOG) / n()
+    )
   # if no relevant data return NULL object
   if (nrow(riverfly_score) == 0) {
     return()
   }
 
   riverfly_score <- pivot_longer(riverfly_score,
-                                 cols = c("Riverfly Score", "Riverfly NTAXA", "Riverfly ASPT"),
-                                 names_to = column_attributes$name[2],
-                                 values_to =  column_attributes$name[3]
+    cols = c("Riverfly Score", "Riverfly NTAXA", "Riverfly ASPT"),
+    names_to = column_attributes$name[2],
+    values_to = column_attributes$name[3]
   )
 
   riverfly_score <- dplyr::mutate(
@@ -129,8 +132,10 @@ calc_riverfly <- function(data,
     column_attributes$name[6]
   )
 
-  riverfly_score <- dplyr::mutate_at(riverfly_score,
-                     column_attributes$name[3], as.character)
+  riverfly_score <- dplyr::mutate_at(
+    riverfly_score,
+    column_attributes$name[3], as.character
+  )
 
   return(riverfly_score)
 }

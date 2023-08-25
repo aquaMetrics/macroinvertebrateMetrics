@@ -31,18 +31,11 @@
 #' stress in communities - Species traits reveal community effects of
 #' toxicants}. Science of the Total Environment. 406: 484-490
 #' @seealso
-#' \code{\link{filterSpear}}
+#' \code{\link{filter_spear}}
 #' @export
 #'
 #' @examples
-#' ecologyResults <- macroinvertebrateMetrics::demoEcologyResults
-#' ecologyResults <- ecologyResults[ecologyResults$SAMPLE_ID == 3201863, ]
-#' ecologyResults <- ecologyResults[ecologyResults$ANALYSIS_NAME == "FW_TAX_ID", ]
-#' sample <- filter_spear(demo_data, taxa_list = "TL2")
-#' spearOutput <- calc_spear(sample, taxa_list = "TL2")
-#'
+#' spearOutput <- calc_spear(demo_data, taxa_list = "TL2")
 calc_spear <- function(data, recoveryArea = "unknown", taxa_list = "TL2") {
-
   output <- calc_metric(data, metrics = "spear")
-
 }

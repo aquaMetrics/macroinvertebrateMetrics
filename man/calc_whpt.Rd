@@ -6,13 +6,14 @@
 \usage{
 calc_whpt(
   data,
-  taxonTable = NULL,
-  names = column_attributes$name,
-  questions = c("Taxon abundance", "Taxon Abundance")
+  taxon_table = macroinvertebrateMetrics::macroinvertebrateTaxa,
+  names = macroinvertebrateMetrics::column_attributes$name,
+  questions = c("Taxon abundance", "Taxon Abundance", "Live abundance"),
+  metric_cols = macroinvertebrateMetrics::metric_cols
 )
 }
 \arguments{
-\item{taxonTable}{Optional Dataframe with WHPT scores and taxa. Default is NULL and will use
+\item{taxon_table}{Optional Dataframe with WHPT scores and taxa. Default is NULL and will use
 built in WHPT scores. But you could supply custom dataframe if required for
 experimenation/development purposes.}
 

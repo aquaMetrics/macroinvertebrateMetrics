@@ -6,8 +6,9 @@
 \usage{
 calc_awic(
   data,
-  names = column_attributes$name,
-  questions = c("Taxon abundance", "Taxon Abundance")
+  names = macroinvertebrateMetrics::column_attributes$name,
+  questions = c("Taxon abundance", "Taxon Abundance"),
+  metric_cols = macroinvertebrateMetrics::metric_cols
 )
 }
 \arguments{

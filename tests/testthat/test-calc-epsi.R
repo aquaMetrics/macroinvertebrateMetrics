@@ -1,13 +1,10 @@
 context("calc_epsi")
 
 test_that("creates dataframe", {
-  ecology_results <- filter_psi(demo_data, taxa_list = "TL2")
-  metric_results <- calc_epsi(ecology_results)
-  expect_equal(class(metric_results), expected = c("tbl_df", "tbl","data.frame"))
-
-  ecology_results <- filter_psi(demo_data, taxa_list = "TL5")
-  metric_results <- calc_epsi(ecology_results, taxa_list = "TL5")
-  expect_equal(class(metric_results), expected = c("tbl_df", "tbl","data.frame"))
+  metric_results <- calc_epsi(demo_data)
+  expect_equal(class(metric_results), expected = c("tbl_df", "tbl", "data.frame"))
+  metric_results <- calc_epsi(demo_data, taxa_list = "TL5")
+  expect_equal(class(metric_results), expected = c("tbl_df", "tbl", "data.frame"))
 })
 
 test_that("test internal to SEPA", {

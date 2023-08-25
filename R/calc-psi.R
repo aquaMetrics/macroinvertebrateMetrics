@@ -3,20 +3,20 @@
 #' A sediment-sensitive macro-invertebrate metric that provides a proxy to
 #' describe the extent to which the surface of river bed are composed, or
 #' covered by sediments. It can be calculated at Taxonomic Levels 3, 4 & 5
-#' @param ecologyResults
+#' @param data
 #' Dataframe with at least three columns
-#' item{SAMPLE_ID} - unique idenftier for each sample
-#' item{TAXON} - Taxon name that matches to macroinvertebrateTaxa dataset
-#' item{RESULT} - Log abundance category
-#' @param taxaList The taxonomic level the sample(s) have been identified at
+#' item{sample_id} - unique idenftier for each sample
+#' item{label} - Taxon name that matches to macroinvertebrateTaxa dataset
+#' item{response} - Log abundance category
+#' @param taxa_list The taxonomic level the sample(s) have been identified at
 #' according to specificed taxa lists as described in WFD100 Further
 #' Development of River Invertebrate Classification Tool. Either "TL3" - Taxa
 #' list 3, "TL4" - Taxa list 4 or  "TL5" - Taxa list 5.
 #' @return Dataframe with
-#' item{SAMPLE_ID}
-#' item{ANALYSIS_NAME}
-#' item{DETERMINAND}
-#' item{RESULT}
+#' item{sample_id}
+#' item{parmaeter}
+#' item{question}
+#' item{response}
 #' @references
 #' Extence, Chris & Chadd, Richard & England, Judy & Dunbar, M.J. & Wood, Paul &
 #' Taylor, E.D.. (2010). The Assessment of Fine Sediment Accumulation in Rivers
@@ -25,75 +25,25 @@
 #' @export
 #'
 #' @examples
-#' sample <- demoEcologyResults
-#' sample <- filter_psi(sample, taxaList = "TL3")
-#' calc_psi(ecologyResults = sample)
-calc_psi <- function(ecologyResults, taxaList = "TL3") {
-  if (!taxaList %in% c("TL3", "TL5", "TL4")) {
-    stop("taxaList arugment must be either 'TL3', 'TL4' or 'TL5'")
-  }
-  # unique taxa incase any duplicate taxa causes double counting. Metric is
-  # based on present / absent so don't need to group by abundance etc.
-  ecologyResults <- unique(ecologyResults[, c("SAMPLE_ID", "TAXON", "RESULT")])
+#' sample <- demo_data
+#' calc_psi(data = sample, taxa_list = "TL3")
+calc_psi <- function(data,
+                     names = macroinvertebrateMetrics::column_attributes$name,
+                     questions = c(
+                       "Taxon abundance",
+                       "Taxon Abundance"
+                     ),
+                     taxa_list = "TL3",
+                     log_abundance = TRUE,
+                     metric_cols = macroinvertebrateMetrics::metric_cols) {
+  metric <- calc_metric(data,
+    metrics = "psi",
+    taxa_list = taxa_list,
+    names = names,
+    questions = questions,
+    metric_cols = metric_cols,
+    log_abundance = log_abundance
+  )
 
-  # merge ecology results with taxa metric scores based on taxon name
-  macroinvertebrates <- macroinvertebrateMetrics::macroinvertebrateTaxa
-  ecologyResults <-
-    merge(ecologyResults,
-      macroinvertebrates,
-      by.x = "TAXON",
-      by.y = "TAXON_NAME"
-    )
-  psiSensitivityScore <- macroinvertebrateMetrics::psiSensitivityScore
-  ecologyResults <-
-    merge(ecologyResults,
-      psiSensitivityScore,
-      by.x = c("PSI_GROUP", "RESULT"),
-      by.y = c("GROUP", "LOG10.ABUN.CAT")
-    )
-
-
-  # split by sample number
-  sampleMetric <-
-    lapply(split(ecologyResults, ecologyResults$SAMPLE_ID), function(sample) {
-      # calculate PSI score
-      sampleMetric <-
-        sum(sample$SEDIMENT.SS[sample$PSI_GROUP %in% c("A", "B")], na.rm = TRUE) /
-          sum(sample$SEDIMENT.SS[sample$SEDIMENT.SS != "" |
-            is.na(sample$SEDIMENT.SS)], na.rm = TRUE) * 100
-      # calculate PSI condition using psiCondition dataframe saved in package
-      psiConditions <- macroinvertebrateMetrics::psiCondition
-      intervals <-
-        data.frame(value = table(cut(
-          sampleMetric,
-          breaks = c(0, psiConditions[, "upperlimit"]),
-          include.lowest = TRUE
-        )))
-      intervals$row <- row.names(intervals)
-      # merge condition lookup table with results
-      intervalCondition <-
-        merge(psiConditions, intervals, by.x = "value", by.y = "row")
-      # create list of psi score and psi condition
-      psiResult <- c(
-        sampleMetric,
-        as.character(intervalCondition$condition[
-          intervalCondition$value.Freq == 1
-        ])
-      )
-      # create dataframe of results
-      samplePsi <- data.frame(
-        SAMPLE_ID = unique(sample$SAMPLE_ID),
-        ANALYSIS_REPNAME = paste0("Proportion of Sediment-sensitive Inverts"),
-        ANALYSIS_NAME = paste0("METRIC PSI"),
-        DETERMINAND = c(
-          paste0("PSI Score ", taxaList),
-          paste0("PSI Condition ", taxaList)
-        ),
-        RESULT = psiResult
-      )
-
-      return(samplePsi)
-    })
-  metric <- do.call("rbind", sampleMetric)
   return(metric)
 }

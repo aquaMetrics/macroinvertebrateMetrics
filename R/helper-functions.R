@@ -8,7 +8,6 @@ validate_input <- function(
     ),
     taxon_table = macroinvertebrateMetrics::macroinvertebrateTaxa,
     metric_cols = macroinvertebrateMetrics::metric_cols) {
-
   column_attributes <- macroinvertebrateMetrics::column_attributes
   column_attributes$name <- names
   stopifnot(ncol(data[, names(data) %in% column_attributes$name[c(1, 3:4)]]) == 3)

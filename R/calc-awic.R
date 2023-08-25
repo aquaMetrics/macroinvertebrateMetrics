@@ -22,12 +22,12 @@ calc_awic <- function(data,
                         "Taxon Abundance"
                       ),
                       metric_cols = macroinvertebrateMetrics::metric_cols) {
-
   data <- calc_metric(data,
-                      metrics = "awic",
-                      names = names,
-                      questions = questions,
-                      metric_cols = metric_cols)
+    metrics = "awic",
+    names = names,
+    questions = questions,
+    metric_cols = metric_cols
+  )
 
   return(data)
 }

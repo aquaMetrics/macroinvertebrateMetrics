@@ -31,13 +31,7 @@
 #' stress in communities - Species traits reveal community effects of
 #' toxicants}. Science of the Total Environment. 406: 484-490
 #' @seealso
-#' \code{\link{filterSpear}}
-#' @export
-#'
-#' @examples
-#' sample <- filter_spear(demo_data, taxa_list = "TL2")
-#' spearOutput <- calc_spear(sample, taxa_list = "TL2")
-#'
+#' \code{\link{filter_spear}}
 spear <- function(data, recoveryArea = "unknown", taxa_list = "TL2") {
   column_attributes <- macroinvertebrateMetrics::column_attributes
   # Calculate log10 of Abundance
@@ -48,12 +42,10 @@ spear <- function(data, recoveryArea = "unknown", taxa_list = "TL2") {
   # the taxon does not have score in SPEAR database. I think the TL5 method
   # should be the correct way to go.
   data$scoringTaxaLog <- log10(data[, column_attributes$name[3]] + 1)
-
   if (taxa_list == "TL5") {
     # remove taxa not included in SPEAR
     data$scoringTaxaLog[is.na(data$SPEAR_SPECIES)] <- 0
   }
-
   # calculate sum of Log10 of the abundance for each scoring taxa
   sample_id <- column_attributes$name[1]
   scores <- data %>%

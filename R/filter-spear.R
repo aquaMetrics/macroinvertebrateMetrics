@@ -9,25 +9,8 @@
 #' List 4 or  "TL5" - Taxa List 5.
 #' @return
 #' Dataframe of filtered and aggregated results (based on Taxa List) with four
-#' columns: SAMPLE_ID, TAXON, SPEAR_SPECIES, RESULT
-#' @export
-#'
-#' @examples
-#' filtered <- filter_spear(demo_data, taxa_list = "TL2")
+#' columns: sample_id, label, SPEAR_SPECIES, response
 filter_spear <- function(data, taxa_list = NULL) {
-  # only need Taxon abundance determinand
-  # ecologyResults <-
-  #   data[data$question == "Taxon abundance" |
-  #          data$question == "Taxon Abundance", ]
-  # # merge ecology results with taxa metric scores based on taxon name
-  # macroinvertebrates <- macroinvertebrateMetrics::macroinvertebrateTaxa
-  # ecologyResults$label <- trimws(ecologyResults$label)
-  # taxaMetricValues <-
-  #   merge(ecologyResults,
-  #     macroinvertebrates,
-  #     by.x = "label",
-  #     by.y = "TAXON_NAME"
-  #   )
   taxaMetricValues <- data
   # Remove oligochaeta - not counted at TL2 in SPEAR metric
   if (taxa_list %in% c("TL2", "TL3")) {
@@ -37,7 +20,6 @@ filter_spear <- function(data, taxa_list = NULL) {
   if (nrow(taxaMetricValues) == 0) {
     return(taxaMetricValues)
   }
-
   # Remove SPEAR_SPECIES is NA
   taxaMetricValues <- taxaMetricValues[!is.na(taxaMetricValues$SPEAR_SPECIES), ]
   # aggregate to correct Taxa List (TL) level
@@ -54,15 +36,6 @@ filter_spear <- function(data, taxa_list = NULL) {
       FUN = sum
     )
   } else if (taxa_list == "TL5") {
-    # taxaMetricValues <- stats::aggregate(
-    #   taxaMetricValues[, c("response")],
-    #   by = list(
-    #     taxaMetricValues$sampled_id,
-    #     taxaMetricValues$TL5_TAXON,
-    #     taxaMetricValues$SPEAR_SPECIES
-    #   ),
-    #   FUN = sum
-    # )
     taxaMetricValues <- taxaMetricValues %>%
       dplyr::group_by(sample_id, TL5_TAXON, SPEAR_SPECIES) %>%
       dplyr::summarise(value = sum(response))
@@ -91,5 +64,8 @@ filter_spear <- function(data, taxa_list = NULL) {
   # only return results for records that match TL
   taxaMetricValues <- taxaMetricValues[taxaMetricValues$label != "", ]
 
+  if (nrow(taxaMetricValues) == 0) {
+    return(NULL)
+  }
   return(taxaMetricValues)
 }
