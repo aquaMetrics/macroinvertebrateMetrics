@@ -38,4 +38,5 @@
 #' spearOutput <- calc_spear(demo_data, taxa_list = "TL2")
 calc_spear <- function(data, recoveryArea = "unknown", taxa_list = "TL2") {
   output <- calc_metric(data, metrics = "spear")
+  return(output)
 }

@@ -7,7 +7,6 @@ awic <- function(data,
                  metric_cols = metric_cols) {
   metric_cols <- metric_cols[metric_cols$metric == "awic", ]
   data <- select(data, any_of(c(names, metric_cols$metric_names)))
-
   # Replace value in awic_score column with matching values in AWIC_A, AWIC_B,
   # AWIC_C based on 'RESULT' in this case value is Abundance.
   results <- dplyr::rename(data,

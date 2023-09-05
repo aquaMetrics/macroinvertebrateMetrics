@@ -33,10 +33,10 @@ epsi <- function(data,
           return(samplePsi)
         }
         sample$PSI_VALUE <- sample$CAT * sample$EPSI_WEIGHT_FAM
-        sample$PSI_SENSITIVE_SUM <- sum(sample$PSI_VALUE[sample$EPSI_WEIGHT_FAM >= 0.5], na.rm = T)
+        sample$PSI_SENSITIVE_SUM <- sum(sample$PSI_VALUE[sample$EPSI_WEIGHT_FAM >= 0.5], na.rm = TRUE)
       } else {
         sample$PSI_VALUE <- sample$CAT * sample$EPSI_WEIGHT_TL5
-        sample$PSI_SENSITIVE_SUM <- sum(sample$PSI_VALUE[sample$EPSI_WEIGHT_TL5 >= 0.5], na.rm = T)
+        sample$PSI_SENSITIVE_SUM <- sum(sample$PSI_VALUE[sample$EPSI_WEIGHT_TL5 >= 0.5], na.rm = TRUE)
       }
 
       sample$PSI_ALL_SUM <- sum(sample$PSI_VALUE, na.rm = TRUE)

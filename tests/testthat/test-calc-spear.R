@@ -10,7 +10,6 @@ test_that("compare TL2 against aquaMetric package scores", {
   ecologyResults <- demo_data
   ecologyResults <- ecologyResults[ecologyResults$sample_id == 3201863, ]
   ecologyResults <- ecologyResults[ecologyResults$analysis_name == "FW_TAX_ID", ]
-  # ecologyResults <- filter_spear(ecologyResults, taxa_list = "TL2")
   spearOutput <- calc_spear(ecologyResults, recoveryArea = "unknown", taxa_list = "TL2")
 
   # results taken from internal DAVE Ecology tool 16/10/2018 which uses aquaMetrics package
@@ -101,6 +100,5 @@ test_that("compare TL2 against aquaMetric package scores", {
   # currently DAVE Ecology not working for TL5?
   ecologyResults <- demo_data
   ecologyResults <- ecologyResults[ecologyResults$analysis_name == "MIXTAX_TST", ]
-  #  ecologyResults <- filter_spear(ecologyResults, taxa_list = "TL5")
   spearOutput <- calc_spear(ecologyResults, recoveryArea = "unknown", taxa_list = "TL5")
 })
