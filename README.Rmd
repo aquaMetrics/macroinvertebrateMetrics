@@ -1,5 +1,7 @@
 ---
 output: github_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -39,18 +41,54 @@ In R: Install the development version from GitHub:
 To calculate any metric you need:
 
 ## Input Data
-- Usually dataframe with at least three columns: sample_id, taxon name and abundance
 
-## Input Data Metadata
+- The absolute minimium input data is a dataframe with at least two columns containing: taxon name and abundance*
+- *some metrics don't require abundance.
+- Optional sample_id, parameter, question - these well book keep and give more precise on the type of data and metrics which can be calculated based on the input data.
+
+For example:
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+demo_data <- macroinvertebrateMetrics::demo_data
+data <- demo_data[demo_data$parameter %in% "River Family Inverts" &
+                    demo_data$question == "Taxon abundance",  
+                  c("sample_id", 
+                  "label",
+                  "response", 
+                  "parameter")]
+head(data, 4)
+```
+
+
+## Input Metadata
 - For each metric a table identifying the column names used for sample_id, taxon_name and abundance
 - A list of validation rules for each column in the input data
-- See 'column_attributes'
+- See 'column_attributes' for example
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+head(macroinvertebrateMetrics::column_attributes,4)
+```
+
 
 ## Metric scores
-- A list of scores given to each taxa based on expert opinion or some relationship with pressure
+- A list of scores given to each taxa based on expert opinion or some relationship with pressure 
 
-## Metric Scores Metadata
+For example:
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+taxa <- macroinvertebrateMetrics::macroinvertebrateTaxa
+taxa <- taxa[, c("TAXON_NAME", "WHPT_A", "EPSI_WEIGHT_FAM", "SPEAR_SPECIES")]
+taxa <- taxa[complete.cases(taxa), ]
+head(taxa, 4)
+```
+
+
+## Metric Metadata
 - See 'metric_cols'
 - The name of the metric
 - The names of the columns required to calculate a particular metric
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+head(macroinvertebrateMetrics::metric_cols ,4)
+```
 

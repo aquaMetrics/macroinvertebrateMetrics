@@ -12,7 +12,6 @@
 #' filters only abundance values.
 #' @return
 #' A data frame 5 variables
-#' @export
 #' @importFrom rlang .data :=
 #' @importFrom magrittr "%>%"
 #' @importFrom dplyr all_of across
@@ -21,7 +20,7 @@
 #' data <- data[data$parameter == "River Family Inverts", ]
 #' output <- calc_riverfly(data)
 #'
-calc_riverfly <- function(data,
+riverfly <- function(data,
                           names = macroinvertebrateMetrics::column_attributes$name,
                           questions = c(
                             "Taxon abundance",
@@ -32,12 +31,6 @@ calc_riverfly <- function(data,
   # their dataset update package column name data with column names provided to
   # function
   column_attributes <- macroinvertebrateMetrics::column_attributes
-  column_attributes$name <- names
-  # Validate and format input data - column names are user provided or revert to
-  # default. After this point, columns names are referred by index/number rather
-  # than text of column name, this allows the default column names to be update
-  # easily in future
-  data <- validate_input(data, names = names)
 
   # This table has a lookup list for riverfly taxon groups against TL2 families
   taxon_table <- utils::read.csv(
