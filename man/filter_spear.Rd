@@ -4,23 +4,20 @@
 \alias{filter_spear}
 \title{Filter data before calculating SPEAR metric}
 \usage{
-filter_spear(ecologyResults, taxaList = NULL)
+filter_spear(data, taxa_list = NULL)
 }
 \arguments{
-\item{ecologyResults}{Dataframe with ecology results...}
+\item{data}{Dataframe with ecology results...}
 
-\item{taxaList}{The taxonomic level the sample(s) have been identified at according to
+\item{taxa_list}{The taxonomic level the sample(s) have been identified at according to
 specified taxa lists as described in WFD100 Further Development of River
 Invertebrate Classification Tool. Either "TL2" - Taxa List 2, "TL4" - Taxa
 List 4 or  "TL5" - Taxa List 5.}
 }
 \value{
 Dataframe of filtered and aggregated results (based on Taxa List) with four
-columns: SAMPLE_ID, TAXON, SPEAR_SPECIES, RESULT
+columns: sample_id, label, SPEAR_SPECIES, response
 }
 \description{
 Filter data before calculating SPEAR metric
-}
-\examples{
-filtered <- filter_spear(demoEcologyResults, taxaList = "TL2")
 }

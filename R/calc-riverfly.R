@@ -23,10 +23,11 @@
 #'
 calc_riverfly <- function(data,
                           names = macroinvertebrateMetrics::column_attributes$name,
-                          questions = c("Taxon abundance",
-                                        "Taxon Abundance",
-                                        "Live abundance")
-                          ){
+                          questions = c(
+                            "Taxon abundance",
+                            "Taxon Abundance",
+                            "Live abundance"
+                          )) {
   # To allow user to specify the names of the columns to match the columns in
   # their dataset update package column name data with column names provided to
   # function
@@ -95,19 +96,29 @@ calc_riverfly <- function(data,
   ))
 
   # group_by sample_id and sum log abundance
+  # group_by sample_id and sum log abundance
   riverfly_score <- dplyr::group_by(
     riverfly_sum,
     across(column_attributes$name[1])
   ) %>%
-    dplyr::summarise(response = sum(.data$VALUE_LOG))
+    dplyr::summarise(
+      `Riverfly Score` = sum(.data$VALUE_LOG),
+      `Riverfly NTAXA` = n(),
+      `Riverfly ASPT` = sum(.data$VALUE_LOG) / n()
+    )
   # if no relevant data return NULL object
   if (nrow(riverfly_score) == 0) {
     return()
   }
 
-  riverfly_score <- mutate(
+  riverfly_score <- pivot_longer(riverfly_score,
+    cols = c("Riverfly Score", "Riverfly NTAXA", "Riverfly ASPT"),
+    names_to = column_attributes$name[2],
+    values_to = column_attributes$name[3]
+  )
+
+  riverfly_score <- dplyr::mutate(
     riverfly_score,
-    !!column_attributes$name[2] := "Riverfly Score",
     !!column_attributes$name[5] := "Riverfly Metric",
     !!column_attributes$name[6] := "Angler Riverfly Monitoring Index (ARMI)"
   )
@@ -120,5 +131,11 @@ calc_riverfly <- function(data,
     column_attributes$name[5],
     column_attributes$name[6]
   )
+
+  riverfly_score <- dplyr::mutate_at(
+    riverfly_score,
+    column_attributes$name[3], as.character
+  )
+
   return(riverfly_score)
 }

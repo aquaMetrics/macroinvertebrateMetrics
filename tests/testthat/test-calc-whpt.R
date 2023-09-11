@@ -32,7 +32,7 @@ test_that("WHPT scores match previously calculated scores in demo dataset", {
   metricResults <- tidyr::spread(metricResults, key = question, value = response)
 
   test <- dplyr::inner_join(metricResults, results)
-
+  test$WHPT_NTAXA <- as.numeric(test$WHPT_NTAXA)
   # Remove known errors in demo data WHPT scores and then compare:
   expect_equal(
     test$WHPT_NTAXA[c(1:2, 4, 6:11, 13:14, 16:19, 21:26, 28:32)],
@@ -49,6 +49,7 @@ test_that("WHPT scores match previously calculated scores in demo dataset", {
     "WHPT_P_NTAXA",
     "WHPT_P_SCORE"
   ))
+  test$response <- as.numeric(test$response)
   expect_equal(
     round(test$response[1:9], 6),
     c(

@@ -6,8 +6,8 @@
 \usage{
 calc_riverfly(
   data,
-  names = column_attributes$name,
-  questions = c("Taxon abundance", "Taxon Abundance")
+  names = macroinvertebrateMetrics::column_attributes$name,
+  questions = c("Taxon abundance", "Taxon Abundance", "Live abundance")
 )
 }
 \arguments{

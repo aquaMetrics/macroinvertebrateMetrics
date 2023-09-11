@@ -1,14 +1,14 @@
 #' Filter results for PSI metric
 #'
-#' @param ecologyResults
+#' @param data
 #' Dataframe of ecology results with mandatory four columns:
 #' \itemize{
-#'  \item RESULT - Numeric count result.
-#'  \item TAXON - Taxon name matching names in macroinvertebrates::macroinvertebrateTaxa table
-#'  \item DETERMINAND - 'Taxon abundance'
-#'  \item SAMPLE_ID - Unique identifier for each sample (number or text)
+#'  \item response - Numeric count result.
+#'  \item label - Taxon name matching names in macroinvertebrates::macroinvertebrateTaxa table
+#'  \item question - 'Taxon abundance'
+#'  \item sample_id - Unique identifier for each sample (number or text)
 #' }
-#' @param taxaList
+#' @param taxa_list
 #' The taxonomic level the sample(s) have been identified at according to
 #' specified taxa lists as described in WFD100 Further Development of River
 #' Invertebrate Classification Tool. Either "TL2" - Taxa list 2, "TL3" - Taxa
@@ -17,107 +17,93 @@
 #' according to WFD100.
 #' @return
 #' Dataframe
-#' @export
-#'
-#' @examples
-#' filter_psi(demoEcologyResults, taxaList = "TL2")
-filter_psi <- function(ecologyResults, taxaList = "TL3") {
-  if (!taxaList %in% c("TL2", "TL3", "TL5", "TL4")) {
-    stop("taxaList arugment must be either 'TL2', 'TL3', 'TL4' or 'TL5'")
+filter_psi <- function(data, taxa_list = taxa_list) {
+  if (!taxa_list %in% c("TL2", "TL3", "TL5", "TL4")) {
+    stop("taxa_list arugment must be either 'TL2', 'TL3', 'TL4' or 'TL5'")
   }
-  # only need Taxon abundance determinand
-  ecologyResults <-
-    ecologyResults[ecologyResults$DETERMINAND == "Taxon abundance" |
-      ecologyResults$DETERMINAND == "Taxon Abundance", ]
-  # merge ecology results with taxa metric scores based on taxon name
-  macroinvertebrateTaxa <- macroinvertebrateMetrics::macroinvertebrateTaxa
-  ecologyResults$TAXON <- trimws(ecologyResults$TAXON)
-  taxaMetricValues <-
-    merge(ecologyResults,
-      macroinvertebrateTaxa,
-      by.x = "TAXON",
-      by.y = "TAXON_NAME"
-    )
-  # if nothing in data.frame
-  if (length(taxaMetricValues$TAXON) == 0) {
-    return(taxaMetricValues)
+
+  if (length(data$label) == 0) {
+    return(data)
   }
   # change class for aggregation
-  taxaMetricValues$PSI_GROUP <- as.character(taxaMetricValues$PSI_GROUP)
+  data$PSI_GROUP <- as.character(data$PSI_GROUP)
   # aggregate to correct Taxa List (TL) level
-  taxaMetricValues$RESULT <- as.character(taxaMetricValues$RESULT)
-  taxaMetricValues$RESULT <- as.numeric(taxaMetricValues$RESULT)
-  if (taxaList == "TL3") {
-    taxaMetricValues$TL3_TAXON <- as.character(taxaMetricValues$TL3_TAXON)
-    taxaMetricValues$TL3_TAXON[taxaMetricValues$TAXON == "Oligochaeta"] <- "Oligochaeta"
+  data$response <- as.character(data$response)
+  data$response <- as.numeric(data$response)
+  if (taxa_list == "TL3") {
+    data$TL3_TAXON <- as.character(data$TL3_TAXON)
+    data$TL3_TAXON[data$label == "Oligochaeta"] <- "Oligochaeta"
 
-    taxaMetricValues <- stats::aggregate(
-      taxaMetricValues[, c("RESULT")],
+    data <- stats::aggregate(
+      data[, c("response")],
       by = list(
-        taxaMetricValues$SAMPLE_ID,
-        taxaMetricValues$TL3_TAXON,
-        taxaMetricValues$PSI_GROUP
+        data$sample_id,
+        data$TL3_TAXON,
+        data$PSI_GROUP
       ),
       FUN = sum
     )
   }
 
-  if (taxaList == "TL2") {
-    taxaMetricValues <- stats::aggregate(
-      taxaMetricValues[, c("RESULT")],
+  if (taxa_list == "TL2") {
+    data <- stats::aggregate(
+      data[, c("response")],
       by = list(
-        taxaMetricValues$SAMPLE_ID,
-        taxaMetricValues$TL2_TAXON,
-        taxaMetricValues$PSI_GROUP
+        data$sample_id,
+        data$TL2_TAXON,
+        data$PSI_GROUP
       ),
       FUN = sum
     )
   }
 
-  if (taxaList == "TL4") {
-    taxaMetricValues <- stats::aggregate(
-      taxaMetricValues[, c("RESULT")],
+  if (taxa_list == "TL4") {
+    data <- stats::aggregate(
+      data[, c("response")],
       by = list(
-        taxaMetricValues$SAMPLE_ID,
-        taxaMetricValues$TL4_TAXON,
-        taxaMetricValues$PSI_GROUP
+        data$sample_id,
+        data$TL4_TAXON,
+        data$PSI_GROUP
       ),
       FUN = sum
     )
   }
 
-  if (taxaList == "TL5") {
-    taxaMetricValues <- stats::aggregate(
-      taxaMetricValues[, c("RESULT")],
+  if (taxa_list == "TL5") {
+    data <- stats::aggregate(
+      data[, c("response")],
       by = list(
-        taxaMetricValues$SAMPLE_ID,
-        taxaMetricValues$TL5_TAXON,
-        taxaMetricValues$PSI_GROUP
+        data$sample_id,
+        data$TL5_TAXON,
+        data$PSI_GROUP
       ),
       FUN = sum
     )
   }
 
-  if (taxaList == "TL4") {
-    taxaMetricValues <- stats::aggregate(
-      taxaMetricValues[, c("RESULT")],
+  if (taxa_list == "TL4") {
+    data <- stats::aggregate(
+      data[, c("response")],
       by = list(
-        taxaMetricValues$SAMPLE_ID,
-        taxaMetricValues$TL5_TAXON,
-        taxaMetricValues$PSI_GROUP
+        data$sample_id,
+        data$TL5_TAXON,
+        data$PSI_GROUP
       ),
       FUN = sum
     )
   }
   # update names after aggregation
-  names(taxaMetricValues) <- c("SAMPLE_ID", "TAXON", "PSI_GROUP", "RESULT")
+  names(data) <- c("sample_id", "label", "PSI_GROUP", "response")
   # PSI_GROUP not required by calcPSI function
-  taxaMetricValues$PSI_GROUP <- NULL
+  data$PSI_GROUP <- NULL
   # remove 'blank' taxa if not scores for PSI
-  taxaMetricValues <- taxaMetricValues[taxaMetricValues$TAXON != "", ]
-  taxaMetricValues <- taxaMetricValues[!is.na(taxaMetricValues$TAXON), ]
+  data <- data[data$label != "", ]
+  data <- data[!is.na(data$label), ]
   # log Abundance
-  taxaMetricValues$RESULT <- floor(log10(taxaMetricValues$RESULT) + 1)
-  taxaMetricValues$RESULT[taxaMetricValues$RESULT > 6] <- 6
-  return(taxaMetricValues)
+  if (nrow(data) == 0) {
+    return(NULL)
+  }
+  data$response <- floor(log10(data$response) + 1)
+  data$response[data$response > 6] <- 6
+  return(data)
 }
