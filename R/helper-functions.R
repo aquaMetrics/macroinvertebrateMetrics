@@ -55,7 +55,6 @@ validate_input <- function(
   )
   data <- suppressWarnings(convert_magic(data, convert_columns$col_type))
 
-  # data <- data[stats::complete.cases(data), ]
   # Tidy TAXON name incase of whitespace
   data[, column_attributes$name[4]] <-
     trimws(data[, column_attributes$name[4]])

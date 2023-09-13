@@ -5,13 +5,14 @@ awic <- function(data,
                    "Taxon Abundance"
                  ),
                  metric_cols = metric_cols) {
+
   metric_cols <- metric_cols[metric_cols$metric == "awic", ]
   data <- select(data, any_of(c(names, metric_cols$metric_names)))
-
   # Replace value in awic_score column with matching values in AWIC_A, AWIC_B,
-  # AWIC_C based on 'RESULT' in this case value is Abundance.
+  # AWIC_C based on 'response' in this case value is Abundance.
+
   results <- dplyr::rename(data,
-    "response" = !!column_attributes$name[3]
+    "response" = !!names[3]
   )
   results <-
     dplyr::mutate(results,
@@ -26,7 +27,7 @@ awic <- function(data,
   results <- stats::na.omit(results)
   # Group by sample_id to calculate score per sample
   results <- dplyr::rename(results,
-    "sample_id" = !!column_attributes$name[1]
+    "sample_id" = !!names[1]
   )
   results <- dplyr::group_by(results, .data$sample_id)
 
@@ -41,19 +42,19 @@ awic <- function(data,
 
   scores <- pivot_longer(scores,
     cols = c("sample_score", "ntaxa", "wfd_awic"),
-    names_to = column_attributes$name[2],
-    values_to = column_attributes$name[3]
+    names_to = names[2],
+    values_to = names[3]
   )
 
   scores <- dplyr::mutate(
     scores,
-    !!column_attributes$name[5] := "WFD_AWIC",
-    !!column_attributes$name[6] := "WFD AWIC"
+    !!names[5] := "WFD_AWIC",
+    !!names[6] := "WFD AWIC"
   )
 
   scores <- dplyr::mutate_at(
     scores,
-    column_attributes$name[3], as.character
+    names[3], as.character
   )
   return(scores)
 }

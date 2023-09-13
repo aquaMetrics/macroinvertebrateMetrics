@@ -127,8 +127,9 @@ spear <- function(data, recoveryArea = "unknown", taxa_list = "TL2") {
   # outputs
   question <- column_attributes$name[2]
   scores <- mutate(scores, question = paste(question, taxa_list))
+  scores <- mutate(scores,
+                   !!column_attributes$name[5] := "SPEAR Metric",
+                   !!column_attributes$name[6] := "SPEcies At Risk (SPEAR)")
 
-  scores$parameter <- "SPEAR Metric"
-  scores$long_parameter <- "SPEcies At Risk (SPEAR)"
   return(scores)
 }
