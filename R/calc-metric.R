@@ -55,7 +55,9 @@ calc_metric <- function(
 
   output <- purrr::map_df(metrics, function(metric) {
     if (any(metric %in% c("awic"))) {
-      awic <- awic(data, metric_cols = metric_cols)
+      awic <- awic(data,
+                   metric_cols = metric_cols,
+                   names = names)
       return(awic)
     }
 
