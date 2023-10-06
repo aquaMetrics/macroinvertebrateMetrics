@@ -1,0 +1,39 @@
+metric,metric_names,parameter
+awic,AWIC_A,TL5 River Invertebrate
+awic,AWIC_B,TL5 River Invertebrate
+awic,AWIC_C,TL5 River Invertebrate
+epsi,EPSI_WEIGHT_TL5,TL5 River Invertebrate
+epsi,EPSI_WEIGHT_FAM,River Family Inverts
+epsi,EPSI_WEIGHT_FAM,BANKSIDE_INVERTS
+lamm,LAMM_ACID_SENS,TL5 River Invertebrate
+lamm,LAMM_WEIGHTING,TL5 River Invertebrate
+lamm,LAMM_TAXON,TL5 River Invertebrate
+lamm,LAMM_TL,TL5 River Invertebrate
+life - work in progress,LIFE_GROUP - work in progress,
+psi,PSI_GROUP,River Family Inverts
+psi,PSI_GROUP,TL3 River Invertebrate
+psi,PSI_GROUP,TL5 River Invertebrate
+psi,PSI_GROUP,BANKSIDE_INVERTS
+psi,TL2_TAXON,BANKSIDE_INVERTS
+psi,TL2_TAXON,River Family Inverts
+psi,TL3_TAXON,TL3 River Invertebrate
+psi,TL5_TAXON,TL5 River Invertebrate
+riverfly,TL2_5_TAXON,River Family Inverts
+spear,SPEAR_SPECIES,TL5 River Invertebrate
+spear,SPEAR_SPECIES,River Family Inverts
+spear,SPEAR_SPECIES,BANKSIDE_INVERTS
+whpt,WHPT_A,River Family Inverts
+whpt,WHPT_B,River Family Inverts
+whpt,WHPT_C,River Family Inverts
+whpt,WHPT_D,River Family Inverts
+whpt,WHPT_P,River Family Inverts
+whpt,TL2_TAXON,River Family Inverts
+whpt,WHPT_A,BANKSIDE_INVERTS
+whpt,WHPT_B,BANKSIDE_INVERTS
+whpt,WHPT_C,BANKSIDE_INVERTS
+whpt,WHPT_D,BANKSIDE_INVERTS
+whpt,WHPT_P,BANKSIDE_INVERTS
+whpt,TL2_TAXON,BANKSIDE_INVERTS
+riverfly,TL2_5_TAXON,BANKSIDE_INVERTS
+riverfly,TL2_5_TAXON,TL5 River Invertebrate
+riverfly,TL2_5_TAXON,TL3 River Invertebrate

@@ -35,5 +35,5 @@ test_that("test riverfly returns nothing if no relevant data", {
   ]
   riverflyOutput <- calc_riverfly(ecology_results)
 
-  expect_equal(riverflyOutput$RESULT[1], NULL)
+  expect_equal(nrow(riverflyOutput), 0)
 })

@@ -47,42 +47,50 @@ calc_metric <- function(
   # default. After this point, columns names are referred by index/number rather
   # than text of column name, this allows the default column names to be update
   # easily in future
-  data <- validate_input(data,
-    names = column_attributes$name,
+  data <- validate_input(
+    data = data,
+    names = names,
+    questions = questions,
     taxon_table = taxon_table,
     metric_cols = metric_cols
   )
 
   output <- purrr::map_df(metrics, function(metric) {
-    if (any(metric %in% c("awic"))) {
-      awic <- awic(data,
+    metric_cols <- metric_cols[metric_cols$metric == metric, ]
+    # filter for correct Taxa List(s)/Parameter level for metric
+    filtered_data <- filter_data(data, parameter = unique(metric_cols$parameter))
+    if(is.null(filtered_data)) {
+      return(NULL)
+    }
+    if (any(metric %in% "awic")) {
+      awic <- awic(filtered_data,
                    metric_cols = metric_cols,
                    names = names)
       return(awic)
     }
 
-    if (any(metric %in% c("epsi"))) {
-      epsi <- epsi(data, taxa_list = taxa_list, metric_cols = metric_cols, ...)
+    if (any(metric %in% "epsi")) {
+      epsi <- epsi(filtered_data, taxa_list = taxa_list, metric_cols = metric_cols, ...)
       return(epsi)
     }
-    if (any(metric %in% c("psi"))) {
+    if (any(metric %in% "psi")) {
       # These metrics need specific Taxa List to run correctly
-      psi_data <- filter_psi(data, taxa_list = taxa_list)
+      psi_data <- filter_psi(filtered_data, taxa_list = taxa_list)
       whpt <- psi(psi_data)
       return(whpt)
     }
-    if (any(metric %in% c("riverfly"))) {
-      riverfly <- calc_riverfly(data)
+    if (any(metric %in% "riverfly")) {
+      riverfly <- riverfly(filtered_data)
       return(riverfly)
     }
-    if (any(metric %in% c("spear"))) {
+    if (any(metric %in% "spear")) {
       # These metrics need specific Taxa List to run correctly
-      spear_data <- filter_spear(data, taxa_list = taxa_list)
+      spear_data <- filter_spear(filtered_data, taxa_list = taxa_list)
       spear <- spear(spear_data)
       return(spear)
     }
-    if (any(metric %in% c("whpt"))) {
-      whpt <- calc_whpt(data)
+    if (any(metric %in% "whpt")) {
+      whpt <- whpt(filtered_data)
       return(whpt)
     }
   })

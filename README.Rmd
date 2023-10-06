@@ -13,6 +13,9 @@ knitr::opts_chunk$set(
   fig.path = "man/figures/README-",
   out.width = "100%"
 )
+library(macroinvertebrateMetrics)
+library(knitr)
+library(dplyr)
 ```
 
 # macroinvertebrateMetrics
@@ -36,15 +39,40 @@ In R: Install the development version from GitHub:
 ``library(devtools)``   
 ``install_github("aquaMetrics/macroinvertebrateMetrics")``  
   
+# Quick-start
+
+Calculate all metrics:
+
+```{r}
+library(macroinvertebrateMetrics)
+all_metrics <- calc_metric(demo_data)
+head(all_metrics, 4)
+```
+
+Calculate specific metrics:
+
+```{r}
+
+selected_metrics <- calc_metric(demo_data, metrics = c("whpt","awic"))
+head(selected_metrics, 4)
+```
+
+Use metric specific function:
+
+```{r}
+
+specific_metric <- calc_epsi(demo_data)
+head(specific_metric, 4)
+```
+
 # Concepts
 
 To calculate any metric you need:
 
 ## Input Data
-
-- The absolute minimium input data is a dataframe with at least two columns containing: taxon name and abundance*
-- *some metrics don't require abundance.
-- Optional sample_id, parameter, question - these well book keep and give more precise on the type of data and metrics which can be calculated based on the input data.
+ 
+- The absolute minimium input data is a dataframe with at least two columns containing: `label` (taxon name) and `response` (abundance - some metrics don't require abundance).
+- Optional `sample_id`, `parameter`, `question` - these book-keeping variables give more info on the type of data and metrics which can be calculated based on the input data.
 
 For example:
 
@@ -56,8 +84,30 @@ data <- demo_data[demo_data$parameter %in% "River Family Inverts" &
                   "label",
                   "response", 
                   "parameter")]
-head(data, 4)
+kable(head(data, 4))
 ```
+
+Here's the precise definition of each recommended input column see `column_attributes`:
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+kable(column_attributes)
+```
+
+- The parameter gives info of the method of analysis used. This is usually the taxonomic level of identification. Here's the list of recognised analyses:
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+unique(metric_cols$parameter)
+```
+
+- A TL5 sample can be downgraded to TL3 or TL2 'family' level.
+- Depending on the Taxonomic Level of the sample selected only certain metrics can be calculated
+- The list of which metric can be calculated at which level is listed here:
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+
+kable(unique(select(metric_cols, metric, parameter)), row.names = FALSE)
+```
+
+
+- If parameter is not supplied, all metrics will be calculated however, this may not be appropriate depending on what taxonomic resolution your data was analysed to.
 
 
 ## Input Metadata
@@ -66,12 +116,13 @@ head(data, 4)
 - See 'column_attributes' for example
 
 ```{r, message=FALSE, warning=FALSE, echo=FALSE}
-head(macroinvertebrateMetrics::column_attributes,4)
+kable(head(macroinvertebrateMetrics::column_attributes,4))
 ```
 
 
 ## Metric scores
 - A list of scores given to each taxa based on expert opinion or some relationship with pressure 
+- See `macroinvertebrateTaxa`
 
 For example:
 
@@ -79,16 +130,33 @@ For example:
 taxa <- macroinvertebrateMetrics::macroinvertebrateTaxa
 taxa <- taxa[, c("TAXON_NAME", "WHPT_A", "EPSI_WEIGHT_FAM", "SPEAR_SPECIES")]
 taxa <- taxa[complete.cases(taxa), ]
-head(taxa, 4)
+kable(head(taxa, 4))
 ```
 
-
 ## Metric Metadata
-- See 'metric_cols'
+- See `metric_cols`
 - The name of the metric
 - The names of the columns required to calculate a particular metric
 
 ```{r, message=FALSE, warning=FALSE, echo=FALSE}
-head(macroinvertebrateMetrics::metric_cols ,4)
+kable(head(macroinvertebrateMetrics::metric_cols ,4))
 ```
+
+## Calculate
+
+There are two ways to calculate a given metric, for example WHPT can be
+calculated using either `calc_metric(demo_data, metric = "whpt")` or the metric
+specific function `calc_whpt(demo_data)`. These two function execute the same
+code except that `calc_awic()` uses `calc_metric()` behind the scenes and hard
+codes the `metric = "whpt"` parameter to save a little bit of typing.
+
+All metrics follow the same calculation process:
+
+1. The `data` input is passed to a `calc_metric()` function.
+
+2. Input `data` is validated in an internal function called `validate_data()`. This function checks the data is in the correct format and then joins the data to taxonomic table containing metrics values. 
+
+3. The `data` (now with the metric values attached) is then passed to specific internal metric functions. These metric function calculates the specific metrics. If more then one metric is requested, the `calc_metric()` function  calculates only the requested metrics in-turn and then binds and returns the outputs in a final output dataframe. 
+
+
 

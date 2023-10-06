@@ -53,57 +53,13 @@ calc_whpt <- function(data,
     questions = questions,
     metric_cols = metric_cols
   )
-  # group by sample so WHPT scores are produce by sample
-  # and group by TL2_TAXON to sum abundance across sub-families/genus
-  metric_results <- data %>%
-    dplyr::group_by(.data$sample_id, .data$TL2_TAXON) %>%
-    dplyr::summarise(
-      response = sum(.data$response),
-      WHPT_D = mean(.data$WHPT_D),
-      WHPT_C = mean(.data$WHPT_C),
-      WHPT_B = mean(.data$WHPT_B),
-      WHPT_A = mean(.data$WHPT_A),
-      WHPT_P = mean(.data$WHPT_P)
-    )
 
-  # Find correct WHPT score based on abundance categories to use
-  # and add to new column 'score'
-  metric_results <-
-    dplyr::mutate(metric_results,
-      score = dplyr::if_else(.data$response > 999, .data$WHPT_D,
-        dplyr::if_else(.data$response > 99, .data$WHPT_C,
-          dplyr::if_else(.data$response > 9,
-            .data$WHPT_B,
-            .data$WHPT_A
-          )
-        )
-      )
-    )
-
-  # calculate WHPT score
-  metric_results <- dplyr::summarise(metric_results,
-    WHPT_SCORE = sum(.data$score, na.rm = TRUE),
-    WHPT_ASPT = mean(.data$score, na.rm = TRUE),
-    WHPT_NTAXA = length(.data$score[!is.na(.data$score)]),
-    WHPT_P_SCORE = sum(.data$WHPT_P, na.rm = TRUE),
-    WHPT_P_ASPT = mean(.data$WHPT_P, na.rm = TRUE),
-    WHPT_P_NTAXA = length(.data$WHPT_P[!is.na(.data$WHPT_P)])
-  )
-  # create final output in standard 'long' format
-  whpt_result <- metric_results %>%
-    tidyr::gather(
-      key = !!column_attributes$name[2],
-      value = !!column_attributes$name[3], -sample_id
-    ) %>%
-    dplyr::mutate(
-      !!column_attributes$name[5] := "WHPT Metric",
-      !!column_attributes$name[6] := "WHPT Metric"
-    )
-
-  whpt_result <- dplyr::mutate_at(
-    whpt_result,
-    column_attributes$name[3], as.character
+  data <- calc_metric(data,
+                      metrics = "whpt",
+                      names = names,
+                      questions = questions,
+                      metric_cols = metric_cols
   )
 
-  return(whpt_result)
+  return(data)
 }

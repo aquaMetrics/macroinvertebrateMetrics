@@ -37,7 +37,7 @@ filter_spear <- function(data, taxa_list = NULL) {
     )
   } else if (taxa_list == "TL5") {
     taxaMetricValues <- taxaMetricValues %>%
-      dplyr::group_by(sample_id, TL5_TAXON, SPEAR_SPECIES) %>%
+      dplyr::group_by(.data$sample_id, .data$TL5_TAXON, .data$SPEAR_SPECIES) %>%
       dplyr::summarise(value = sum(response))
     # merge SPEAR_SPECIES back in because of NULL SPEAR_SPECIES not pick up if aggregated
     taxaMetricValues <-
