@@ -7,6 +7,9 @@
 #' @param questions
 #' Optional, user provided 'question' default is 'Taxon abundance', which
 #' filters only abundance values.
+#' @param metric_cols Columns used from taxon table to calculate metrics and
+#'   the taxon name column to join to input data (if using custom taxon table)
+#' @param ... Pass in specific paramters for each metric.
 #' @return dataframe
 #' @export
 #' @importFrom dplyr n select mutate any_of

@@ -1,11 +1,7 @@
 validate_input <- function(
     data,
-    names = macroinvertebrateMetrics::column_attributes$name,
-    questions = c(
-      "Taxon abundance",
-      "Taxon Abundance",
-      "Live abundance"
-    ),
+    names,
+    questions,
     taxon_table = macroinvertebrateMetrics::macroinvertebrateTaxa,
     metric_cols = macroinvertebrateMetrics::metric_cols) {
   column_attributes <- macroinvertebrateMetrics::column_attributes
@@ -63,7 +59,7 @@ validate_input <- function(
   # (sometimes errors and zero or less are accidentally recorded)
   data <- dplyr::filter(data, .data$response > 0)
   # Select metric score columns and taxon name from taxon table
-  taxon_table <- taxon_table[, c("TAXON_NAME", metric_cols$metric_names)]
+  taxon_table <- taxon_table[, c("TAXON_NAME", unique(metric_cols$metric_names))]
 
   # Need to join data to reference table of metric scores
   data <-
@@ -73,5 +69,14 @@ validate_input <- function(
       by.x = column_attributes$name[4],
       by.y = "TAXON_NAME"
     )
+  return(data)
+}
+
+filter_data <- function(data, parameter) {
+
+  data <- dplyr::filter(data, parameter %in% parameter)
+  if(nrow(data) == 0) {
+    return(NULL)
+  }
   return(data)
 }

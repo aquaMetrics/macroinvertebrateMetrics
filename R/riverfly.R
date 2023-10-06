@@ -21,17 +21,13 @@
 #' output <- calc_riverfly(data)
 #'
 riverfly <- function(data,
-                          names = macroinvertebrateMetrics::column_attributes$name,
-                          questions = c(
+                     names = macroinvertebrateMetrics::column_attributes$name,
+                     questions = c(
                             "Taxon abundance",
                             "Taxon Abundance",
                             "Live abundance"
-                          )) {
-  # To allow user to specify the names of the columns to match the columns in
-  # their dataset update package column name data with column names provided to
-  # function
-  column_attributes <- macroinvertebrateMetrics::column_attributes
-
+                          ),
+                     metric_cols = metric_cols) {
   # This table has a lookup list for riverfly taxon groups against TL2 families
   taxon_table <- utils::read.csv(
     system.file("extdat",
@@ -47,9 +43,9 @@ riverfly <- function(data,
     merge(
       data[, c(
         "TL2_5_TAXON",
-        column_attributes$name[4],
-        column_attributes$name[3],
-        column_attributes$name[1]
+        names[4],
+        names[3],
+        names[1]
       )],
       taxon_table,
       by.x = "TL2_5_TAXON",
@@ -61,11 +57,11 @@ riverfly <- function(data,
     riverfly_taxa,
     across(all_of(c(
       "RIVERFLY_GROUP",
-      column_attributes$name[1]
+      names[1]
     )))
     # .data$SAMPLE_ID
   ) %>%
-    dplyr::summarise(across(column_attributes$name[3], sum))
+    dplyr::summarise(across(names[3], sum))
 
   # riverfly abundance categories
   category <- function(x) {
@@ -76,14 +72,14 @@ riverfly <- function(data,
     )
   }
   riverfly_sum$VALUE_LOG <- c(apply(
-    riverfly_sum[, column_attributes$name[3]], 2, category
+    riverfly_sum[, names[3]], 2, category
   ))
 
   # group_by sample_id and sum log abundance
   # group_by sample_id and sum log abundance
   riverfly_score <- dplyr::group_by(
     riverfly_sum,
-    across(column_attributes$name[1])
+    across(names[1])
   ) %>%
     dplyr::summarise(
       `Riverfly Score` = sum(.data$VALUE_LOG),
@@ -97,28 +93,28 @@ riverfly <- function(data,
 
   riverfly_score <- pivot_longer(riverfly_score,
     cols = c("Riverfly Score", "Riverfly NTAXA", "Riverfly ASPT"),
-    names_to = column_attributes$name[2],
-    values_to = column_attributes$name[3]
+    names_to = names[2],
+    values_to = names[3]
   )
 
   riverfly_score <- dplyr::mutate(
     riverfly_score,
-    !!column_attributes$name[5] := "Riverfly Metric",
-    !!column_attributes$name[6] := "Angler Riverfly Monitoring Index (ARMI)"
+    !!names[5] := "Riverfly Metric",
+    !!names[6] := "Angler Riverfly Monitoring Index (ARMI)"
   )
 
   riverfly_score <- select(
     riverfly_score,
-    column_attributes$name[1],
-    column_attributes$name[2],
-    column_attributes$name[3],
-    column_attributes$name[5],
-    column_attributes$name[6]
+    names[1],
+    names[2],
+    names[3],
+    names[5],
+    names[6]
   )
 
   riverfly_score <- dplyr::mutate_at(
     riverfly_score,
-    column_attributes$name[3], as.character
+    names[3], as.character
   )
 
   return(riverfly_score)

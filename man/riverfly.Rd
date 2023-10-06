@@ -7,7 +7,8 @@
 riverfly(
   data,
   names = macroinvertebrateMetrics::column_attributes$name,
-  questions = c("Taxon abundance", "Taxon Abundance", "Live abundance")
+  questions = c("Taxon abundance", "Taxon Abundance", "Live abundance"),
+  metric_cols = metric_cols
 )
 }
 \arguments{

@@ -8,12 +8,12 @@ awic <- function(data,
 
   metric_cols <- metric_cols[metric_cols$metric == "awic", ]
   data <- select(data, any_of(c(names, metric_cols$metric_names)))
-  # Replace value in awic_score column with matching values in AWIC_A, AWIC_B,
-  # AWIC_C based on 'response' in this case value is Abundance.
-
+  # rename column to make it easier to select in dplyr functions
   results <- dplyr::rename(data,
     "response" = !!names[3]
   )
+  # Replace value in awic_score column with matching values in AWIC_A, AWIC_B,
+  # AWIC_C based on 'response' in this case value is indicates abundance
   results <-
     dplyr::mutate(results,
       awic_score = dplyr::if_else(.data$response > 99, .data$AWIC_C,
@@ -25,10 +25,11 @@ awic <- function(data,
     )
 
   results <- stats::na.omit(results)
-  # Group by sample_id to calculate score per sample
+  # rename column to make it easier to select in dplyr functions
   results <- dplyr::rename(results,
     "sample_id" = !!names[1]
   )
+  # Group by sample_id to calculate score per sample
   results <- dplyr::group_by(results, .data$sample_id)
 
   # `summarise` calculates `sum()` and `n()` on what we grouped by(sample_number)

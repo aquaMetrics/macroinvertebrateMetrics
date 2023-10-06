@@ -7,7 +7,8 @@
 calc_riverfly(
   data,
   names = macroinvertebrateMetrics::column_attributes$name,
-  questions = c("Taxon abundance", "Taxon Abundance", "Live abundance")
+  questions = c("Taxon abundance", "Taxon Abundance", "Live abundance"),
+  metric_cols = macroinvertebrateMetrics::metric_cols
 )
 }
 \arguments{
@@ -18,6 +19,11 @@ in `column_attributes` to match with input data}
 
 \item{questions}{Optional, user provided 'question' default is 'Taxon abundance', which
 filters only abundance values.}
+
+\item{metric_cols}{Columns used from taxon table to calculate metrics plus to
+taxon name column to join to input data (if using custom taxon table)}
+
+\item{...}{Pass in specific paramters for each metric.}
 }
 \value{
 A data frame 5 variables
