@@ -16,7 +16,10 @@ knitr::opts_chunk$set(
   echo = FALSE
 )
 library(macroinvertebrateMetrics)
-library(tidyverse)
+library(dplyr)
+library(tidyr)
+library(purrr)
+library(tibble)
 library(magrittr)
 library(knitr)
 ```
