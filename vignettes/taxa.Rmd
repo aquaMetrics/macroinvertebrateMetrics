@@ -8,7 +8,7 @@ vignette: >
 editor_options: 
   chunk_output_type: console
 ---
-
+ 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -23,92 +23,154 @@ library(tibble)
 library(magrittr)
 library(knitr)
 ```
-
-
+ 
+ 
 ```{r}
 # format taxa table types
 taxa <- macroinvertebrateTaxa
 taxa$TAXON_NAME <- as.character(taxa$TAXON_NAME)
 taxa$TL2_5_TAXON <- as.character(taxa$TL5_TAXON)
 ```
-
+ 
 # Intro
-
+ 
 What list should we use for ECN sites?
-
+ 
 # ECN Vs TL5
-
+ 
 What's in TL5 but not in TL_ECN
-
+ 
 - Mainly Beetle and Corixidae species
-
+ 
 ```{r}
 tl5 <- filter(taxa, TAXON_NAME == TL5_TAXON)
 tl5_not_in_ecn <- filter(tl5, ECN_TL == FALSE)
 tl5_not_in_ecn$TAXON_NAME
-
+ 
 ```
-
+ 
 What's in ECN and not in TL5
-
+ 
 - Mainly Oligochaeta families and Beetle families not found in TL5
-
+ 
 ```{r}
-
+ 
 ecn <- filter(taxa, ECN_TL == TRUE)
 ecn_not_in_tl5 <- filter(ecn, !TAXON_NAME %in% tl5$TAXON_NAME)
 ecn_not_in_tl5$TAXON_NAME
 ```
-
+ 
 ## TL4
-
+ 
 ```{r}
 tl4 <- filter(taxa, TAXON_NAME == TL4_TAXON)
 ecn <- filter(taxa, ECN_TL == TRUE)
 ```
-
-TL4 is double the length of ECN list (`r length(tl4$TAXON_NAME)` Vs `r length(ecn$TAXON_NAME)`). TL4 is much more resource intensive than ECN list. Don't recommend using TL4. 
-
+ 
+TL4 is double the length of ECN list (`r length(tl4$TAXON_NAME)` Vs `r length(ecn$TAXON_NAME)`). TL4 is much more resource intensive than ECN list. Don't recommend using TL4.
+ 
 ## So what list should we use?
-
-What we need is TL5 + ECN? For a ECN analysis which can be 'downgraded' to TL5 and used for AWIC/LAMM or other TL5 level metrics. 
-
+ 
+What we need is TL5 + ECN? For a ECN analysis which can be 'downgraded' to TL5 and used for AWIC/LAMM or other TL5 level metrics.
+ 
 However, we need to take away family level options where genus/species options are available in ECN/TL5, for instance:
-
+ 
 - Remove Oligochaeta (TL5) as option and replace with sub families from ECN list (Naididae, Lumbriculidae etc)
-- Add *Corixa affinis* (TL5) and remove Corixidae (ECN) 
-
+- Add *Corixa affinis* (TL5) and remove Corixidae (ECN)
+ 
 ECN familes to keep:
 ```{r}
 ecn_family <- filter(ecn, RANK == "Family") 
 tl5_genus_species <- filter(tl5, FAMILY %in% ecn$TAXON_NAME)
 ecn_family_keep <- filter(ecn_family, !TAXON_NAME %in% tl5_genus_species$FAMILY)
-ecn_family_keep
+ecn_family_keep$TAXON_NAME
 ```
-
+ 
 TL5 families to keep
 ```{r}
 tl5_family <- filter(tl5, RANK == "Family") 
 ecn_genus_species <- filter(ecn, FAMILY %in% ecn$TAXON_NAME)
-tl4_family_keep <- filter(tl5_family, !TAXON_NAME %in% ecn_genus_species$FAMILY)
-tl4_family_keep
+tl5_family_keep <- filter(tl5_family, !TAXON_NAME %in% ecn_genus_species$FAMILY)
+tl5_family_keep$TAXON_NAME
 ```
-
+ 
 # Not Active
-
-Check column `active_data_entry` = FALSE
-  
+ 
+Check column `active_data_entry` = FALSE. This column was used to filter which taxa could be entered in NEMS. Even if particular taxa are part of an official taxa list, there were sometimes reasons to prevent entry to use a different (usually NBN preferred / most recent name used in identification keys) named. 
 ECN taxa not active:
 ```{r}
 filter(ecn, ACTIVE_DATA_ENTRY == FALSE) %>%  select(TAXON_NAME) %>% kable(row.names = FALSE)
 ```
-
+ 
+Nemurella pictetii > Should be Nemurella picteti - with one 'i'. So use correctly spelt version. This can be converted back to 'pictetii' for ECN reporting if required.
+ 
+Enchytraeidae (including Propappidae) & Lumbricidae (including Glossoscolecidae) don't have NBN codes which constrains data sharing, additionally these superfamilies were not previously recorded in NEMS. Suggest we include all separate families instead of superfamilies i.e. Enchytraeidae, Propappidae, Lumbricidae, Glossoscolecidae. When reporting for ECN we can re-combine into super families if required.
+ 
 TL5 taxa not active:
 ```{r}
 filter(tl5, ACTIVE_DATA_ENTRY == FALSE) %>%  select(TAXON_NAME) %>% kable(row.names = FALSE)
 ```
-
-
+ 
+Heptagenia lateralis is not active, include Electrogena lateralis instead, as preferred by NBN and used by ECN. Leave this as Heptagenia for now.
+ 
+Armiger crista not used but this looks like mistake, include Armiger crista. Gyraulus (Armiger) crista is used by ECN. Armiger crista can be converted to Gyraulus (Armiger) crista if required for ECN reporting.
+ 
+ 
+## Save TL5_ECN list
+ 
+Save the combined ECN and TL5 taxa list with corrections:
+ 
+```{r}
+ 
+ 
+ecn_tl5 <- bind_rows(tl5 , ecn)
+dups <- ecn_tl5[duplicated(ecn_tl5$TAXON_NAME), ]
+familes_in_both <- dups[dups$RANK == "Family", ]
+ 
+ecn_tl5 <- unique(ecn_tl5)
+ 
+worm_families <- taxa[taxa$TAXON_NAME %in% c("Enchytraeidae", 
+                                             "Propappidae", 
+                                             "Lumbricidae", 
+                                             "Glossoscolecidae"), ]
+ 
+keep_families <- bind_rows(tl5_family_keep, ecn_family_keep, worm_families, familes_in_both)
+ 
+ 
+ecn_tl5 <-  ecn_tl5[
+                      !ecn_tl5$RANK %in% c("Family",
+                                           "Superfamily", 
+                                           "Class"), ]
+ 
+ 
+ecn_tl5 <- bind_rows(ecn_tl5, keep_families)
+ 
+ecn_tl5 <- ecn_tl5[!ecn_tl5$TAXON_NAME %in% c("Nemurella pictetii",
+                                              "Planorbis crista"), ]
+ 
+ecn_tl5 <- ecn_tl5[!ecn_tl5$TAXON_NAME %in% c("Tipulidae",
+                                              "Limoniidae",
+                                              "Pediciidae"), ]
+ 
+ 
+ 
+```
+ 
+ 
+# AWIC / LAMM species?
+ 
+```{r}
+ 
+ 
+taxa$TAXON_NAME[taxa$AWIC_TAXON == taxa$TAXON_NAME, ]
+ 
+unique(taxa$AWIC_TAXON)[!unique(taxa$AWIC_TAXON) %in% ecn_tl5$TAXON_NAME]
+ 
+unique(taxa$LAMM_TAXON)[!unique(taxa$LAMM_TAXON) %in% ecn_tl5$LAMM_TAXON]
+ 
+unique(taxa$LAMM_TAXON)
+ 
+```
 
 
 
