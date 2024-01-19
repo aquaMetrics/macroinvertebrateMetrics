@@ -1,5 +1,5 @@
 ---
-title: "ECN Taxa List"
+title: "Freshwater Macroinvertebrate Taxa Lists"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{taxa}
@@ -22,6 +22,7 @@ library(purrr)
 library(tibble)
 library(magrittr)
 library(knitr)
+library(DiagrammeR)
 ```
  
  
@@ -29,14 +30,132 @@ library(knitr)
 # format taxa table types
 taxa <- macroinvertebrateTaxa
 taxa$TAXON_NAME <- as.character(taxa$TAXON_NAME)
-taxa$TL2_5_TAXON <- as.character(taxa$TL5_TAXON)
+taxa$TL2_5_TAXON <- as.character(taxa$TL2_5_TAXON)
+taxa$LAMM_TAXON <- as.character(taxa$LAMM_TAXON)
+taxa$AWIC_TAXON <- as.character(taxa$AWIC_TAXON)
+
 ```
  
 # Intro
  
-What list should we use for ECN sites?
- 
-# ECN Vs TL5
+What taxa lists should SEPA use for identification? 
+  
+Based on the [WFD100](https://www.sniffer.org.uk/Handlers/Download.ashx?IDMF=e9b55f14-59cf-46b4-927f-66411e2e02d8) document, there are five standardised taxa lists. In particular, Taxa List 2 and 5 (TL2/TL5) have been widely adopted for reporting purposes. TL2 is a family-level(ish) list used for routine WHPT/RICT reporting. TL5 is used for species-level(ish) AWIC reporting.
+
+These taxa lists allow changes in the environment to be detected by applying consistent levels of analysis - making changes between samples directly comparable. 
+
+# Taxa tables
+
+## Freshwater macrinvertebrates
+
+The combine taxa table for freshwater [macro-invertebrates table is stored](https://github.com/aquaMetrics/macroinvertebrateMetrics/blob/master/inst/extdat/INVERT-TAXON-DICTIONARY.csv) in the [macroinverebrateMetrics R pacakage](https://github.com/aquaMetrics/macroinvertebrateMetrics). This table provides the basis for taxonomic lists for data. Subsets of this table are provided to the Labware based LIMS and ESRI's Survey123 for data entry. 
+
+The taxa table held in macroinverebrateMetrics R package is a copy of previous table held in NEMS (predecessor to LIMS). 
+
+# Implementor's Trap
+
+Taxonomy, keys, metrics and data sharing standards are all independently produced by different organisations and a not maintained and updated in sync. 
+In an ideal world, SEPA would implement an globally managed list of taxa, identification keys, metrics and reporting tools which a tightly aligned and consistent with each other and allow sharing of data with other partners. 
+
+However, SEPA is trapped by competing and independent sources of truth and taxa concepts. These are WFD100s, NBN,  ECN  taxa lists and additionally independent taxa lists for some metrics (LAMM & AWIC etc). Furthermore, the identification keys are independently produced and may not always use the preferred taxa name for any of these lists.
+
+To solve this implementation dilemma, SEPA combines all these sources of truth into taxa table(s), managing the changes to keys, metrics, taxonomy and allowing conversion to NBN or ECN outputs. This can be a substantial implementation burden and repeated in similar way for other lists, for example diatoms, macrophytes and marine lists. 
+
+### Summary of macroinvertebrate taxa data flow
+
+```{r}
+
+mermaid("
+graph TB
+    WFD100 --> INVERT-TAXON-DICTIONARY
+    ECN --> INVERT-TAXON-DICTIONARY
+    NBN --> INVERT-TAXON-DICTIONARY
+    Metrics --> INVERT-TAXON-DICTIONARY
+    ID_KEYS -.- INVERT-TAXON-DICTIONARY
+    INVERT-TAXON-DICTIONARY --> LIMS
+    INVERT-TAXON-DICTIONARY --> SURVEY123
+    SURVEY123 -.- LIMS
+    LIMS -.- id1(SEPA Database)
+    id1 -.-> ECN_DATABASE
+    id1 -.-> NBN_DATABASE
+    id1 --> METRICS/REPORTING
+    INVERT-TAXON-DICTIONARY --> internal(LIST FOR METHOD DOCUMENTATION & AUDITORS)
+    METRICS/REPORTING -.-> id1
+    ")
+
+```
+
+- Dotted line with arrow (..>) - irregular usage. 
+- Dotted line with no arrow - planned but not implemented (..).
+- Solid line with arrow (->) - data has previously or currently passes but majority these connections are not automated data flows.
+
+# Metadata
+
+The INVERT-TAXON-DICTIONARY is a single table combining the taxonomy, ECN and NBN identifiers, metric scores, taxa lists and columns used for presentation and record-keeping purposes. 
+
+
+
+
+# Requirements
+
+- Taxa lists should limit the level of analysis to keep reporting and training consistent.
+
+- LIMS requires three taxa lists, TL2, TL5 (including LAMM) and TL5_ECN (including LAMM and ECN).
+
+- LIMS requires a single column/list of unique taxa names for the user to pick from.
+
+- Survey123 requires TL2 table with Taxon name, WHPT and BMWP scores.
+
+- Auditing at the TL5 and TL2 must be possible (even if extra taxa are included).
+
+- Lists for TL2 and TL5 must be available for external auditors for reference.
+
+-  The taxa names should match the names in the preferred identification keys. 
+
+- Taxa names should match with requirements of metric/modelling tools (in separate column if required).
+
+- Taxa results should be share-able with the NBN gateway.
+
+- Taxa results should be share-able with ECN.
+
+- Additional taxa have been added to TL2 lists which SEPA routinely identify.
+
+- To calculate LAMM metric, additional taxa must also be added to the TL5 list.
+
+- For sites in the ECN network, additional taxa are needed to be added to TL5 to match with ECN taxa list.
+
+- Target list for analysis TL2 (including extra SEPA taxa) and TL5 (including LAMM) and ECN levels are required for documentation providing a reference for analysts.
+
+# Taxa lists
+
+The freshwater macroinvertebrate taxa list is held as a [.CSV data file](https://github.com/aquaMetrics/macroinvertebrateMetrics/blob/master/inst/extdat/INVERT-TAXON-DICTIONARY.csv) in the [macroinvertebrateMetrics](https://github.com/aquaMetrics/macroinvertebrateMetrics) R package. 
+
+# TL5 including LAMM
+
+```{r}
+# get TL5 taxa list
+tl5 <- filter(taxa, TAXON_NAME == TL5_TAXON)
+
+# get LAMM taxa list
+lamm <-  taxa[taxa$LAMM_TL == TRUE, ]
+```
+
+Some duplicate LAMM taxa because LAMM list includes non-standard groups/aggregates not included in WFD100 taxa lists.
+
+```{r}
+# duplicates?
+lamm$LAMM_TAXON[duplicated(lamm$LAMM_TAXON)]
+
+```
+
+Combine LAMM and TL5
+
+```{r}
+TL5_LAMM <- bind_rows(tl5, lamm)
+TL5_LAMM <- distinct(TL5_LAMM)
+```
+
+# TL5_ECN
  
 What's in TL5 but not in TL_ECN
  
@@ -60,15 +179,15 @@ ecn_not_in_tl5 <- filter(ecn, !TAXON_NAME %in% tl5$TAXON_NAME)
 ecn_not_in_tl5$TAXON_NAME
 ```
  
-## TL4
+## Note on TL4
  
 ```{r}
 tl4 <- filter(taxa, TAXON_NAME == TL4_TAXON)
 ecn <- filter(taxa, ECN_TL == TRUE)
 ```
  
-TL4 is double the length of ECN list (`r length(tl4$TAXON_NAME)` Vs `r length(ecn$TAXON_NAME)`). TL4 is much more resource intensive than ECN list. Don't recommend using TL4.
- 
+TL4 is double the length of ECN list (`r length(tl4$TAXON_NAME)` Vs `r length(ecn$TAXON_NAME)`). TL4 is much more resource intensive than ECN list. And...yes, unexpectedly TL4 is a larger list than TL5. So in terms of number of taxa: TL1 < TL2 < TL3 < TL4 > TL5!
+
 ## So what list should we use?
  
 What we need is TL5 + ECN? For a ECN analysis which can be 'downgraded' to TL5 and used for AWIC/LAMM or other TL5 level metrics.
@@ -78,7 +197,7 @@ However, we need to take away family level options where genus/species options a
 - Remove Oligochaeta (TL5) as option and replace with sub families from ECN list (Naididae, Lumbriculidae etc)
 - Add *Corixa affinis* (TL5) and remove Corixidae (ECN)
  
-ECN familes to keep:
+ECN families to keep:
 ```{r}
 ecn_family <- filter(ecn, RANK == "Family") 
 tl5_genus_species <- filter(tl5, FAMILY %in% ecn$TAXON_NAME)
@@ -97,9 +216,12 @@ tl5_family_keep$TAXON_NAME
 # Not Active
  
 Check column `active_data_entry` = FALSE. This column was used to filter which taxa could be entered in NEMS. Even if particular taxa are part of an official taxa list, there were sometimes reasons to prevent entry to use a different (usually NBN preferred / most recent name used in identification keys) named. 
+
 ECN taxa not active:
 ```{r}
-filter(ecn, ACTIVE_DATA_ENTRY == FALSE) %>%  select(TAXON_NAME) %>% kable(row.names = FALSE)
+filter(ecn, ACTIVE_DATA_ENTRY == FALSE) %>% 
+  select(TAXON_NAME) %>% 
+  kable(row.names = FALSE)
 ```
  
 Nemurella pictetii > Should be Nemurella picteti - with one 'i'. So use correctly spelt version. This can be converted back to 'pictetii' for ECN reporting if required.
@@ -108,7 +230,9 @@ Enchytraeidae (including Propappidae) & Lumbricidae (including Glossoscolecidae)
  
 TL5 taxa not active:
 ```{r}
-filter(tl5, ACTIVE_DATA_ENTRY == FALSE) %>%  select(TAXON_NAME) %>% kable(row.names = FALSE)
+filter(tl5, ACTIVE_DATA_ENTRY == FALSE) %>%  
+  select(TAXON_NAME) %>% 
+  kable(row.names = FALSE)
 ```
  
 Heptagenia lateralis is not active, include Electrogena lateralis instead, as preferred by NBN and used by ECN. Leave this as Heptagenia for now.
@@ -118,11 +242,10 @@ Armiger crista not used but this looks like mistake, include Armiger crista. Gyr
  
 ## Save TL5_ECN list
  
-Save the combined ECN and TL5 taxa list with corrections:
+Save the combined ECN and TL5 (including LAMM) taxa list with corrections:
  
 ```{r}
- 
- 
+tl5 <- TL5_LAMM
 ecn_tl5 <- bind_rows(tl5 , ecn)
 dups <- ecn_tl5[duplicated(ecn_tl5$TAXON_NAME), ]
 familes_in_both <- dups[dups$RANK == "Family", ]
@@ -136,12 +259,9 @@ worm_families <- taxa[taxa$TAXON_NAME %in% c("Enchytraeidae",
  
 keep_families <- bind_rows(tl5_family_keep, ecn_family_keep, worm_families, familes_in_both)
  
- 
-ecn_tl5 <-  ecn_tl5[
-                      !ecn_tl5$RANK %in% c("Family",
-                                           "Superfamily", 
-                                           "Class"), ]
- 
+ecn_tl5 <-  ecn_tl5[!ecn_tl5$RANK %in% c("Family",
+                                          "Superfamily", 
+                                          "Class"), ]
  
 ecn_tl5 <- bind_rows(ecn_tl5, keep_families)
  
@@ -151,28 +271,57 @@ ecn_tl5 <- ecn_tl5[!ecn_tl5$TAXON_NAME %in% c("Nemurella pictetii",
 ecn_tl5 <- ecn_tl5[!ecn_tl5$TAXON_NAME %in% c("Tipulidae",
                                               "Limoniidae",
                                               "Pediciidae"), ]
- 
- 
- 
 ```
  
- 
-# AWIC / LAMM species?
+# AWIC taxa
+
+Any AWIC taxa missing from TL5?
  
 ```{r}
- 
- 
-taxa$TAXON_NAME[taxa$AWIC_TAXON == taxa$TAXON_NAME, ]
- 
-unique(taxa$AWIC_TAXON)[!unique(taxa$AWIC_TAXON) %in% ecn_tl5$TAXON_NAME]
- 
-unique(taxa$LAMM_TAXON)[!unique(taxa$LAMM_TAXON) %in% ecn_tl5$LAMM_TAXON]
- 
-unique(taxa$LAMM_TAXON)
- 
+
+missing_awic <- unique(taxa$AWIC_TAXON)[!unique(taxa$AWIC_TAXON) %in% ecn_tl5$TAXON_NAME]
+missing_awic[missing_awic != ""]
+
 ```
 
+These missing genus are well covered at species level in TL5, so don't need to be added. Therefore the analyst should target these species rather than the genus level:
 
+```{r}
+ecn_tl5$TAXON_NAME[grep("Caenis|Sialis|Protonemura", 
+                        ecn_tl5$TAXON_NAME)]
+
+```
+
+# Taxa lists
+
+For routine 'family' level lab and bankside samples.
+
+TL2 + extra taxa/sub-families:
+
+```{r}
+
+tl2 <- taxa$TAXON_NAME[!is.na(taxa$TL2_5_ORDER)]
+kable(tl2)
+
+
+```
+
+For sampling points with AWIC or LAMM, core surveillance (and perhaps other purposes). 
+
+TL5 + LAMM
+
+```{r}
+kable(TL5_LAMM$TAXON_NAME)
+```
+
+For sampling points with ECN purpose, a new analysis in LIMS with these lists:
+
+TL5 + LAMM + ECN
+
+
+```{r}
+kable(ecn_tl5$TAXON_NAME)
+```
 
 
 
