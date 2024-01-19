@@ -23,6 +23,7 @@ library(tibble)
 library(magrittr)
 library(knitr)
 library(DiagrammeR)
+library(DT)
 ```
  
  
@@ -46,9 +47,7 @@ These taxa lists allow changes in the environment to be detected by applying con
 
 # Taxa tables
 
-## Freshwater macrinvertebrates
-
-The combine taxa table for freshwater [macro-invertebrates table is stored](https://github.com/aquaMetrics/macroinvertebrateMetrics/blob/master/inst/extdat/INVERT-TAXON-DICTIONARY.csv) in the [macroinverebrateMetrics R pacakage](https://github.com/aquaMetrics/macroinvertebrateMetrics). This table provides the basis for taxonomic lists for data. Subsets of this table are provided to the Labware based LIMS and ESRI's Survey123 for data entry. 
+The combine taxa table for freshwater macro-invertebrates table is called INVERT-TAXON-DICTIONARY and is stored in the [macroinverebrateMetrics R pacakage](https://github.com/aquaMetrics/macroinvertebrateMetrics/blob/master/inst/extdat/INVERT-TAXON-DICTIONARY.csv). This table provides the basis for taxonomic lists used for various analysis levels. Subsets of this table are provided to the Labware based LIMS and ESRI's Survey123 for data entry. 
 
 The taxa table held in macroinverebrateMetrics R package is a copy of previous table held in NEMS (predecessor to LIMS). 
 
@@ -81,7 +80,7 @@ graph TB
     id1 --> METRICS/REPORTING
     INVERT-TAXON-DICTIONARY --> internal(LIST FOR METHOD DOCUMENTATION & AUDITORS)
     METRICS/REPORTING -.-> id1
-    ")
+    ", height = '100%', width = '100%')
 
 ```
 
@@ -91,12 +90,18 @@ graph TB
 
 # Metadata
 
-The INVERT-TAXON-DICTIONARY is a single table combining the taxonomy, ECN and NBN identifiers, metric scores, taxa lists and columns used for presentation and record-keeping purposes. 
+The INVERT-TAXON-DICTIONARY is a single table with 49 columns. Covering taxonomy, ECN and NBN identifiers, metric scores, taxa lists, presentation and record-keeping. Her's a description of each column:
 
+```{r}
+ meta <- read.csv(system.file("extdat", "METADATA_INVERT_TAXON_DICTIONARY.csv", package="macroinvertebrateMetrics"))
+DT::datatable(meta)
+```
 
 
 
 # Requirements
+
+By filtering on the columns in INVERT-TAXON-DICTIONARY, we can filter the table to provide taxa lists matching our requirements:
 
 - Taxa lists should limit the level of analysis to keep reporting and training consistent.
 
@@ -126,7 +131,7 @@ The INVERT-TAXON-DICTIONARY is a single table combining the taxonomy, ECN and NB
 
 - Target list for analysis TL2 (including extra SEPA taxa) and TL5 (including LAMM) and ECN levels are required for documentation providing a reference for analysts.
 
-# Taxa lists
+# Prepare Lists
 
 The freshwater macroinvertebrate taxa list is held as a [.CSV data file](https://github.com/aquaMetrics/macroinvertebrateMetrics/blob/master/inst/extdat/INVERT-TAXON-DICTIONARY.csv) in the [macroinvertebrateMetrics](https://github.com/aquaMetrics/macroinvertebrateMetrics) R package. 
 
@@ -292,35 +297,61 @@ ecn_tl5$TAXON_NAME[grep("Caenis|Sialis|Protonemura",
 
 ```
 
-# Taxa lists
+# Taxa Lists
 
 For routine 'family' level lab and bankside samples.
 
-TL2 + extra taxa/sub-families:
+## TL2 + extra taxa/sub-families:
 
 ```{r}
 
-tl2 <- taxa$TAXON_NAME[!is.na(taxa$TL2_5_ORDER)]
-kable(tl2)
-
+tl2 <- taxa[!is.na(taxa$TL2_5_ORDER), ]
+display_tl2 <- tl2[, c("TAXON_NAME","TL2_TAXON","BMWP", "WHPT_A", "WHPT_B", "WHPT_C", "WHPT_D")]
+DT::datatable(display_tl2, rownames = FALSE, 
+              extensions = 'Buttons',
+              options = list(
+    dom = 'Blfrtip',
+    buttons = c('copy', 'csv', 'excel'),
+    lengthMenu = list(c(10,30, 50, -1), 
+                      c('10', '30', '50', 'All')),
+    paging = T))
 
 ```
 
 For sampling points with AWIC or LAMM, core surveillance (and perhaps other purposes). 
 
-TL5 + LAMM
+## TL5 + LAMM:
 
 ```{r}
-kable(TL5_LAMM$TAXON_NAME)
+display_tl5 <- TL5_LAMM[, c("TAXON_NAME","TL5_TAXON", "LAMM_TAXON")]
+DT::datatable(display_tl5, 
+              rownames = FALSE, 
+              extensions = 'Buttons',
+              options = list(
+    dom = 'Blfrtip',
+    buttons = c('copy', 'csv', 'excel'),
+    lengthMenu = list(c(10,30, 50, -1), 
+                      c('10', '30', '50', 'All')),
+    paging = T))
 ```
 
-For sampling points with ECN purpose, a new analysis in LIMS with these lists:
+For sampling points with ECN purpose, a new analysis in LIMS with these lists.
 
-TL5 + LAMM + ECN
-
+## TL5 + LAMM + ECN:
 
 ```{r}
-kable(ecn_tl5$TAXON_NAME)
+display_ecn_tl5 <- ecn_tl5[, c("TAXON_NAME",
+                               "TL5_TAXON",
+                               "LAMM_TAXON",
+                               "ECN_TL")]
+DT::datatable(display_ecn_tl5,  rownames = FALSE, 
+              extensions = 'Buttons',
+              options = list(
+    dom = 'Blfrtip',
+    buttons = c('copy', 'csv', 'excel'),
+    lengthMenu = list(c(10,30, 50, -1), 
+                      c('10', '30', '50', 'All')),
+    paging = T))
 ```
 
 
