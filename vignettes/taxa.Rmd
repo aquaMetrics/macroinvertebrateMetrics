@@ -56,7 +56,7 @@ The taxa table held in macroinverebrateMetrics R package is a copy of previous t
 Taxonomy, keys, metrics and data sharing standards are all independently produced by different organisations and a not maintained and updated in sync. 
 In an ideal world, SEPA would implement an globally managed list of taxa, identification keys, metrics and reporting tools which a tightly aligned and consistent with each other and allow sharing of data with other partners. 
 
-However, SEPA is trapped by competing and independent sources of truth and taxa concepts. These are WFD100s, NBN,  ECN  taxa lists and additionally independent taxa lists for some metrics (LAMM & AWIC etc). Furthermore, the identification keys are independently produced and may not always use the preferred taxa name for any of these lists.
+However, SEPA is trapped by competing and independent sources of truth and taxa concepts. These are WFD100, NBN,  ECN  taxa lists and additionally independent taxa lists for some metrics (LAMM & AWIC etc). Furthermore, the identification keys are independently produced.
 
 To solve this implementation dilemma, SEPA combines all these sources of truth into taxa table(s), managing the changes to keys, metrics, taxonomy and allowing conversion to NBN or ECN outputs. This can be a substantial implementation burden and repeated in similar way for other lists, for example diatoms, macrophytes and marine lists. 
 
@@ -96,8 +96,6 @@ The INVERT-TAXON-DICTIONARY is a single table with 49 columns. Covering taxonomy
  meta <- read.csv(system.file("extdat", "METADATA_INVERT_TAXON_DICTIONARY.csv", package="macroinvertebrateMetrics"))
 DT::datatable(meta)
 ```
-
-
 
 # Requirements
 
