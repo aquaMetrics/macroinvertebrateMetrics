@@ -1,0 +1,9 @@
+url: https://aquametrics.github.io/macroinvertebrateMetrics/
+destination: docs
+pkgdown:
+  as_is: yes
+template:
+  bootstrap: 5
+  params:
+    noindex: yes
+

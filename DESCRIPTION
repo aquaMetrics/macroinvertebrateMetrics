@@ -23,7 +23,7 @@ Suggests:
 Depends:
   R (>= 4.0)
 License: MIT + file LICENSE
-URL: https://github.com/aquaMetrics/macroinvertebrateMetrics
+URL: https://github.com/aquaMetrics/macroinvertebrateMetrics, https://aquametrics.github.io/macroinvertebrateMetrics/
 LazyLoad: yes
 LazyData: yes
 VignetteBuilder: knitr
