@@ -16,6 +16,8 @@ Imports:
 Suggests:
   covr,
   devtools,
+  DiagrammeR,
+  DT,
   lintr,
   knitr,
   rmarkdown,
