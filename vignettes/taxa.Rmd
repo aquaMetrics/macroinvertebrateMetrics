@@ -38,7 +38,7 @@ taxa$AWIC_TAXON <- as.character(taxa$AWIC_TAXON)
  
 What taxa lists to use for identification? 
   
-According to [WFD100](https://www.sniffer.org.uk/Handlers/Download.ashx?IDMF=e9b55f14-59cf-46b4-927f-66411e2e02d8) document, there are five standardised taxa lists. In particular, Taxa List 2 and 5 (TL2/TL5) have been widely adopted for reporting purposes. TL2 is a family-level(ish) list used for routine WHPT/RICT reporting. TL5 is used for species-level(ish) AWIC reporting.
+According to [WFD100](https://www.sniffer.org.uk/Handlers/Download.ashx?IDMF=e9b55f14-59cf-46b4-927f-66411e2e02d8) document, there are five standardised taxa lists. In particular, Taxa List 2 and 5 (TL2/TL5) have been widely adopted for reporting purposes. TL2 is a family-level(ish) list used for routine WHPT/RICT reporting. TL5 is used for species-level(ish) reporting including AWIC.
 
 These taxa lists allow changes in the environment to be detected by applying consistent levels of analysis - making changes between samples directly comparable. 
 
@@ -124,7 +124,7 @@ By filtering on the columns in INVERT-TAXON-DICTIONARY, we can filter the table 
 
 - For sites in the ECN network, additional taxa are needed to be added to TL5 to match with ECN taxa list.
 
-- Target list for analysis TL2 (including extra SEPA taxa) and TL5 (including LAMM) and ECN levels are required for documentation providing a reference for analysts.
+- Three target lists for analysis at TL2 (including extra SEPA taxa) and TL5 (including LAMM) and ECN levels are required for documentation providing a reference for analysts.
 
 # Prepare Lists
 
@@ -240,14 +240,12 @@ filter(tl5, ACTIVE_DATA_ENTRY == FALSE) %>%
 *Heptagenia lateralis* is not active, include *Electrogena lateralis* instead, as preferred by NBN and used by ECN. 
  
 *Armiger crista* not used but this looks like a mistake, include *Armiger crista*. *Gyraulus (Armiger) crista* is used by ECN. *Armiger crista* can be converted to *Gyraulus (Armiger) crista* if required for ECN reporting.
- 
-## Save TL5_ECN list
- 
-Save the combined ECN and TL5 (including LAMM) taxa list with corrections:
- 
+
 ```{r}
-tl5 <- TL5_LAMM
-ecn_tl5 <- bind_rows(tl5 , ecn)
+TL5_LAMM <- TL5_LAMM[!TL5_LAMM$TAXON_NAME %in% c("Nemurella pictetii",
+                                              "Heptagenia lateralis"), ]
+
+ecn_tl5 <- bind_rows(TL5_LAMM , ecn)
 dups <- ecn_tl5[duplicated(ecn_tl5$TAXON_NAME), ]
 familes_in_both <- dups[dups$RANK == "Family", ]
  
@@ -266,9 +264,7 @@ ecn_tl5 <-  ecn_tl5[!ecn_tl5$RANK %in% c("Family",
  
 ecn_tl5 <- bind_rows(ecn_tl5, keep_families)
  
-ecn_tl5 <- ecn_tl5[!ecn_tl5$TAXON_NAME %in% c("Nemurella pictetii",
-                                              "Planorbis crista",
-                                              "Heptagenia lateralis"), ]
+ecn_tl5 <- ecn_tl5[!ecn_tl5$TAXON_NAME %in% c("Planorbis crista"), ]
 
  
 ecn_tl5 <- ecn_tl5[!ecn_tl5$TAXON_NAME %in% c("Tipulidae",
