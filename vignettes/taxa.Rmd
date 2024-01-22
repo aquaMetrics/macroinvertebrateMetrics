@@ -44,7 +44,7 @@ These taxa lists allow changes in the environment to be detected by applying con
 
 # Data Sources
 
-The combine taxa table for freshwater macro-invertebrates table is called INVERT-TAXON-DICTIONARY and is stored in the [macroinverebrateMetrics R pacakage](https://github.com/aquaMetrics/macroinvertebrateMetrics/blob/master/inst/extdat/INVERT-TAXON-DICTIONARY.csv). This table provides the basis for taxa lists used in analysis including WFD100 reference lists. Subsets of this table are then provided to the Labware based LIMS and ESRI's Survey123 for data entry. 
+The combine taxa table for freshwater macro-invertebrates table is called INVERT-TAXON-DICTIONARY and is stored in the [macroinverebrateMetrics R package](https://github.com/aquaMetrics/macroinvertebrateMetrics/blob/master/inst/extdat/INVERT-TAXON-DICTIONARY.csv). This table provides the basis for taxa lists used in analysis including WFD100 reference lists. Subsets of this table are then provided to the Labware based LIMS and ESRI's Survey123 for data entry. 
 
 The INVERT-TAXON-DICTIONARY is a copy of previous table held in NEMS (predecessor to LIMS). The R package is used when calculating metrics for reporting purposes.
 
