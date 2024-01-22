@@ -295,9 +295,11 @@ ecn_tl5$TAXON_NAME[grep("Caenis|Sialis|Protonemura",
 
 # Taxa Lists
 
-For routine 'family' level lab and bankside samples.
+Three completed lists for analysis.
 
-## TL2 + extra taxa/sub-families:
+## TL2 + extra taxa/sub-families
+
+For routine 'family' level lab and bankside samples.
 
 ```{r}
 
@@ -314,9 +316,9 @@ DT::datatable(display_tl2, rownames = FALSE,
 
 ```
 
-For sampling points with AWIC or LAMM, core surveillance (and perhaps other purposes). 
+## TL5 + LAMM
 
-## TL5 + LAMM:
+For sampling points with AWIC or LAMM, core surveillance (and perhaps other purposes).
 
 ```{r}
 display_tl5 <- TL5_LAMM[, c("TAXON_NAME","TL5_TAXON", "LAMM_TAXON")]
@@ -331,9 +333,9 @@ DT::datatable(display_tl5,
     paging = T))
 ```
 
-For sampling points with ECN purpose, a new analysis in LIMS with these lists.
+## TL5 + LAMM + ECN
 
-## TL5 + LAMM + ECN:
+For sampling points with ECN purpose, a new analysis in LIMS with these lists.
 
 ```{r}
 display_ecn_tl5 <- ecn_tl5[, c("TAXON_NAME",
