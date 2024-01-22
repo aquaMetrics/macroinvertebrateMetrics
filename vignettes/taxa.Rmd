@@ -240,9 +240,9 @@ filter(tl5, ACTIVE_DATA_ENTRY == FALSE) %>%
   kable(row.names = FALSE)
 ```
  
-Heptagenia lateralis is not active, include Electrogena lateralis instead, as preferred by NBN and used by ECN. Leave this as Heptagenia for now.
+*Heptagenia lateralis* is not active, include *Electrogena lateralis* instead, as preferred by NBN and used by ECN. 
  
-Armiger crista not used but this looks like mistake, include Armiger crista. Gyraulus (Armiger) crista is used by ECN. Armiger crista can be converted to Gyraulus (Armiger) crista if required for ECN reporting.
+*Armiger crista* not used but this looks like a mistake, include *Armiger crista*. *Gyraulus (Armiger) crista* is used by ECN. *Armiger crista* can be converted to *Gyraulus (Armiger) crista* if required for ECN reporting.
  
  
 ## Save TL5_ECN list
@@ -271,11 +271,14 @@ ecn_tl5 <-  ecn_tl5[!ecn_tl5$RANK %in% c("Family",
 ecn_tl5 <- bind_rows(ecn_tl5, keep_families)
  
 ecn_tl5 <- ecn_tl5[!ecn_tl5$TAXON_NAME %in% c("Nemurella pictetii",
-                                              "Planorbis crista"), ]
+                                              "Planorbis crista",
+                                              "Heptagenia lateralis"), ]
+
  
 ecn_tl5 <- ecn_tl5[!ecn_tl5$TAXON_NAME %in% c("Tipulidae",
                                               "Limoniidae",
                                               "Pediciidae"), ]
+
 ```
  
 # AWIC taxa
