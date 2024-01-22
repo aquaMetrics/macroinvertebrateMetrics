@@ -44,18 +44,19 @@ These taxa lists allow changes in the environment to be detected by applying con
 
 # Data Sources
 
-The combine taxa table for freshwater macro-invertebrates table is called INVERT-TAXON-DICTIONARY and is stored in the [macroinverebrateMetrics R pacakage](https://github.com/aquaMetrics/macroinvertebrateMetrics/blob/master/inst/extdat/INVERT-TAXON-DICTIONARY.csv). This table provides the basis for taxa lists used for various analysis levels including lists in the WFD100. Subsets of this table are provided to the Labware based LIMS and ESRI's Survey123 for data entry. 
+The combine taxa table for freshwater macro-invertebrates table is called INVERT-TAXON-DICTIONARY and is stored in the [macroinverebrateMetrics R pacakage](https://github.com/aquaMetrics/macroinvertebrateMetrics/blob/master/inst/extdat/INVERT-TAXON-DICTIONARY.csv). This table provides the basis for taxa lists used in analysis including WFD100 reference lists. Subsets of this table are then provided to the Labware based LIMS and ESRI's Survey123 for data entry. 
 
-The INVERT-TAXON-DICTIONARY held in macroinverebrateMetrics R package is a copy of previous table held in NEMS (predecessor to LIMS). 
+The INVERT-TAXON-DICTIONARY is a copy of previous table held in NEMS (predecessor to LIMS). The R package is used when calculating metrics for reporting purposes.
 
 # Implementor's Trap
 
-Taxonomy, keys, metrics and data sharing standards are all independently produced by different organisations and a not maintained and updated in sync. 
-In an ideal world, we would implement an globally managed list of taxa, identification keys, metrics and reporting tools which a tightly aligned and consistent with each other and allow sharing of data with other partners. 
+We must implement taxonomy, keys, metrics and data sharing standards that are independently produced by different organisations and a not maintained and updated in sync. 
 
-However, there are a number of independent sources of truth for taxa concepts. These are WFD100, NBN,  ECN and  metrics (LAMM & AWIC etc) taxa lists. Furthermore, the identification keys are independently produced.
+In an ideal world, we would download a globally managed list of taxa, identification keys, metrics and reporting tools which are tightly coordinated with each other and allow sharing of data. 
 
-To solve this implementation dilemma, we combine all these sources of truth into a taxa table (INVERT-TAXON-DICTIONARY), and co-ordinate updates to keys, guidance, data entry, training and auditing as required. This is repeated in similar way for other lists, for example diatoms, macrophytes and marine lists. 
+However, there are a number of independent sources of truth. These include WFD100, National Biodiversity Network (NBN), Environmental Change Network (ECN), metrics and identification keys.
+
+To solve this implementation dilemma, we combine all sources of truth into a taxa table (INVERT-TAXON-DICTIONARY), and co-ordinate updates to keys, data entry, training, auditing and data-sharing as required. This is repeated in similar way for other lists, for example diatoms, macrophytes and marine lists. 
 
 ### Summary of macroinvertebrate taxa data flow
 
