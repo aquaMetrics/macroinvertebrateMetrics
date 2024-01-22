@@ -1,11 +1,8 @@
 ---
 title: "Freshwater Macroinvertebrate Taxa Lists"
-output: word_document
-vignette: >
-  %\VignetteIndexEntry{taxa}
-  %\VignetteEncoding{UTF-8}
-  %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
+output: rmarkdown::html_vignette
+vignette: "%\\VignetteIndexEntry{taxa} %\\VignetteEncoding{UTF-8} %\\VignetteEngine{knitr::rmarkdown}\n"
+editor_options:
   chunk_output_type: console
 ---
  
@@ -41,13 +38,13 @@ taxa$AWIC_TAXON <- as.character(taxa$AWIC_TAXON)
  
 What taxa lists to use for identification? 
   
-Based on the [WFD100](https://www.sniffer.org.uk/Handlers/Download.ashx?IDMF=e9b55f14-59cf-46b4-927f-66411e2e02d8) document, there are five standardised taxa lists. In particular, Taxa List 2 and 5 (TL2/TL5) have been widely adopted for reporting purposes. TL2 is a family-level(ish) list used for routine WHPT/RICT reporting. TL5 is used for species-level(ish) AWIC reporting.
+According to [WFD100](https://www.sniffer.org.uk/Handlers/Download.ashx?IDMF=e9b55f14-59cf-46b4-927f-66411e2e02d8) document, there are five standardised taxa lists. In particular, Taxa List 2 and 5 (TL2/TL5) have been widely adopted for reporting purposes. TL2 is a family-level(ish) list used for routine WHPT/RICT reporting. TL5 is used for species-level(ish) AWIC reporting.
 
 These taxa lists allow changes in the environment to be detected by applying consistent levels of analysis - making changes between samples directly comparable. 
 
-# Taxa tables
+# Data Sources
 
-The combine taxa table for freshwater macro-invertebrates table is called INVERT-TAXON-DICTIONARY and is stored in the [macroinverebrateMetrics R pacakage](https://github.com/aquaMetrics/macroinvertebrateMetrics/blob/master/inst/extdat/INVERT-TAXON-DICTIONARY.csv). This table provides the basis for taxonomic lists used for various analysis levels. Subsets of this table are provided to the Labware based LIMS and ESRI's Survey123 for data entry. 
+The combine taxa table for freshwater macro-invertebrates table is called INVERT-TAXON-DICTIONARY and is stored in the [macroinverebrateMetrics R pacakage](https://github.com/aquaMetrics/macroinvertebrateMetrics/blob/master/inst/extdat/INVERT-TAXON-DICTIONARY.csv). This table provides the basis for taxa lists used for various analysis levels including lists in the WFD100. Subsets of this table are provided to the Labware based LIMS and ESRI's Survey123 for data entry. 
 
 The taxa table held in macroinverebrateMetrics R package is a copy of previous table held in NEMS (predecessor to LIMS). 
 
@@ -131,9 +128,9 @@ By filtering on the columns in INVERT-TAXON-DICTIONARY, we can filter the table 
 
 # Prepare Lists
 
-The freshwater macroinvertebrate taxa list is held as a [INVERT-TAXON-DICTIONARY.CSV data file](https://github.com/aquaMetrics/macroinvertebrateMetrics/blob/master/inst/extdat/INVERT-TAXON-DICTIONARY.csv) in the [macroinvertebrateMetrics](https://github.com/aquaMetrics/macroinvertebrateMetrics) R package. 
+Below we work through a number of steps to a create target lists for various levels of analysis.
 
-# TL5 including LAMM
+## TL5 including LAMM
 
 ```{r}
 # get TL5 taxa list
@@ -160,7 +157,7 @@ TL5_LAMM <- bind_rows(tl5, lamm)
 TL5_LAMM <- distinct(TL5_LAMM)
 ```
 
-# TL5_ECN
+## TL5_ECN
  
 What's in TL5 but not in TL_ECN
  
@@ -218,7 +215,7 @@ tl5_family_keep <- filter(tl5_family, !TAXON_NAME %in% ecn_genus_species$FAMILY)
 tl5_family_keep$TAXON_NAME
 ```
  
-# Not Active
+## Not Active
  
 Check column `active_data_entry` = FALSE. This column was used to filter which taxa could be entered in NEMS. Even if particular taxa are part of an official taxa list, there were sometimes reasons to prevent entry to use a different (usually NBN preferred / most recent name used in identification keys) named. 
 
@@ -243,7 +240,6 @@ filter(tl5, ACTIVE_DATA_ENTRY == FALSE) %>%
 *Heptagenia lateralis* is not active, include *Electrogena lateralis* instead, as preferred by NBN and used by ECN. 
  
 *Armiger crista* not used but this looks like a mistake, include *Armiger crista*. *Gyraulus (Armiger) crista* is used by ECN. *Armiger crista* can be converted to *Gyraulus (Armiger) crista* if required for ECN reporting.
- 
  
 ## Save TL5_ECN list
  
@@ -281,7 +277,7 @@ ecn_tl5 <- ecn_tl5[!ecn_tl5$TAXON_NAME %in% c("Tipulidae",
 
 ```
  
-# AWIC taxa
+## AWIC taxa
 
 Any AWIC taxa missing from TL5?
  
