@@ -1,6 +1,6 @@
 ---
 title: "Freshwater Macroinvertebrate Taxa Lists"
-output: rmarkdown::html_vignette
+output: word_document
 vignette: >
   %\VignetteIndexEntry{taxa}
   %\VignetteEncoding{UTF-8}
@@ -39,7 +39,7 @@ taxa$AWIC_TAXON <- as.character(taxa$AWIC_TAXON)
  
 # Intro
  
-What taxa lists should SEPA use for identification? 
+What taxa lists to use for identification? 
   
 Based on the [WFD100](https://www.sniffer.org.uk/Handlers/Download.ashx?IDMF=e9b55f14-59cf-46b4-927f-66411e2e02d8) document, there are five standardised taxa lists. In particular, Taxa List 2 and 5 (TL2/TL5) have been widely adopted for reporting purposes. TL2 is a family-level(ish) list used for routine WHPT/RICT reporting. TL5 is used for species-level(ish) AWIC reporting.
 
@@ -54,11 +54,11 @@ The taxa table held in macroinverebrateMetrics R package is a copy of previous t
 # Implementor's Trap
 
 Taxonomy, keys, metrics and data sharing standards are all independently produced by different organisations and a not maintained and updated in sync. 
-In an ideal world, SEPA would implement an globally managed list of taxa, identification keys, metrics and reporting tools which a tightly aligned and consistent with each other and allow sharing of data with other partners. 
+In an ideal world, we would implement an globally managed list of taxa, identification keys, metrics and reporting tools which a tightly aligned and consistent with each other and allow sharing of data with other partners. 
 
-However, SEPA is trapped by competing and independent sources of truth and taxa concepts. These are WFD100, NBN,  ECN  taxa lists and additionally independent taxa lists for some metrics (LAMM & AWIC etc). Furthermore, the identification keys are independently produced.
+However, there are a number of independent sources of truth for taxa concepts. These are WFD100, NBN,  ECN  taxa lists and additionally independent taxa lists for some metrics (LAMM & AWIC etc). Furthermore, the identification keys are independently produced.
 
-To solve this implementation dilemma, SEPA combines all these sources of truth into taxa table(s), managing the changes to keys, metrics, taxonomy and allowing conversion to NBN or ECN outputs. This can be a substantial implementation burden and repeated in similar way for other lists, for example diatoms, macrophytes and marine lists. 
+To solve this implementation dilemma, we combine all these sources of truth into taxa table(s), managing the changes to keys, metrics, taxonomy and allowing conversion to NBN or ECN outputs. This can be a substantial implementation burden and repeated in similar way for other lists, for example diatoms, macrophytes and marine lists. 
 
 ### Summary of macroinvertebrate taxa data flow
 
@@ -90,7 +90,7 @@ graph TB
 
 # Metadata
 
-The INVERT-TAXON-DICTIONARY is a single table with 49 columns. Covering taxonomy, ECN and NBN identifiers, metric scores, taxa lists, presentation and record-keeping. Her's a description of each column:
+The INVERT-TAXON-DICTIONARY is a single table with 49 columns. Covering taxonomy, ECN and NBN identifiers, metric scores, taxa lists, presentation and record-keeping. The columns in this table are described below:
 
 ```{r}
  meta <- read.csv(system.file("extdat", "METADATA_INVERT_TAXON_DICTIONARY.csv", package="macroinvertebrateMetrics"))
@@ -121,7 +121,7 @@ By filtering on the columns in INVERT-TAXON-DICTIONARY, we can filter the table 
 
 - Taxa results should be share-able with ECN.
 
-- Additional taxa have been added to TL2 lists which SEPA routinely identify.
+- Include additional taxa to the TL2 list which are routinely identified.
 
 - To calculate LAMM metric, additional taxa must also be added to the TL5 list.
 
@@ -131,7 +131,7 @@ By filtering on the columns in INVERT-TAXON-DICTIONARY, we can filter the table 
 
 # Prepare Lists
 
-The freshwater macroinvertebrate taxa list is held as a [.CSV data file](https://github.com/aquaMetrics/macroinvertebrateMetrics/blob/master/inst/extdat/INVERT-TAXON-DICTIONARY.csv) in the [macroinvertebrateMetrics](https://github.com/aquaMetrics/macroinvertebrateMetrics) R package. 
+The freshwater macroinvertebrate taxa list is held as a [INVERT-TAXON-DICTIONARY.CSV data file](https://github.com/aquaMetrics/macroinvertebrateMetrics/blob/master/inst/extdat/INVERT-TAXON-DICTIONARY.csv) in the [macroinvertebrateMetrics](https://github.com/aquaMetrics/macroinvertebrateMetrics) R package. 
 
 # TL5 including LAMM
 
@@ -147,7 +147,9 @@ Some duplicate LAMM taxa because LAMM list includes non-standard groups/aggregat
 
 ```{r}
 # duplicates?
-lamm$LAMM_TAXON[duplicated(lamm$LAMM_TAXON)]
+lamm_dups <- lamm$LAMM_TAXON[duplicated(lamm$LAMM_TAXON) ]
+
+kable(taxa[taxa$TAXON_NAME %in% lamm$TAXON_NAME[lamm$LAMM_TAXON %in% lamm_dups]  , c("TAXON_NAME", "LAMM_TAXON")])
 
 ```
 
@@ -191,7 +193,7 @@ ecn <- filter(taxa, ECN_TL == TRUE)
  
 TL4 is double the length of ECN list (`r length(tl4$TAXON_NAME)` Vs `r length(ecn$TAXON_NAME)`). TL4 is much more resource intensive than ECN list. And...yes, unexpectedly TL4 is a larger list than TL5. So in terms of number of taxa: TL1 < TL2 < TL3 < TL4 > TL5!
 
-## So what list should we use?
+## What to use?
  
 What we need is TL5 + ECN? For a ECN analysis which can be 'downgraded' to TL5 and used for AWIC/LAMM or other TL5 level metrics.
  
