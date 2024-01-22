@@ -84,9 +84,9 @@ graph TB
 
 ```
 
-- Dotted line with arrow (..>) - irregular usage. 
-- Dotted line with no arrow - planned but not implemented (..).
-- Solid line with arrow (->) - data has previously or currently passes but majority these connections are not automated data flows.
+- (..>) Dotted line with arrow shows irregular usage. 
+- (..) Dotted line with no arrow shows planned but not implemented .
+- (->) Solid line with arrow shows data has previously or currently flows but majority of these connections are not automated.
 
 # Metadata
 
