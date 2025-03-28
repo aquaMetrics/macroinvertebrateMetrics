@@ -20,8 +20,8 @@ in `column_attributes` to match with input data}
 \item{questions}{Optional, user provided 'question' default is 'Taxon abundance', which
 filters only abundance values.}
 
-\item{metric_cols}{Columns used from taxon table to calculate metrics plus to
-taxon name column to join to input data (if using custom taxon table)}
+\item{metric_cols}{Columns used from taxon table to calculate metrics and
+the taxon name column to join to input data (if using custom taxon table)}
 
 \item{...}{Pass in specific paramters for each metric.}
 }
