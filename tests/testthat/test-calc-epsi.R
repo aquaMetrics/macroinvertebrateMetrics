@@ -12,7 +12,14 @@ test_that("test internal to SEPA", {
   library(sepaTools)
   # old manually calculated example from sepaTools:
   ecologyResults <- getEcologyResults(sampleNumber = c(91977))
+  ecologyResults <- hera::get_data(207383)
+  ecologyResults <- dplyr::filter(ecologyResults, sample_id == c(91977))
+  ecologyResults$sample_number <- ecologyResults$sample_id
+  ecologyResults$sample_id <- NULL
+  metricResults <- calc_metric(ecologyResults, metrics  = "psi")
+
   ecologyResults$RESULT <- ecologyResults$VALUE
+
   ecologyResults <- filter_psi(ecologyResults, taxa_list = "TL2")
   metricResults <- calc_epsi(ecologyResults)
   expect_equal(round(as.numeric(as.character(metricResults$RESULT[1])),
