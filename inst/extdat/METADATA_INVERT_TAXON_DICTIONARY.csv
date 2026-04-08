@@ -8,7 +8,7 @@ RANK,Rank taxonomic hierarchy
 MAITLAND_CODE,MAITLAND CODE from Maitland lists
 CEH_CODE,Unique CEH_CODE - successor to Maitland code
 AQEM_CODE,European unique code
-NBN_CODE,NBN unqiue code
+NBN_CODE,NBN unique code
 RED_BOOK_TEXT,2010 red book status
 AUTHORITY,taxonomic reference paper
 ALT_TAXONNAME_1,synonym

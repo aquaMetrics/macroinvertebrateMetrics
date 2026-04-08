@@ -62,37 +62,52 @@ calc_metric <- function(
     if(is.null(filtered_data)) {
       return(NULL)
     }
+    # Make sample_id include parameter id so if parameters share same sample_id
+    # they will be calculated separately
+    filtered_data$sample_id <- paste0(filtered_data$sample_id,"-",
+                                      filtered_data$parameter)
+    sample_output <- purrr::map_df(
+      split(filtered_data, filtered_data$sample_id), function(sample) {
     if (any(metric %in% "awic")) {
-      awic <- awic(filtered_data,
+      metric_output <- awic(sample,
                    metric_cols = metric_cols,
                    names = names)
-      return(awic)
     }
 
     if (any(metric %in% "epsi")) {
-      epsi <- epsi(filtered_data, taxa_list = taxa_list, metric_cols = metric_cols, ...)
-      return(epsi)
+      metric_output <- epsi(sample,
+                   taxa_list = taxa_list,
+                   metric_cols = metric_cols,
+                   ...)
     }
     if (any(metric %in% "psi")) {
       # These metrics need specific Taxa List to run correctly
-      psi_data <- filter_psi(filtered_data, taxa_list = taxa_list)
-      whpt <- psi(psi_data)
-      return(whpt)
+      psi_data <- filter_psi(sample, taxa_list = taxa_list)
+      metric_output <- psi(psi_data)
     }
     if (any(metric %in% "riverfly")) {
-      riverfly <- riverfly(filtered_data)
-      return(riverfly)
+      metric_output <- riverfly(sample)
     }
     if (any(metric %in% "spear")) {
       # These metrics need specific Taxa List to run correctly
-      spear_data <- filter_spear(filtered_data, taxa_list = taxa_list)
-      spear <- spear(spear_data)
-      return(spear)
+      spear_data <- filter_spear(sample, taxa_list = taxa_list)
+      metric_output <- spear(spear_data)
     }
     if (any(metric %in% "whpt")) {
-      whpt <- whpt(filtered_data)
-      return(whpt)
+      metric_output <- whpt(sample)
     }
+
+    if(exists("metric_output")) {
+      if(is.na(unique(sample$parameter)) == FALSE){
+        metric_output$parameter <-  paste0(metric_output$parameter, " ", unique(sample$parameter))
+      }
+    }
+    return(metric_output)
+    # Unique parameter name to identify analysis/parameter in output
+
   })
+   return(sample_output)
+  })
+  output$sample_id <- gsub("-.*", "", output$sample_id)
   return(output)
 }

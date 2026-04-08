@@ -1,7 +1,7 @@
 Package: macroinvertebrateMetrics
 Type: Package
 Title: Macroinvertebrate Biotic indices
-Version: 0.99.4
+Version: 0.99.5
 Date: 2020-05-26
 Authors@R: c(person("Carlos","Ruiz",role="aut"),
              person("Tim","Foster",email = "tim.foster@sepa.org.uk",role=c("ctb","cre"))) 
@@ -29,5 +29,5 @@ URL: https://github.com/aquaMetrics/macroinvertebrateMetrics, https://aquametric
 LazyLoad: yes
 LazyData: yes
 VignetteBuilder: knitr
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 Encoding: UTF-8
