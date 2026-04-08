@@ -1,0 +1,57 @@
+# SPEcies At Risk (SPEAR) metric
+
+Indicator based on biological traits used to detect effects of
+pesticides on non-target freshwater invertebrate organisms. It can be
+calculated at Taxonomic Levels 2, 4 and 5.
+
+## Usage
+
+``` r
+spear(data, recoveryArea = "unknown", taxa_list = "TL2")
+```
+
+## Arguments
+
+- data:
+
+  Dataframe of results with four columns: SAMPLE_NUMBER, TAXON,
+  SPEAR_SPECIES, RESULT
+
+- recoveryArea:
+
+  There are 3 different paramaters depending on availability of
+  "Recovery areas" information:
+
+  - "Absent" - No presence of recovery areas
+
+  - "Present" - Presence of recovery areas
+
+  - "Unknown" - No information available
+
+- taxa_list:
+
+  The taxonomic level the sample(s) have been identified at according to
+  specificed taxa lists as described in WFD100 Further Development of
+  River Invertebrate Classification Tool. Either "TL2" - Taxa list 2,
+  "TL4" - Taxa list 4 or "TL5" - Taxa list 5.
+
+## Value
+
+dataframe with metric outputs
+
+## References
+
+Liess M. & Von der Ohe P. 2005. *Analyzing effects of pesticides on
+invertebrate communities in streams*. Environ Toxicol Chem. 24: 954-965.
+
+Wogram J. & Liess M. 2001. *Rank ordering of macroinvertebrate species
+sensitivity to toxic compounds by comparison with that of Daphnia
+magna*. Bull Environ Contam Toxicol. 67: 360-367
+
+Liess M., Schaefer R., Schriever C. 2008. *The footprint of pesticide
+stress in communities - Species traits reveal community effects of
+toxicants*. Science of the Total Environment. 406: 484-490
+
+## See also
+
+[`filter_spear`](https://aquametrics.github.io/macroinvertebrateMetrics/reference/filter_spear.md)
