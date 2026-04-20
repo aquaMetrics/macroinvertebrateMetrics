@@ -3,7 +3,7 @@ pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
   taxa: taxa.html
-last_built: 2026-04-08T09:45Z
+last_built: 2026-04-20T07:24Z
 urls:
   reference: https://aquametrics.github.io/macroinvertebrateMetrics/reference
   article: https://aquametrics.github.io/macroinvertebrateMetrics/articles
