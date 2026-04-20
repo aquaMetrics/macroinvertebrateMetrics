@@ -64,10 +64,11 @@ calc_metric <- function(
     }
     # Make sample_id include parameter id so if parameters share same sample_id
     # they will be calculated separately
-    filtered_data$sample_id <- paste0(filtered_data$sample_id,"-",
+    filtered_data$sample_id <- paste0(filtered_data$sample_id,"-Para",
                                       filtered_data$parameter)
     sample_output <- purrr::map_df(
       split(filtered_data, filtered_data$sample_id), function(sample) {
+
     if (any(metric %in% "awic")) {
       metric_output <- awic(sample,
                    metric_cols = metric_cols,
@@ -99,15 +100,16 @@ calc_metric <- function(
 
     if(exists("metric_output")) {
       if(is.na(unique(sample$parameter)) == FALSE){
-        metric_output$parameter <-  paste0(metric_output$parameter, " ", unique(sample$parameter))
+        metric_output$parameter <-  paste0(unique(sample$parameter))
       }
     }
+
     return(metric_output)
     # Unique parameter name to identify analysis/parameter in output
 
   })
    return(sample_output)
   })
-  output$sample_id <- gsub("-.*", "", output$sample_id)
+  output$sample_id <- gsub("-Para.*", "", output$sample_id)
   return(output)
 }
